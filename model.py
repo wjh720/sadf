@@ -189,17 +189,17 @@ class Learner():
         self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
-        #self.model.add(BatchNormalization())
+        self.model.add(BatchNormalization())
         self.model.add(MaxPooling2D(pool_size = (2, 2)))
         self.model.add(Dropout(0.1))
-
+        '''
         self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
-        #self.model.add(BatchNormalization())
+        self.model.add(BatchNormalization())
         self.model.add(MaxPooling2D(pool_size = (2, 2)))
         self.model.add(Dropout(0.2))
-
+        '''
         self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
