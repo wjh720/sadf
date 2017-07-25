@@ -53,12 +53,16 @@ class Learner():
             norm_asd = norm_asd / np.std(norm_asd, axis = 0)
             print(np.std(norm_asd, axis = 0))
 
+            time.sleep(30)
+
             for j in range(num_repeat):
                 Start = j * 43
                 End = (j + 2) * 43
                 aa = asd[Start : End].T
                 print(aa.shape)
                 pdata.append(aa)
+
+            time.sleep(30)
 
         self.data = np.array(pdata)
 
