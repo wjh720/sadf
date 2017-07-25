@@ -96,34 +96,6 @@ class Learner():
 
     def create_model(self):
 
-        def my_loss(y_true, y_pred):
-            print("asavad ",y_true.get_shape)
-            print("asavad ",y_pred.get_shape)
-
-            ans = []
-            for i in range(num_asd):
-                ans.append(K.categorical_crossentropy(y_true[:, i], y_pred[:,i]))
-            return K.mean(tf.stack(ans))
-
-        def mode(y_true, y_pred):
-            a = K.argmax(y_pred, axis = 2)
-            aa = K.argmax(y_true, axis = 2)
-            ans = []
-            for i in range(15):
-                tmp = K.equal(a, i)
-                b = tf.reduce_sum(tf.cast(tmp, tf.int32), axis = 1, keep_dims=False)
-                ans.append(b)
-            c = tf.stack(ans)
-            d = K.argmax(K.transpose(c), axis = 1)
-            return K.mean(K.equal(aa[:, 0], d))
-
-        def mean_acc(y_true, y_pred):
-            a = K.argmax(y_pred, axis = 2)
-            aa = K.argmax(y_true, axis = 2)
-
-            tmp = K.equal(a, aa)
-            return K.mean(K.mean(tf.cast(tmp, tf.float32)))
-
         def lam(X):
             print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
             print(X.shape)
@@ -156,10 +128,87 @@ class Learner():
         self.model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
         #self.model.compile(loss = my_loss, optimizer='adam',metrics=[mean_acc, mode])
 
+    def prepare_mfcc(self):
+        f = file('label.npy', 'r')
+        self.label = np.load(f)
+        f.close()
+
+        f = file('data_mfcc.npy', 'r')
+        self.data = np.load(f)
+        f.close()
+
+        self.label = self.label.repeat(num_repeat)
+        self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
+        print(self.label[0, 0])
+
+        n = self.data.shape[0]
+
+        pdata = []
+        for i in range(n):
+            asd = self.data[i]
+            #print(asd.shape)
+            norm_asd = asd - np.mean(asd, axis = 0)
+            #print(np.mean(norm_asd, axis = 0))
+            #print(np.std(norm_asd, axis = 0))
+            #norm_asd = norm_asd / np.std(norm_asd, axis = 0)
+            #print(np.std(norm_asd, axis = 0))
+
+            #time.sleep(30)
+
+            for j in range(num_repeat):
+                Start = j * 86
+                End = (j + 1) * 86
+                aa = asd[Start : End]
+                #print(aa.shape)
+                pdata.append(aa)
+
+            #time.sleep(30)
+
+        self.data = np.array(pdata)
+
+        print(self.data.shape)
+        print(self.label.shape)
+
+    def create_mfcc(self):
+
+        def lam(X):
+            print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
+            print(X.shape)
+            X=K.max(X,axis=1)
+            print(X.shape)
+            return X
+
+        self.model = Sequential()
+
+        self.model.add(Reshape((86, 20, 1), input_shape=(86, 20)))
+        self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
+        self.model.add(BatchNormalization())
+        self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
+        #self.model.add(BatchNormalization())
+        self.model.add(MaxPooling2D(pool_size = (3, 3)))
+        self.model.add(Dropout(0.1))
+
+        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
+        self.model.add(BatchNormalization())
+        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
+        #self.model.add(BatchNormalization())
+        self.model.add(Lambda(lam,output_shape=(6,128)))
+        #self.model.add(MaxPooling2D(pool_size = (10, 2)))
+        self.model.add(Dropout(0.2))
+        self.model.add(Flatten())
+        #self.model.add(Conv1D(256, 1, padding='same', activation='relu'))
+        #self.model.add(Conv1D(15, 1, padding='same', activation='softmax'))
+        #self.model.add(Dense(256, activation='relu'))
+        self.model.add(Dense(15, activation='softmax'))
+        self.model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
+        #self.model.compile(loss = my_loss, optimizer='adam',metrics=[mean_acc, mode])
+
 
     def work(self):
-        self.prepare()
-        self.create_model()
+        #self.prepare()
+        self.prepare_mfcc()
+        #self.create_model()
+        self.create_mfcc()
         #self.log_model_summary()
         self.learn()
 
