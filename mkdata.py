@@ -123,7 +123,7 @@ def prepare_mfcc():
         data = np.array(data)
         print(data.shape)
 
-        f = file('data.npy', 'w')
+        f = file('data_mfcc.npy', 'w')
         np.save(f, data)
         f.close()
         print(' Data End ')
