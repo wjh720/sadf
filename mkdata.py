@@ -38,7 +38,7 @@ def prepare_data():
     label = np.array(label_list)
     print(label.shape)
     f = file('label.npy', 'w')
-    np.save(f, data)
+    np.save(f, label)
     f.close()
     print(' End ')
 
