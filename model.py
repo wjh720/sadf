@@ -49,7 +49,7 @@ class Learner():
             asd = self.data[i]
             print(asd.shape)
             norm_asd = asd - np.mean(asd, axis = 0)
-            print(np.mean(asd, axis = 0))
+            print(np.mean(norm_asd, axis = 0))
             norm_asd = norm_asd / np.std(norm_asd, axis = 0)
             print(np.std(norm_asd, axis = 0))
 
@@ -58,7 +58,7 @@ class Learner():
             for j in range(num_repeat):
                 Start = j * 43
                 End = (j + 2) * 43
-                aa = asd[Start : End].T
+                aa = asd[Start : End]
                 print(aa.shape)
                 pdata.append(aa)
 
