@@ -64,7 +64,7 @@ class Learner():
 
 
     def create_model(self):
-        
+        pass
 
 
     def work(self):
