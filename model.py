@@ -151,7 +151,7 @@ class Learner():
         self.model.add(Flatten())
         #self.model.add(Conv1D(256, 1, padding='same', activation='relu'))
         #self.model.add(Conv1D(15, 1, padding='same', activation='softmax'))
-        self.model.add(Dense(256, activation='relu'))
+        #self.model.add(Dense(256, activation='relu'))
         self.model.add(Dense(15, activation='softmax'))
         self.model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
         #self.model.compile(loss = my_loss, optimizer='adam',metrics=[mean_acc, mode])
