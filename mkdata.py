@@ -50,11 +50,14 @@ def prepare_data():
             y, sr=soundfile.read(item)
             y = np.mean(y.T, axis=0)
 
-            stft = librosa.feature.chroma_stft
-
-            S = logam(stft(y, sr))
-
+            S = np.abs(librosa.stft(y))**2
             print(S.shape)
+            S = librosa.feature.melspectrogram(S, sr)
+            print(S.shape)
+
+            S = librosa.power_to_db(S)
+            print(S.shape)
+            time.sleep(1000)
 
             data.append(S.T)
 
