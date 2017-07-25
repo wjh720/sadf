@@ -120,7 +120,7 @@ class Learner():
         self.model.add(BatchNormalization())
         self.model.add(MaxPooling2D(pool_size = (10, 2)))
         self.model.add(Dropout(0.25))
-        self.model.add(Lambda(lam,output_shape=(15,200))
+        self.model.add(Lambda(lam,output_shape=(15,200)))
         #self.model.add(Flatten())
         self.model.add(Dense(15, activation='softmax'))
         self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
