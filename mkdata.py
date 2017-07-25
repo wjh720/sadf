@@ -34,15 +34,15 @@ def prepare_data():
             label_list.append(dict_label[parts[1]])
 
     print(num_label)
-    
-    label = np.array(label_list)
-    print(label.shape)
-    f = file('label.npy', 'w')
-    np.save(f, label)
-    f.close()
-    print(' End ')
 
     if (overwrite):
+        label = np.array(label_list)
+        print(label.shape)
+        f = file('label.npy', 'w')
+        np.save(f, label)
+        f.close()
+        print(' Label End ')
+
         data = []
         num = 0
         for item in file_list:
@@ -66,8 +66,7 @@ def prepare_data():
         f = file('data.npy', 'w')
         np.save(f, data)
         f.close()
-        print(' End ')
-
+        print(' Data End ')
 
 
 prepare_data()
