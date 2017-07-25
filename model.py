@@ -93,7 +93,8 @@ class Learner():
     def create_model(self):
         self.model = Sequential()
 
-        self.model.add(Conv2D(256, (3, 3), activation='relu', input_shape=(86, 186)))
+        self.model.add(Reshape((86, 186, 1), input_shape=(86, 186)))
+        self.model.add(Conv2D(256, (3, 3), activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(256, (3, 3), activation='relu'))
         self.model.add(BatchNormalization())
