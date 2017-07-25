@@ -53,12 +53,13 @@ def prepare_data():
             print(num)
         num = num + 1
 
-    data = data.array(data)
+    data = np.array(data)
 
     print(data.shape)
 
     f = file('data.npy', 'w')
     np.save(f, data)
     f.close()
+    print(' End ')
 
 prepare_data()
