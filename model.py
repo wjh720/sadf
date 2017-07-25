@@ -89,11 +89,13 @@ class Learner():
 
         print(' End fitting ')
 
-    def Lambda(X):
-        print(X.shape)
-        return K.max(X,axis=1)
 
     def create_model(self):
+
+        def Lambda(X):
+            print(X.shape)
+            return K.max(X,axis=1)
+
         self.model = Sequential()
 
         self.model.add(Reshape((86, 128, 1), input_shape=(86, 128)))
