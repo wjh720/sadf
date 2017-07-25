@@ -22,6 +22,7 @@ def prepare_data():
     with open(meta_path, 'r') as ff:
         for line in ff:
             parts = line.split(' ')
+            print(parts)
             file_list.append(parts[0])
 
             if (parts[1] not in dict_label):
