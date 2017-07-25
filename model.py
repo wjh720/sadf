@@ -117,7 +117,7 @@ class Learner():
 
         self.model.add(Flatten())
         self.model.add(Dense(15, activation='softmax'))
-        self.model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
+        self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
 
 
     def work(self):
