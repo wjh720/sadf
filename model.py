@@ -23,6 +23,7 @@ from keras.layers import LSTM,Add
 from keras import backend as K
 import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
+import keras
 
 
 class Learner():
@@ -69,8 +70,9 @@ class Learner():
 
 
     def work(self):
-        create_model()
-        learn()
+        self.prepare()
+        self.create_model()
+        self.learn()
 
 a = Learner()
 a.work()
