@@ -31,6 +31,91 @@ class Learner():
     def __init__(self):
         pass
 
+    def log_model_summary(self):
+        """Prints model summary to the logging interface.
+
+        Similar to Keras model summary
+        """
+
+        layer_name_map = {
+            'BatchNormalization': 'BatchNorm',
+        }
+        import keras.backend as keras_backend
+
+        self.logger.debug('  Model summary')
+        self.logger.debug(
+            '    {type:<15s} | {out:20s} | {param:6s}  | {name:21s}  | {conn:27s} | {act:7s} | {init:7s}'.format(
+                type='Layer type',
+                out='Output',
+                param='Param',
+                name='Name',
+                conn='Connected to',
+                act='Activ.',
+                init='Init')
+        )
+
+        self.logger.debug(
+            '    {type:<15s} + {out:20s} + {param:6s}  + {name:21s}  + {conn:27s} + {act:7s} + {init:6s}'.format(
+                type='-' * 15,
+                out='-' * 20,
+                param='-' * 6,
+                name='-' * 21,
+                conn='-' * 27,
+                act='-' * 7,
+                init='-' * 6)
+        )
+
+        for layer in self.model.layers:
+            connections = []
+            for node_index, node in enumerate(layer.inbound_nodes):
+                for i in range(len(node.inbound_layers)):
+                    inbound_layer = node.inbound_layers[i].name
+                    inbound_node_index = node.node_indices[i]
+                    inbound_tensor_index = node.tensor_indices[i]
+                    connections.append(inbound_layer + '[' + str(inbound_node_index) +
+                                       '][' + str(inbound_tensor_index) + ']')
+
+            config = DottedDict(layer.get_config())
+            layer_name = layer.__class__.__name__
+            if layer_name in layer_name_map:
+                layer_name = layer_name_map[layer_name]
+
+            if config.get_path('kernel_initializer.class_name') == 'VarianceScaling':
+                init = str(config.get_path('kernel_initializer.config.distribution', '---'))
+            elif config.get_path('kernel_initializer.class_name') == 'RandomUniform':
+                init = 'uniform'
+            else:
+                init = '---'
+
+            self.logger.debug(
+                '    {type:<15s} | {shape:20s} | {params:6s}  | {name:21s}  | {connected:27s} | {activation:7s} | {init:7s}'.format(
+                    type=layer_name,
+                    shape=str(layer.output_shape),
+                    params=str(layer.count_params()),
+                    name=str(layer.name),
+                    connected=str(connections[0]) if len(connections) > 0 else '---',
+                    activation=str(config.get('activation', '---')),
+                    init=init,
+
+                )
+            )
+
+        trainable_count = int(
+            numpy.sum([keras_backend.count_params(p) for p in set(self.model.trainable_weights)])
+        )
+
+        non_trainable_count = int(
+            numpy.sum([keras_backend.count_params(p) for p in set(self.model.non_trainable_weights)])
+        )
+
+        self.logger.debug('  ')
+        self.logger.debug('  Parameters')
+        self.logger.debug('    Trainable\t[{param_count:,}]'.format(param_count=int(trainable_count)))
+        self.logger.debug('    Non-Trainable\t[{param_count:,}]'.format(param_count=int(non_trainable_count)))
+        self.logger.debug(
+            '    Total\t\t[{param_count:,}]'.format(param_count=int(trainable_count + non_trainable_count)))
+        self.logger.debug('  ')
+
     def prepare(self):
         f = file('label.npy', 'r')
         self.label = np.load(f)
@@ -88,7 +173,6 @@ class Learner():
         )
 
         print(' End fitting ')
-
 
     def create_model(self):
 
