@@ -131,6 +131,7 @@ class Learner():
     def work(self):
         self.prepare()
         self.create_model()
+        self.log_model_summary()
         self.learn()
 
 a = Learner()
