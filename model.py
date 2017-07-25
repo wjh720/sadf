@@ -44,6 +44,7 @@ class Learner():
 
         self.label = self.label.repeat(num_repeat)
         self.label = np.eye(num_classes)[self.label].reshape(-1, 1, 15).repeat(num_asd, axis = 1)
+        print(self.label[0, 0])
 
         n = self.data.shape[0]
 
@@ -148,9 +149,8 @@ class Learner():
         #self.model.add(MaxPooling2D(pool_size = (10, 2)))
         self.model.add(Dropout(0.2))
         #self.model.add(Flatten())
-        self.model.add(Conv1D(256, 5, padding='same', activation='relu'))
-        self.model.add(Dropout(0.25))
-        self.model.add(Conv1D(15, 5, padding='same', activation='softmax'))
+        self.model.add(Conv1D(256, 1, padding='same', activation='relu'))
+        self.model.add(Conv1D(15, 1, padding='same', activation='softmax'))
         #self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
         self.model.compile(loss = my_loss, optimizer='adam',metrics=[mean_acc, mode])
 
