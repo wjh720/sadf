@@ -51,13 +51,13 @@ def prepare_data():
             y = np.mean(y.T, axis=0)
 
             D = np.abs(librosa.stft(y)) ** 2
-            print(D.shape)
+            #print(D.shape)
             S = librosa.feature.melspectrogram(S = D)
-            print(S.shape)
+            3print(S.shape)
 
             S = librosa.power_to_db(S)
-            print(S.shape)
-            time.sleep(1000)
+            #print(S.shape)
+            #time.sleep(1000)
 
             data.append(S.T)
 
