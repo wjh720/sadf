@@ -104,7 +104,7 @@ class Learner():
         self.model.add(Reshape((86, 128, 1), input_shape=(86, 128)))
         self.model.add(Conv2D(64, (5, 5), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
-        #self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
+        self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
         #self.model.add(BatchNormalization())
         self.model.add(MaxPooling2D(pool_size = (5, 5)))
         self.model.add(Dropout(0.1))
@@ -118,7 +118,7 @@ class Learner():
         '''
         self.model.add(Conv2D(128, (5, 5), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
-        #self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
+        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
         #self.model.add(BatchNormalization())
         self.model.add(Lambda(lam,output_shape=(25,128)))
         #self.model.add(MaxPooling2D(pool_size = (10, 2)))
