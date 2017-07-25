@@ -95,7 +95,7 @@ class Learner():
         def lam(X):
             print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
             print(X.shape)
-            X=K.max(X,axis=1)
+            X=K.max(X,axis=2)
             print(X.shape)
             return X
 
