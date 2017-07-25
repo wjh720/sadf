@@ -26,7 +26,7 @@ from keras.callbacks import ModelCheckpoint
 import keras
 
 num_repeat = 10
-wave_size = 25
+num_asd = 25
 
 class Learner():
     def __init__(self):
