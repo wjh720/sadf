@@ -59,7 +59,7 @@ class Learner():
                 Start = j * 43
                 End = (j + 2) * 43
                 aa = asd[Start : End]
-                print(aa.shape)
+                #print(aa.shape)
                 pdata.append(aa)
 
             #time.sleep(30)
