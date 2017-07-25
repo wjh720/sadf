@@ -106,7 +106,7 @@ class Learner():
 
         def mode(y_true, y_pred):
             a = K.argmax(y_pred, axis = 2)
-            aa = y_true
+            aa = K.argmax(y_true, axis = 2)
             ans = []
             for i in range(15):
                 tmp = K.equal(a, i)
@@ -152,7 +152,7 @@ class Learner():
         self.model.add(Dropout(0.25))
         self.model.add(Conv1D(15, 5, padding='same', activation='softmax'))
         #self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
-        self.model.compile(loss = my_loss, optimizer='adam',metrics=["accuracy"])
+        self.model.compile(loss = my_loss, optimizer='adam',metrics=[mean_acc, mode])
 
 
     def work(self):
