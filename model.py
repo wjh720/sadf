@@ -54,7 +54,7 @@ class Learner():
             norm_asd = norm_asd / np.std(norm_asd, axis = 0)
             print(np.std(norm_asd, axis = 0))
 
-            #time.sleep(30)
+            time.sleep(30)
 
             for j in range(num_repeat):
                 Start = j * 86
