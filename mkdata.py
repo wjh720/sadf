@@ -10,7 +10,7 @@ import soundfile
 import collections
 
 Type = 'development'
-path = '../../data/TUT-acoustic-scenes-2017-' + Type + '/'
+path = '../data/TUT-acoustic-scenes-2017-' + Type + '/'
 
 def prepare_data():
     meta_path = path + 'meta.txt'
