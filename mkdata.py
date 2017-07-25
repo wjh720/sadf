@@ -53,7 +53,7 @@ def prepare_data():
             D = np.abs(librosa.stft(y)) ** 2
             #print(D.shape)
             S = librosa.feature.melspectrogram(S = D)
-            3print(S.shape)
+            #print(S.shape)
 
             S = librosa.power_to_db(S)
             #print(S.shape)
