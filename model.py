@@ -25,6 +25,7 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
+num_repeat = 19
 
 class Learner():
     def __init__(self):
@@ -39,7 +40,27 @@ class Learner():
         self.data = np.load(f)
         f.close()
 
-        self.label = self.label.reshape(-1, 1)
+        self.label = self.label.repeat(num_repeat).reshape(-1, 1)
+
+        n = self.data.shape[0]
+
+        pdata = []
+        for i in range(n):
+            asd = self.data[i]
+            print(asd.shape)
+            norm_asd = asd - np.mean(asd, axis = 0)
+            print(np.mean(asd, axis = 0))
+            norm_asd = norm_asd / np.std(norm_asd, axis = 0)
+            print(np.std(norm_asd, axis = 0))
+
+            for j in range(num_repeat):
+                Start = j * 43
+                End = (j + 2) * 43
+                aa = asd[Start : End].T
+                print(aa.shape)
+                pdata.append(aa)
+
+        self.data = np.array(pdata)
 
         print(self.data.shape)
         print(self.label.shape)
@@ -66,7 +87,8 @@ class Learner():
 
 
     def create_model(self):
-        pass
+        self.model = Sequential()
+
 
 
     def work(self):
