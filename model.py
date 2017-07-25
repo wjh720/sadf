@@ -27,6 +27,7 @@ import keras
 
 num_repeat = 10
 num_asd = 25
+num_classes = 15
 
 class Learner():
     def __init__(self):
@@ -41,7 +42,7 @@ class Learner():
         self.data = np.load(f)
         f.close()
 
-        self.label = self.label.repeat(num_repeat).reshape(-1, 1)
+        self.label = np.eye(num_classes)[self.label].repeat(num_asd, axis = 1)
 
         n = self.data.shape[0]
 
@@ -99,7 +100,7 @@ class Learner():
 
             ans = []
             for i in range(num_asd):
-                ans.append(K.sparse_categorical_crossentropy(y_true[:, 0], y_pred[:,i]))
+                ans.append(K.categorical_crossentropy(y_true[:, i], y_pred[:,i]))
             return K.mean(tf.stack(ans))
 
         def mode(y_true, y_pred):
@@ -148,9 +149,9 @@ class Learner():
         #self.model.add(Flatten())
         self.model.add(Conv1D(256, 5, padding='same', activation='relu'))
         self.model.add(Dropout(0.25))
-        self.model.add(Conv1D(15, 5, padding='same', activation='softmax', name = 'out_1'))
+        self.model.add(Conv1D(15, 5, padding='same', activation='softmax'))
         #self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
-        self.model.compile(loss = {'out_1' : my_loss}, optimizer='adam',metrics=["accuracy"])
+        self.model.compile(loss = my_loss, optimizer='adam',metrics=["accuracy"])
 
 
     def work(self):
