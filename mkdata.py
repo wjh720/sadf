@@ -11,7 +11,7 @@ import collections
 
 Type = 'development'
 path = '../data/TUT-acoustic-scenes-2017-' + Type + '/'
-overwrite = False
+overwrite = True
 
 def prepare_data():
     meta_path = path + 'meta.txt'
@@ -50,9 +50,11 @@ def prepare_data():
             y, sr=soundfile.read(item)
             y = np.mean(y.T, axis=0)
 
-            S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
+            stft = librosa.feature.chroma_stft
 
-            #print(S.shape)
+            S = logam(stft(y, sr))
+
+            print(S.shape)
 
             data.append(S.T)
 
