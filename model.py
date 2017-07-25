@@ -89,6 +89,8 @@ class Learner():
 
         print(' End fitting ')
 
+    def Lambda(X):
+        return K.max(X,axis=1)
 
     def create_model(self):
         self.model = Sequential()
@@ -115,7 +117,8 @@ class Learner():
         self.model.add(MaxPooling2D(pool_size = (10, 2)))
         self.model.add(Dropout(0.25))
 
-        self.model.add(Flatten())
+        self.model.add(Lamb())
+        #self.model.add(Flatten())
         self.model.add(Dense(15, activation='softmax'))
         self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
 
