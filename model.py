@@ -92,6 +92,34 @@ class Learner():
 
     def create_model(self):
 
+        def my_loss(y_true, y_pred):
+            print("asavad ",y_true.get_shape)
+            print("asavad ",y_pred.get_shape)
+
+            ans = []
+            for i in range(num_asd):
+                ans.append(K.sparse_categorical_crossentropy(y_true[:, 0], y_pred[:,i]))
+            return K.mean(tf.stack(ans))
+
+        def mode(y_true, y_pred):
+            a = K.argmax(y_pred, axis = 2)
+            aa = y_true
+            ans = []
+            for i in range(15):
+                tmp = K.equal(a, i)
+                b = tf.reduce_sum(tf.cast(tmp, tf.int32), axis = 1, keep_dims=False)
+                ans.append(b)
+            c = tf.stack(ans)
+            d = K.argmax(K.transpose(c), axis = 1)
+            return K.mean(K.equal(aa[:, 0], d))
+
+        def mean_acc(y_true, y_pred):
+            a = K.argmax(y_pred, axis = 2)
+            aa = K.argmax(y_true, axis = 2)
+
+            tmp = K.equal(a, aa)
+            return K.mean(K.mean(tf.cast(tmp, tf.float32)))
+
         def lam(X):
             print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
             print(X.shape)
@@ -102,30 +130,26 @@ class Learner():
         self.model = Sequential()
 
         self.model.add(Reshape((86, 128, 1), input_shape=(86, 128)))
-        self.model.add(Conv2D(128, (5, 5), padding='same',activation='relu'))
+        self.model.add(Conv2D(64, (5, 5), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
+        self.model.add(Conv2D(64, (5, 5), padding='same',activation='relu'))
         #self.model.add(BatchNormalization())
         self.model.add(MaxPooling2D(pool_size = (5, 5)))
         self.model.add(Dropout(0.1))
-        '''
-        self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
-        self.model.add(BatchNormalization())
-        self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
-        self.model.add(BatchNormalization())
-        self.model.add(MaxPooling2D(pool_size = (2, 2)))
-        self.model.add(Dropout(0.2))
-        '''
+
         self.model.add(Conv2D(128, (5, 5), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
+        self.model.add(Conv2D(128, (5, 5), padding='same',activation='relu'))
         #self.model.add(BatchNormalization())
         self.model.add(Lambda(lam,output_shape=(25,128)))
         #self.model.add(MaxPooling2D(pool_size = (10, 2)))
+        self.model.add(Dropout(0.2))
+        #self.model.add(Flatten())
+        self.model.add(Conv1D(256, 5, padding='same', activation='relu'))
         self.model.add(Dropout(0.25))
-        self.model.add(Flatten())
-        self.model.add(Dense(15, activation='softmax'))
-        self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
+        self.model.add(Conv1D(15, 5, padding='same', activation='softmax'))
+        #self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
+        self.model.compile(loss = my_loss, optimizer='adam',metrics=["accuracy"])
 
 
     def work(self):
