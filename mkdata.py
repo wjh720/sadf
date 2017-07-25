@@ -110,7 +110,7 @@ def prepare_mfcc():
 
             S = librosa.power_to_db(S)
 
-            librosa.feature.mfcc(S=librosa.power_to_db(S))
+            S = librosa.feature.mfcc(S=librosa.power_to_db(S))
             print(S.shape)
             time.sleep(1000)
 
