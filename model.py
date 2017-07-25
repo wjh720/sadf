@@ -42,7 +42,7 @@ class Learner():
         self.data = np.load(f)
         f.close()
 
-        self.label = np.eye(num_classes)[self.label].repeat(num_asd, axis = 1)
+        self.label = np.eye(num_classes)[self.label].reshape(-1, 1, 15).repeat(num_asd, axis = 1)
 
         n = self.data.shape[0]
 
