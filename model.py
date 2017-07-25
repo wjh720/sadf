@@ -179,7 +179,7 @@ class Learner():
         def lam(X):
             print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
             print(X.shape)
-            X=K.max(X,axis=1)
+            X=K.max(X,axis=2)
             print(X.shape)
             return X
 
@@ -204,7 +204,7 @@ class Learner():
         self.model.add(BatchNormalization())
         #self.model.add(Conv2D(32, (3, 3), padding='same',activation='relu'))
         #self.model.add(BatchNormalization())
-        self.model.add(Lambda(lam,output_shape=(25,128)))
+        self.model.add(Lambda(lam,output_shape=(17,128)))
         #self.model.add(MaxPooling2D(pool_size = (10, 2)))
         self.model.add(Dropout(0.25))
         self.model.add(Flatten())
