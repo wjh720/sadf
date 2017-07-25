@@ -90,6 +90,7 @@ class Learner():
         print(' End fitting ')
 
     def Lambda(X):
+        print(X.shape)
         return K.max(X,axis=1)
 
     def create_model(self):
