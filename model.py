@@ -148,9 +148,9 @@ class Learner():
         #self.model.add(Flatten())
         self.model.add(Conv1D(256, 5, padding='same', activation='relu'))
         self.model.add(Dropout(0.25))
-        self.model.add(Conv1D(15, 5, padding='same', activation='softmax'))
+        self.model.add(Conv1D(15, 5, padding='same', activation='softmax', name = 'out_1'))
         #self.model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
-        self.model.compile(loss = my_loss, optimizer='adam',metrics=["accuracy"])
+        self.model.compile(loss = {'out_1' : my_loss}, optimizer='adam',metrics=["accuracy"])
 
 
     def work(self):
