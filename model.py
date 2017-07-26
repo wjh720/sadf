@@ -62,7 +62,7 @@ class Learner():
                 print(ww)
                 print(qe)
                 print(norm_asd)
-                time.sleep(3)
+                time.sleep(10000)
             #norm_asd = norm_asd / np.std(norm_asd, axis = 0)
             #print(np.std(norm_asd, axis = 0))
 
