@@ -160,7 +160,7 @@ class Learner():
 
             for j in range(num_repeat):
                 Start = j * 43
-                End = (j + 2) * 86
+                End = (j + 2) * 43
                 aa = asd[Start : End]
                 #print(aa.shape)
                 pdata.append(aa)
