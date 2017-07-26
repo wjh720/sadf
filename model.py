@@ -97,7 +97,7 @@ class Learner():
                 'data_3' : self.data_3
             },
             y = self.label,
-            batch_size = 256,
+            batch_size = 32,
             epochs = 10000,
             validation_split = 0.2,
             verbose = 2,
