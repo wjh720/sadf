@@ -198,7 +198,7 @@ class Learner():
         concat_4 = conv_6_bh
         conv_02 = Conv_02(concat_4)
 
-        lam_1 = Lambda(lam, output_shape=(14, 64))(conv_02)
+        lam_1 = Lambda(lam, output_shape=(42, 64))(conv_02)
         drop_3 = Dropout(0.2)(lam_1)
 
         fla_1 = Flatten()(drop_3)
