@@ -58,7 +58,11 @@ class Learner():
             ww = np.std(norm_asd, axis = 0)
             qe = ww[np.where(ww == 0)]
             print(qe.shape)
-            time.sleep(3)
+            if (qe.shape[0] > 0):
+                print(ww)
+                print(qe)
+                print(norm_asd)
+                time.sleep(3)
             #norm_asd = norm_asd / np.std(norm_asd, axis = 0)
             #print(np.std(norm_asd, axis = 0))
 
