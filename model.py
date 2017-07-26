@@ -236,7 +236,7 @@ class Learner():
         conv2_1 = Conv_1(conv_2_in_3)
         conv2_2 = Conv_2(conv2_1)
 
-        lam_1 = Lambda(lam, output_shape=(32, 128))(conv2_2)
+        lam_1 = Lambda(lam, output_shape=(8, 128))(conv2_2)
         drop = Dropout(0.2)(lam_1)
 
         fla_1 = Flatten()(drop)
