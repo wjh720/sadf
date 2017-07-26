@@ -157,32 +157,13 @@ class Learner():
         pdata = []
         for i in range(n):
             asd = self.data[i]
-            #print(asd.shape)
-            print(asd[1])
-            time.sleep(10)
-
             norm_asd = asd - np.mean(asd, axis = 0)
             norm_asd = norm_asd / np.std(norm_asd, axis = 0)
-            #print(np.mean(norm_asd, axis = 0))
-            #print(np.std(norm_asd, axis = 0))
-            ww = np.std(norm_asd, axis = 0)
-            num_0 = np.where(ww == 0)
-            qe = ww[num_0]
-            #print(qe.shape)
-            if (qe.shape[0] > 0):
-                #print(ww)
-                print(num_0)
-                #print(norm_asd[:, num_0])
-                time.sleep(3)
-            
-            #print(np.std(norm_asd, axis = 0))
-
-            #time.sleep(30)
 
             for j in range(num_repeat):
                 Start = j * 86
                 End = (j + 1) * 86
-                aa = asd[Start : End]
+                aa = norm_asd[Start : End]
                 #print(aa.shape)
                 pdata.append(aa)
 
