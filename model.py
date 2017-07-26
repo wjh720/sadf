@@ -183,10 +183,11 @@ class Learner():
 
         mfcc = Input(shape = (86, 64, ), dtype = 'float32', name = 'mfcc')
 
+        mfcc_reshape = Reshape((86, 64, 1))(mfcc)
         Conv_1 = Conv2D(64, (3, 3), padding='same', activation='relu')
         Conv_2 = Conv2D(64, (3, 3), padding='same', activation='relu')
 
-        conv_1 = Conv_1(mfcc)
+        conv_1 = Conv_1(mfcc_reshape)
         conv_1_bh = BatchNormalization(conv_1)
         conv_2 = Conv_2(conv_1_bh)
         maxpool_1 = MaxPooling2D(pool_size = (3, 3))(conv_2)
