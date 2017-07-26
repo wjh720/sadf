@@ -51,12 +51,12 @@ class Learner():
         pdata = []
         for i in range(n):
             asd = self.data[i]
-            norm_asd = asd - np.mean(asd, axis = 0)
+            #norm_asd = asd - np.mean(asd, axis = 0)
 
             for j in range(num_repeat):
                 Start = j * 86
                 End = (j + 1) * 86
-                aa = norm_asd[Start : End]
+                aa = asd[Start : End]
                 #print(aa.shape)
                 pdata.append(aa)
 
