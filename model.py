@@ -28,9 +28,9 @@ import keras
 num_repeat = 10
 num_asd = 25
 num_classes = 15
-si_1 = 168
-si_2 = 84
-si_3 = 42
+si_1 = 160
+si_2 = 80
+si_3 = 40
 
 class Learner():
     def __init__(self):
@@ -110,9 +110,9 @@ class Learner():
     def create_mfcc(self):
 
         K_n = 5
-        K_1 = 3
+        K_1 = 2
         K_2 = 2
-        K_3 = 1
+        K_3 = 2
 
         def lam(X):
             print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
@@ -236,7 +236,7 @@ class Learner():
         conv2_1 = Conv_1(conv_2_in_3)
         conv2_2 = Conv_2(conv2_1)
 
-        lam_1 = Lambda(lam, output_shape=(10, 128))(conv2_2)
+        lam_1 = Lambda(lam, output_shape=(8, 128))(conv2_2)
         drop = Dropout(0.2)(lam_1)
 
         fla_1 = Flatten()(drop)
