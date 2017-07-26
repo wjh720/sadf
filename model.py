@@ -106,27 +106,29 @@ class Learner():
         self.model = Sequential()
 
         self.model.add(Reshape((86, 128, 1), input_shape=(86, 128)))
-        self.model.add(Conv2D(64, (5, 5), padding='same',activation='relu'))
+        self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
-        self.model.add(Conv2D(64, (5, 5), padding='same',activation='relu'))
-        #self.model.add(BatchNormalization())
-        self.model.add(MaxPooling2D(pool_size = (5, 5)))
+        self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
+        self.model.add(MaxPooling2D(pool_size = (3, 3)))
         self.model.add(Dropout(0.1))
 
-        self.model.add(Conv2D(128, (5, 5), padding='same',activation='relu'))
+        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
-        self.model.add(Conv2D(128, (5, 5), padding='same',activation='relu'))
-        #self.model.add(BatchNormalization())
-        self.model.add(Lambda(lam,output_shape=(25,128)))
-        #self.model.add(MaxPooling2D(pool_size = (10, 2)))
+        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
+        self.model.add(MaxPooling2D(pool_size = (3, 3)))
+        self.model.add(Dropout(0.15))
+
+        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
+        self.model.add(BatchNormalization())
+        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
+
+        self.model.add(Lambda(lam,output_shape=(10,128)))
+
         self.model.add(Dropout(0.2))
         self.model.add(Flatten())
-        #self.model.add(Conv1D(256, 1, padding='same', activation='relu'))
-        #self.model.add(Conv1D(15, 1, padding='same', activation='softmax'))
-        #self.model.add(Dense(256, activation='relu'))
+
         self.model.add(Dense(15, activation='softmax'))
         self.model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
-        #self.model.compile(loss = my_loss, optimizer='adam',metrics=[mean_acc, mode])
 
     def prepare_mfcc(self):
         f = file('label.npy', 'r')
