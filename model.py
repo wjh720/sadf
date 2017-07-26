@@ -53,18 +53,20 @@ class Learner():
         self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
         print(self.label[0, 0])
 
-        n = self.data.shape[0]
+        n = self.data_1.shape[0]
 
         pdata_1 = []
         pdata_2 = []
         pdata_3 = []
         for i in range(n):
-            asd = self.data[i]
+            asd_1 = self.data_1[i]
+            asd_2 = self.data_2[i]
+            asd_3 = self.data_3[i]
 
             for j in range(num_repeat):
-                aa_1 = asd[j * 168 : (j + 1) * 168]
-                aa_2 = asd[j * 84 : (j + 1) * 84]
-                aa_3 = asd[j * 42 : (j + 1) * 42]
+                aa_1 = asd_1[j * 168 : (j + 1) * 168]
+                aa_2 = asd_2[j * 84 : (j + 1) * 84]
+                aa_3 = asd_3[j * 42 : (j + 1) * 42]
                 
                 pdata_1.append(aa_1)
                 pdata_2.append(aa_2)
