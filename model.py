@@ -119,7 +119,7 @@ class Learner():
         self.model.fit(
             {
                 'mfcc' : self.mfcc
-            }
+            },
             y = self.label,
             batch_size = 256,
             epochs = 10000,
