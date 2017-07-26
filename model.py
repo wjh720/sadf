@@ -200,7 +200,7 @@ class Learner():
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
 
-        self.model.add(Lambda(lam,output_shape=(2,128)))
+        self.model.add(Lambda(lam,output_shape=(7,128)))
 
         self.model.add(Dropout(0.2))
         self.model.add(Flatten())
