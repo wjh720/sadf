@@ -236,11 +236,11 @@ class Learner():
         print(output[:10])
 
     def work(self):
-        self.prepare()
+        #self.prepare()
         self.prepare_mfcc()
         #self.create_model()
         self.create_mfcc()
-        #self.learn()
+        self.learn()
         self.predict()
 
 a = Learner()
