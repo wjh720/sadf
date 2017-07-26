@@ -175,11 +175,11 @@ class Learner():
         conv_3 = Conv_3(conv_1)
         conv_3_bh = BatchNormalization()(conv_3)
 
-        concat_1 = Concatenate(axis = 3)([drop_1, conv_3_bh])
+        concat_1 = Concatenate(axis = 3)([conv_1, conv_3_bh])
         conv_4 = Conv_4(concat_1)
         conv_4_bh = BatchNormalization()(conv_4)
 
-        concat_2 = Concatenate(axis = 3)([drop_1, conv_3_bh, conv_4_bh])
+        concat_2 = Concatenate(axis = 3)([conv_1, conv_3_bh, conv_4_bh])
         conv_01 = Conv_01(concat_2)
 
         maxpool_2 = MaxPooling2D(pool_size = (3, 3))(conv_01)
