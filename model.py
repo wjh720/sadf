@@ -205,8 +205,8 @@ class Learner():
 
         Dense_2 = Dense(256, activation = 'relu')
         Dense_1 = Dense(15, activation = 'softmax', name = 'out_1')
-        den_1 = Dense_1(fla_1)
-        out = Dense_2(den_1)
+        den_2 = Dense_2(fla_1)
+        out = Dense_1(den_2)
 
         self.model = Model(inputs = [mfcc ], outputs = [out])
         self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=["accuracy"])
