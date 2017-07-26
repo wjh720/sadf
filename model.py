@@ -130,8 +130,8 @@ class Learner():
         mfcc_3_r = Reshape((si_3, 64, 1))(mfcc_3)
 
 
-        Conv_1_1 = Conv2D(32, (K_n, K_n), padding='same', activation='relu')
-        Conv_1_2 = Conv2D(32, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
         Conv_2_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
         Conv_2_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
         Conv_3_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
