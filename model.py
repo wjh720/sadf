@@ -64,9 +64,9 @@ class Learner():
             asd_3 = self.data_3[i]
 
             for j in range(num_repeat):
-                aa_1 = asd_1[j * 168 : (j + 1) * 168]
-                aa_2 = asd_2[j * 84 : (j + 1) * 84]
-                aa_3 = asd_3[j * 42 : (j + 1) * 42]
+                aa_1 = asd_1[j * si_3 : (j + 1) * si_3]
+                aa_2 = asd_2[j * si_2 : (j + 1) * si_2]
+                aa_3 = asd_3[j * si_1 : (j + 1) * si_1]
                 
                 pdata_1.append(aa_1)
                 pdata_2.append(aa_2)
