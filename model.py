@@ -94,7 +94,7 @@ class Learner():
             x = self.data,
             y = self.label,
             batch_size = 256,
-            epochs = 10,
+            epochs = 10000,
             validation_split = 0.2,
             verbose = 2,
             shuffle = True,
