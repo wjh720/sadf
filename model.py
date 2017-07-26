@@ -54,7 +54,11 @@ class Learner():
             #print(asd.shape)
             norm_asd = asd - np.mean(asd, axis = 0)
             #print(np.mean(norm_asd, axis = 0))
-            #print(np.std(norm_asd, axis = 0))
+            print(np.std(norm_asd, axis = 0))
+            ww = np.std(norm_asd, axis = 0)
+            qe = ww[np.where(ww == 0)]
+            print(qe.shape)
+            time.sleep(3)
             #norm_asd = norm_asd / np.std(norm_asd, axis = 0)
             #print(np.std(norm_asd, axis = 0))
 
