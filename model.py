@@ -181,14 +181,13 @@ class Learner():
         conv_5 = Conv_5(drop_2)
         conv_5_bh = BatchNormalization()(conv_5)
         conv_6 = Conv_6(conv_5_bh)
-        maxpool_3 = MaxPooling2D(pool_size = (3, 3))(conv_6)
 
-        lam_1 = Lambda(lam,output_shape=(7,128))(maxpool_3)
+        lam_1 = Lambda(lam, output_shape=(7,128))(maxpool_3)
         drop_3 = Dropout(0.2)(lam_1)
 
         fla_1 = Flatten()(drop_3)
 
-        Dense_1 = Dense(15, activation='softmax', name = 'out_1')
+        Dense_1 = Dense(15, activation = 'softmax', name = 'out_1')
         out = Dense_1(fla_1)
 
         self.model = Model(inputs = [mfcc ], outputs = [out])
