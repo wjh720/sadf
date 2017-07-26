@@ -85,7 +85,7 @@ class Learner():
             x = self.data,
             y = self.label,
             batch_size = 256,
-            epochs = 10000,
+            epochs = 10,
             validation_split = 0.2,
             verbose = 2,
             shuffle = True,
@@ -207,6 +207,15 @@ class Learner():
         self.model.add(Dense(15, activation='softmax'))
         self.model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
 
+    def predict(self):
+        output = self.model.predict(       
+                x = self.data,
+                batch_size = 256,
+                verbose = 2
+            )
+        print("!!!!!!!!!!!!!!!!!!!!")
+        print(self.label[:10])
+        print(output[:10])
 
     def work(self):
         self.prepare()
@@ -214,6 +223,7 @@ class Learner():
         self.create_model()
         #self.create_mfcc()
         self.learn()
+        self.predict()
 
 a = Learner()
 a.work()
