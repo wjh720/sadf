@@ -247,7 +247,7 @@ class Learner():
         Conv_1 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
         Conv_2 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
 
-        conv2_1 = Conv_1(in1_conv_1_1)
+        conv2_1 = Conv_1(in1_conv_3_1)
         conv2_2 = Conv_2(conv2_1)
 
         lam_1 = Lambda(lam, output_shape=(32, 128))(conv2_2)
