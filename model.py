@@ -146,9 +146,9 @@ class Learner():
         #conv_1_d = Dropout(0.1)(conv_1_2)
         #conv_2_d = Dropout(0.1)(conv_2_2)
         #conv_3_d = Dropout(0.1)(conv_3_2)
-        conv_1_d = conv_1_2
-        conv_2_d = conv_2_2
-        conv_3_d = conv_3_2
+        conv_1_d = BatchNormalization()(conv_1_2)
+        conv_2_d = BatchNormalization()(conv_2_2)
+        conv_3_d = BatchNormalization()(conv_3_2)
 
         #-----------------------------------
 
@@ -247,7 +247,7 @@ class Learner():
         Conv_1 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
         Conv_2 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
 
-        conv2_1 = Conv_1(in1_conv_3_3)
+        conv2_1 = Conv_1(conv_2_in_1)
         conv2_2 = Conv_2(conv2_1)
 
         lam_1 = Lambda(lam, output_shape=(32, 128))(conv2_2)
