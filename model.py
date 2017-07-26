@@ -95,7 +95,8 @@ class Learner():
 
         self.model.fit(
             {
-                'mfcc' : self.mfcc
+                'mfcc' : self.mfcc,
+                'mel' : self.data
             },
             y = self.label,
             batch_size = 256,
@@ -168,27 +169,44 @@ class Learner():
 
         Conv_3 = Conv2D(128, (3, 3), padding='same', activation='relu')
         Conv_4 = Conv2D(128, (3, 3), padding='same', activation='relu')
+        Conv_01 = Conv2D(128, (3, 3), padding='same', activation='relu')
 
         conv_3 = Conv_3(drop_1)
         conv_3_bh = BatchNormalization()(conv_3)
-        conv_4 = Conv_4(conv_3_bh)
-        maxpool_2 = MaxPooling2D(pool_size = (3, 3))(conv_4)
+
+        concat_1 = Concatenate(axis = 3)([drop_1, conv_3_bh])
+        conv_4 = Conv_4(concat_1)
+        conv_4_bh = BatchNormalization()(conv_4)
+
+        concat_2 = Concatenate(axis = 3)([drop_1, conv_3_bh, conv_4_bh])
+        conv_01 = Conv_01(concat_2)
+
+        maxpool_2 = MaxPooling2D(pool_size = (3, 3))(conv_01)
         drop_2 = Dropout(0.15)(maxpool_2)
 
         Conv_5 = Conv2D(128, (3, 3), padding='same', activation='relu')
         Conv_6 = Conv2D(128, (3, 3), padding='same', activation='relu')
+        Conv_02 = Conv2D(128, (3, 3), padding='same', activation='relu')
 
         conv_5 = Conv_5(drop_2)
         conv_5_bh = BatchNormalization()(conv_5)
-        conv_6 = Conv_6(conv_5_bh)
 
-        lam_1 = Lambda(lam, output_shape=(7,128))(conv_6)
+        concat_3 = Concatenate(axis = 3)([drop_2, conv_5_bh])
+        conv_6 = Conv_6(concat_3)
+        conv_6_bh = BatchNormalization()(conv_6)
+
+        concat_4 = Concatenate(axis = 3)([drop_2, conv_5_bh, conv_6_bh])
+        conv_02 = Conv_02(concat_4)
+
+        lam_1 = Lambda(lam, output_shape=(7, 128))(conv_02)
         drop_3 = Dropout(0.2)(lam_1)
 
         fla_1 = Flatten()(drop_3)
 
+        Dense_2 = Dense(256, activation = 'relu')
         Dense_1 = Dense(15, activation = 'softmax', name = 'out_1')
-        out = Dense_1(fla_1)
+        den_1 = Dense_1(fla_1)
+        out = Dense_2(den_1)
 
         self.model = Model(inputs = [mfcc ], outputs = [out])
         self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=["accuracy"])
