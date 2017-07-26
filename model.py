@@ -158,7 +158,11 @@ class Learner():
         for i in range(n):
             asd = self.data[i]
             #print(asd.shape)
+            print(asd[1])
+            time.sleep(10)
+
             norm_asd = asd - np.mean(asd, axis = 0)
+            norm_asd = norm_asd / np.std(norm_asd, axis = 0)
             #print(np.mean(norm_asd, axis = 0))
             #print(np.std(norm_asd, axis = 0))
             ww = np.std(norm_asd, axis = 0)
@@ -170,7 +174,7 @@ class Learner():
                 print(num_0)
                 #print(norm_asd[:, num_0])
                 time.sleep(3)
-            #norm_asd = norm_asd / np.std(norm_asd, axis = 0)
+            
             #print(np.std(norm_asd, axis = 0))
 
             #time.sleep(30)
