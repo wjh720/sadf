@@ -188,7 +188,7 @@ class Learner():
         Conv_6 = Conv2D(64, (3, 3), padding='same', activation='relu')
         Conv_02 = Conv2D(64, (3, 3), padding='same', activation='relu')
 
-        conv_5 = Conv_5(drop_2)
+        conv_5 = Conv_5(drop_1)
         conv_5_bh = BatchNormalization()(conv_5)
 
         concat_3 = conv_5_bh
