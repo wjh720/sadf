@@ -65,27 +65,20 @@ class Learner():
         self.data = np.array(pdata)
 
         f = file('data_mfcc.npy', 'r')
-        self.data = np.load(f)
+        self.mfcc = np.load(f)
         f.close()
 
-        self.label = self.label.repeat(num_repeat)
-        self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
-        print(self.label[0, 0])
-
-        n = self.data.shape[0]
+        n = self.mfcc.shape[0]
 
         pdata = []
         for i in range(n):
-            asd = self.data[i]
+            asd = self.mfcc[i]
 
             for j in range(num_repeat):
                 Start = j * 86
                 End = (j + 1) * 86
                 aa = asd[Start : End]
-                #print(aa.shape)
                 pdata.append(aa)
-
-            #time.sleep(30)
 
         self.mfcc = np.array(pdata)
 
