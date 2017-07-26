@@ -161,6 +161,15 @@ class Learner():
             norm_asd = asd - np.mean(asd, axis = 0)
             #print(np.mean(norm_asd, axis = 0))
             #print(np.std(norm_asd, axis = 0))
+            ww = np.std(norm_asd, axis = 0)
+            num_0 = np.where(ww == 0)
+            qe = ww[num_0]
+            #print(qe.shape)
+            if (qe.shape[0] > 0):
+                #print(ww)
+                print(num_0)
+                #print(norm_asd[:, num_0])
+                time.sleep(3)
             #norm_asd = norm_asd / np.std(norm_asd, axis = 0)
             #print(np.std(norm_asd, axis = 0))
 
@@ -228,10 +237,10 @@ class Learner():
 
     def work(self):
         self.prepare()
-        #self.prepare_mfcc()
-        self.create_model()
-        #self.create_mfcc()
-        self.learn()
+        self.prepare_mfcc()
+        #self.create_model()
+        self.create_mfcc()
+        #self.learn()
         self.predict()
 
 a = Learner()
