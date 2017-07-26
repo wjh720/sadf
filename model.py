@@ -155,9 +155,9 @@ class Learner():
             print(X.shape)
             return X
 
-        mfcc = Input(shape = (86, 64, ), dtype = 'float32', name = 'mfcc')
+        mfcc = Input(shape = (86, 128, ), dtype = 'float32', name = 'mel')
 
-        mfcc_reshape = Reshape((86, 64, 1))(mfcc)
+        mfcc_reshape = Reshape((86, 128, 1))(mfcc)
         Conv_1 = Conv2D(64, (3, 3), padding='same', activation='relu')
         Conv_2 = Conv2D(64, (3, 3), padding='same', activation='relu')
 
