@@ -182,7 +182,7 @@ class Learner():
         conv_5_bh = BatchNormalization()(conv_5)
         conv_6 = Conv_6(conv_5_bh)
 
-        lam_1 = Lambda(lam, output_shape=(7,128))(maxpool_3)
+        lam_1 = Lambda(lam, output_shape=(7,128))(conv_6)
         drop_3 = Dropout(0.2)(lam_1)
 
         fla_1 = Flatten()(drop_3)
