@@ -205,10 +205,10 @@ class Learner():
 
 
     def work(self):
-        #self.prepare()
-        self.prepare_mfcc()
-        #self.create_model()
-        self.create_mfcc()
+        self.prepare()
+        #self.prepare_mfcc()
+        self.create_model()
+        #self.create_mfcc()
         #self.log_model_summary()
         self.learn()
 
