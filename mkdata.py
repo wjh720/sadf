@@ -108,7 +108,7 @@ def prepare_mfcc():
             S = librosa.feature.melspectrogram(S = D)
             #print(S.shape)
 
-            S = librosa.feature.mfcc(S=librosa.power_to_db(S), n_mfcc = 60)
+            S = librosa.feature.mfcc(S=librosa.power_to_db(S), n_mfcc = 64)
             #print(S.shape)
             #time.sleep(1000)
 
