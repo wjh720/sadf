@@ -62,7 +62,7 @@ class Learner():
             if (qe.shape[0] > 0):
                 print(ww)
                 print(num_0)
-                print(norm_asd[, num_0])
+                print(norm_asd[:, num_0])
                 time.sleep(10000)
             #norm_asd = norm_asd / np.std(norm_asd, axis = 0)
             #print(np.std(norm_asd, axis = 0))
