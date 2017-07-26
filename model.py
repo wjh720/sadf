@@ -97,7 +97,7 @@ class Learner():
                 'data_3' : self.data_3
             },
             y = self.label,
-            batch_size = 32,
+            batch_size = 64,
             epochs = 10000,
             validation_split = 0.2,
             verbose = 2,
@@ -143,9 +143,12 @@ class Learner():
         conv_2_2 = Conv_2_2(conv_2_1)
         conv_3_1 = Conv_3_1(mfcc_3_r)
         conv_3_2 = Conv_3_2(conv_3_1)
-        conv_1_d = Dropout(0.1)(conv_1_2)
-        conv_2_d = Dropout(0.1)(conv_2_2)
-        conv_3_d = Dropout(0.1)(conv_3_2)
+        #conv_1_d = Dropout(0.1)(conv_1_2)
+        #conv_2_d = Dropout(0.1)(conv_2_2)
+        #conv_3_d = Dropout(0.1)(conv_3_2)
+        conv_1_d = conv_1_2
+        conv_2_d = conv_2_2
+        conv_3_d = conv_3_2
 
         #-----------------------------------
 
@@ -178,9 +181,12 @@ class Learner():
         conv_2_4 = Conv_2_4(conv_2_3)
         conv_3_3 = Conv_3_3(conv_3_in_1)
         conv_3_4 = Conv_3_4(conv_3_3)
-        conv_1_dd = Dropout(0.2)(conv_1_4)
-        conv_2_dd = Dropout(0.2)(conv_2_4)
-        conv_3_dd = Dropout(0.2)(conv_3_4)
+        #conv_1_dd = Dropout(0.2)(conv_1_4)
+        #conv_2_dd = Dropout(0.2)(conv_2_4)
+        #conv_3_dd = Dropout(0.2)(conv_3_4)
+        conv_1_dd = conv_1_4
+        conv_2_dd = conv_2_4
+        conv_3_dd = conv_3_4
 
         #-----------------------------------
 
@@ -213,9 +219,17 @@ class Learner():
         conv_2_6 = Conv_2_6(conv_2_5)
         conv_3_5 = Conv_3_5(conv_3_in_2)
         conv_3_6 = Conv_3_6(conv_3_5)
-        conv_1_ddd = Dropout(0.2)(conv_1_6)
-        conv_2_ddd = Dropout(0.2)(conv_2_6)
-        conv_3_ddd = Dropout(0.2)(conv_3_6)
+        #conv_1_ddd = Dropout(0.2)(conv_1_6)
+        #conv_2_ddd = Dropout(0.2)(conv_2_6)
+        #conv_3_ddd = Dropout(0.2)(conv_3_6)
+        '''
+        conv_1_ddd = conv_1_6
+        conv_2_ddd = conv_2_6
+        conv_3_ddd = conv_3_6
+        '''
+        conv_1_ddd = conv_1_2
+        conv_2_ddd = conv_2_2
+        conv_3_ddd = conv_3_2
 
         #-----------------------------------
 
