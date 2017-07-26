@@ -162,14 +162,10 @@ class Learner():
         #Conv_2 = Conv2D(64, (3, 3), padding='same', activation='relu')
 
         conv_1 = Conv_1(mfcc_reshape)
-        drop_1 = conv_1
-
-        '''
-        conv_1_bh = BatchNormalization()(conv_1)
-        conv_2 = Conv_2(conv_1_bh)
+        #conv_1_bh = BatchNormalization()(conv_1)
+        #conv_2 = Conv_2(conv_1_bh)
         maxpool_1 = MaxPooling2D(pool_size = (3, 3))(conv_2)
         drop_1 = Dropout(0.1)(maxpool_1)
-        '''
 
         Conv_3 = Conv2D(64, (3, 3), padding='same', activation='relu')
         Conv_4 = Conv2D(64, (3, 3), padding='same', activation='relu')
