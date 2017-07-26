@@ -28,6 +28,9 @@ import keras
 num_repeat = 10
 num_asd = 25
 num_classes = 15
+si_1 = 168
+si_2 = 84
+si_3 = 42
 
 class Learner():
     def __init__(self):
@@ -38,8 +41,12 @@ class Learner():
         self.label = np.load(f)
         f.close()
 
-        f = file('data.npy', 'r')
-        self.data = np.load(f)
+        f_1 = file('data_mfcc_1024.npy', 'r')
+        f_2 = file('data_mfcc_2048.npy', 'r')
+        f_3 = file('data_mfcc_4096.npy', 'r')
+        self.data_1 = np.load(f_1)
+        self.data_2 = np.load(f_2)
+        self.data_3 = np.load(f_3)
         f.close()
 
         self.label = self.label.repeat(num_repeat)
@@ -48,42 +55,30 @@ class Learner():
 
         n = self.data.shape[0]
 
-        pdata = []
+        pdata_1 = []
+        pdata_2 = []
+        pdata_3 = []
         for i in range(n):
             asd = self.data[i]
-            #norm_asd = asd - np.mean(asd, axis = 0)
 
             for j in range(num_repeat):
-                Start = j * 86
-                End = (j + 1) * 86
-                aa = asd[Start : End]
-                #print(aa.shape)
-                pdata.append(aa)
+                aa_1 = asd[j * 168 : (j + 1) * 168]
+                aa_2 = asd[j * 84 : (j + 1) * 84]
+                aa_3 = asd[j * 42 : (j + 1) * 42]
+                
+                pdata_1.append(aa_1)
+                pdata_2.append(aa_2)
+                pdata_3.append(aa_3)
 
             #time.sleep(30)
 
-        self.data = np.array(pdata)
+        self.data_1 = np.array(pdata_1)
+        self.data_2 = np.array(pdata_2)
+        self.data_3 = np.array(pdata_3)
 
-        f = file('data_mfcc.npy', 'r')
-        self.mfcc = np.load(f)
-        f.close()
-
-        n = self.mfcc.shape[0]
-
-        pdata = []
-        for i in range(n):
-            asd = self.mfcc[i]
-
-            for j in range(num_repeat):
-                Start = j * 86
-                End = (j + 1) * 86
-                aa = asd[Start : End]
-                pdata.append(aa)
-
-        self.mfcc = np.array(pdata)
-
-        print(self.data.shape)
-        print(self.mfcc.shape)
+        print(self.data_1.shape)
+        print(self.data_2.shape)
+        print(self.data_3.shape)
         print(self.label.shape)
 
     def learn(self):
@@ -95,8 +90,9 @@ class Learner():
 
         self.model.fit(
             {
-                'mfcc' : self.mfcc,
-                'mel' : self.data
+                'data_1' : self.data_1,
+                'data_2' : self.data_2,
+                'data_3' : self.data_3
             },
             y = self.label,
             batch_size = 256,
@@ -109,45 +105,13 @@ class Learner():
 
         print(' End fitting ')
 
-    def create_model(self):
-
-        def lam(X):
-            print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
-            print(X.shape)
-            X=K.max(X,axis=1)
-            print(X.shape)
-            return X
-
-        self.model = Sequential()
-
-        self.model.add(Reshape((86, 128, 1), input_shape=(86, 128)))
-        self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
-        self.model.add(BatchNormalization())
-        self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
-        self.model.add(MaxPooling2D(pool_size = (3, 3)))
-        self.model.add(Dropout(0.1))
-
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
-        self.model.add(BatchNormalization())
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
-        self.model.add(MaxPooling2D(pool_size = (3, 3)))
-        self.model.add(Dropout(0.15))
-
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
-        self.model.add(BatchNormalization())
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
-
-        self.model.add(Lambda(lam,output_shape=(14,128)))
-
-        self.model.add(Dropout(0.2))
-        self.model.add(Flatten())
-
-        self.model.add(Dense(15, activation='softmax'))
-        self.model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
-
-
     def create_mfcc(self):
 
+        K_n = 5
+        K_1 = 3
+        K_2 = 2
+        K_3 = 1
+
         def lam(X):
             print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
             print(X.shape)
@@ -155,60 +119,132 @@ class Learner():
             print(X.shape)
             return X
 
-        mfcc = Input(shape = (86, 128, ), dtype = 'float32', name = 'mel')
+        mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_1')
+        mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2')
+        mfcc_3 = Input(shape = (si_3, 64, ), dtype = 'float32', name = 'data_3')
 
-        mfcc_reshape = Reshape((86, 128, 1))(mfcc)
-        Conv_1 = Conv2D(64, (3, 3), padding='same', activation='relu')
-        #Conv_2 = Conv2D(64, (3, 3), padding='same', activation='relu')
+        mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
+        mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
+        mfcc_3_r = Reshape((si_3, 64, 1))(mfcc_3)
 
-        conv_1 = Conv_1(mfcc_reshape)
-        #conv_1_bh = BatchNormalization()(conv_1)
-        #conv_2 = Conv_2(conv_1_bh)
-        maxpool_1 = MaxPooling2D(pool_size = (3, 3))(conv_1)
-        drop_1 = Dropout(0.1)(maxpool_1)
 
-        Conv_3 = Conv2D(64, (3, 3), padding='same', activation='relu')
-        Conv_4 = Conv2D(64, (3, 3), padding='same', activation='relu')
-        Conv_01 = Conv2D(64, (3, 3), padding='same', activation='relu')
+        Conv_1_1 = Conv2D(32, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_2 = Conv2D(32, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
 
-        conv_3 = Conv_3(drop_1)
-        conv_3_bh = BatchNormalization()(conv_3)
+        conv_1_1 = Conv_1_1(mfcc_1_r)
+        conv_1_2 = Conv_1_2(conv_1_1)
+        conv_2_1 = Conv_2_1(mfcc_2_r)
+        conv_2_2 = Conv_2_2(conv_2_1)
+        conv_3_1 = Conv_3_1(mfcc_3_r)
+        conv_3_2 = Conv_3_2(conv_3_1)
+        conv_1_d = Dropout(0.1)(conv_1_2)
+        conv_2_d = Dropout(0.1)(conv_2_2)
+        conv_3_d = Dropout(0.1)(conv_3_2)
 
-        concat_1 = Concatenate(axis = 3)([drop_1, conv_3_bh])
-        conv_4 = Conv_4(concat_1)
-        conv_4_bh = BatchNormalization()(conv_4)
+        #-----------------------------------
 
-        concat_2 = Concatenate(axis = 3)([drop_1, conv_3_bh, conv_4_bh])
-        conv_01 = Conv_01(concat_2)
+        in1_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_d)
+        in1_conv_1_2 = MaxPooling2D(pool_size = (1, K_1))(conv_1_d)
 
-        maxpool_2 = MaxPooling2D(pool_size = (3, 3))(conv_01)
-        drop_2 = Dropout(0.15)(maxpool_2)
+        in1_conv_2_2 = MaxPooling2D(pool_size = (K_1, K_1))(conv_2_d)
+        in1_conv_2_1 = MaxPooling2D(pool_size = (K_1, 1))(in1_conv_2_2)
+        in1_conv_2_3 = MaxPooling2D(pool_size = (1, K_1))(conv_2_d)
 
-        Conv_5 = Conv2D(64, (3, 3), padding='same', activation='relu')
-        Conv_6 = Conv2D(64, (3, 3), padding='same', activation='relu')
-        Conv_02 = Conv2D(64, (3, 3), padding='same', activation='relu')
+        in1_conv_3_3 = MaxPooling2D(pool_size = (K_1, K_1))(conv_3_d)
+        in1_conv_3_2 = MaxPooling2D(pool_size = (K_1, 1))(in1_conv_3_3)
 
-        conv_5 = Conv_5(drop_2)
-        conv_5_bh = BatchNormalization()(conv_5)
+        conv_1_in_1 = Concatenate(axis = 3)([in1_conv_1_1, in1_conv_2_1])
+        conv_2_in_1 = Concatenate(axis = 3)([in1_conv_2_2, in1_conv_1_2, in1_conv_3_2])
+        conv_3_in_1 = Concatenate(axis = 3)([in1_conv_3_3, in1_conv_2_3])
 
-        concat_3 = Concatenate(axis = 3)([drop_2, conv_5_bh])
-        conv_6 = Conv_6(concat_3)
-        conv_6_bh = BatchNormalization()(conv_6)
+        #-----------------------------------
 
-        concat_4 = Concatenate(axis = 3)([drop_2, conv_5_bh, conv_6_bh])
-        conv_02 = Conv_02(concat_4)
+        Conv_1_3 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_4 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_3 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_4 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_3 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_4 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
 
-        lam_1 = Lambda(lam, output_shape=(14, 64))(conv_02)
-        drop_3 = Dropout(0.2)(lam_1)
+        conv_1_3 = Conv_1_3(conv_1_in_1)
+        conv_1_4 = Conv_1_4(conv_1_3)
+        conv_2_3 = Conv_2_3(conv_2_in_1)
+        conv_2_4 = Conv_2_4(conv_2_3)
+        conv_3_3 = Conv_3_3(conv_3_in_1)
+        conv_3_4 = Conv_3_4(conv_3_3)
+        conv_1_dd = Dropout(0.2)(conv_1_4)
+        conv_2_dd = Dropout(0.2)(conv_2_4)
+        conv_3_dd = Dropout(0.2)(conv_3_4)
 
-        fla_1 = Flatten()(drop_3)
+        #-----------------------------------
+
+        in2_conv_1_1 = MaxPooling2D(pool_size = (K_2, K_2))(conv_1_dd)
+        in2_conv_1_2 = MaxPooling2D(pool_size = (1, K_2))(conv_1_dd)
+
+        in2_conv_2_2 = MaxPooling2D(pool_size = (K_2, K_2))(conv_2_dd)
+        in2_conv_2_1 = MaxPooling2D(pool_size = (K_2, 1))(in2_conv_2_2)
+        in2_conv_2_3 = MaxPooling2D(pool_size = (1, K_2))(conv_2_dd)
+
+        in2_conv_3_3 = MaxPooling2D(pool_size = (K_2, K_2))(conv_3_dd)
+        in2_conv_3_2 = MaxPooling2D(pool_size = (K_2, 1))(in2_conv_3_3)
+
+        conv_1_in_2 = Concatenate(axis = 3)([in2_conv_1_1, in2_conv_2_1])
+        conv_2_in_2 = Concatenate(axis = 3)([in2_conv_2_2, in2_conv_1_2, in2_conv_3_2])
+        conv_3_in_2 = Concatenate(axis = 3)([in2_conv_3_3, in2_conv_2_3])
+
+        #-----------------------------------
+
+        Conv_1_5 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_6 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_5 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_6 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_5 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_6 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+
+        conv_1_5 = Conv_1_5(conv_1_in_2)
+        conv_1_6 = Conv_1_6(conv_1_5)
+        conv_2_5 = Conv_2_5(conv_2_in_2)
+        conv_2_6 = Conv_2_6(conv_2_5)
+        conv_3_5 = Conv_3_5(conv_3_in_2)
+        conv_3_6 = Conv_3_6(conv_3_5)
+        conv_1_ddd = Dropout(0.2)(conv_1_6)
+        conv_2_ddd = Dropout(0.2)(conv_2_6)
+        conv_3_ddd = Dropout(0.2)(conv_3_6)
+
+        #-----------------------------------
+
+        in3_conv_1_2 = MaxPooling2D(pool_size = (1, K_3))(conv_1_ddd)
+
+        in3_conv_2_2 = MaxPooling2D(pool_size = (K_3, K_3))(conv_2_ddd)
+
+        in3_conv_3_3 = MaxPooling2D(pool_size = (K_3, K_3))(conv_3_ddd)
+        in3_conv_3_2 = MaxPooling2D(pool_size = (K_3, 1))(in3_conv_3_3)
+
+        conv_2_in_3 = Concatenate(axis = 3)([in3_conv_2_2, in3_conv_1_2, in3_conv_3_2])
+
+        #-----------------------------------
+
+        Conv_1 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+
+        conv2_1 = Conv_1(conv_2_in_3)
+        conv2_2 = Conv_2(conv2_1)
+
+        lam_1 = Lambda(lam, output_shape=(10, 128))(conv2_2)
+        drop = Dropout(0.2)(lam_1)
+
+        fla_1 = Flatten()(drop)
 
         Dense_2 = Dense(128, activation = 'relu')
         Dense_1 = Dense(15, activation = 'softmax', name = 'out_1')
         den_2 = Dense_2(fla_1)
         out = Dense_1(den_2)
 
-        self.model = Model(inputs = [mfcc ], outputs = [out])
+        self.model = Model(inputs = [mfcc_1, mfcc_2, mfcc_3], outputs = [out])
         self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=["accuracy"])
 
     def predict(self):
@@ -223,7 +259,6 @@ class Learner():
 
     def work(self):
         self.prepare()
-        #self.create_model()
         self.create_mfcc()
         self.learn()
         self.predict()
