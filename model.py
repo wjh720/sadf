@@ -28,9 +28,9 @@ import keras
 num_repeat = 10
 num_asd = 25
 num_classes = 15
-si_1 = 160
+si_1 = 40
 si_2 = 80
-si_3 = 40
+si_3 = 160
 
 class Learner():
     def __init__(self):
@@ -121,9 +121,9 @@ class Learner():
             print(X.shape)
             return X
 
-        mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_1')
+        mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_3')
         mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2')
-        mfcc_3 = Input(shape = (si_3, 64, ), dtype = 'float32', name = 'data_3')
+        mfcc_3 = Input(shape = (si_3, 64, ), dtype = 'float32', name = 'data_1')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
         mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
