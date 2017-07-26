@@ -167,7 +167,7 @@ class Learner():
 
             #time.sleep(30)
 
-        self.data = np.array(pdata)
+        self.mfcc = np.array(pdata)
 
         print(self.data.shape)
         print(self.label.shape)
@@ -181,32 +181,44 @@ class Learner():
             print(X.shape)
             return X
 
-        self.model = Sequential()
+        mfcc = Input(shape = (86, 64, ), dtype = 'float32', name = 'mfcc')
 
-        self.model.add(Reshape((86, 64, 1), input_shape=(86, 64)))
-        self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
-        self.model.add(BatchNormalization())
-        self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
-        self.model.add(MaxPooling2D(pool_size = (3, 3)))
-        self.model.add(Dropout(0.1))
+        Conv_1 = Conv2D(64, (3, 3), padding='same', activation='relu')
+        Conv_2 = Conv2D(64, (3, 3), padding='same', activation='relu')
 
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
-        self.model.add(BatchNormalization())
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
-        self.model.add(MaxPooling2D(pool_size = (3, 3)))
-        self.model.add(Dropout(0.15))
+        conv_1 = Conv_1(mfcc)
+        conv_1_bh = BatchNormalization(conv_1)
+        conv_2 = Conv_2(conv_1_bh)
+        maxpool_1 = MaxPooling2D(pool_size = (3, 3))(conv_2)
+        drop_1 = Dropout(0.1)(maxpool_1)
 
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
-        self.model.add(BatchNormalization())
-        self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
+        Conv_3 = Conv2D(128, (3, 3), padding='same', activation='relu')
+        Conv_4 = Conv2D(128, (3, 3), padding='same', activation='relu')
 
-        self.model.add(Lambda(lam,output_shape=(7,128)))
+        conv_3 = Conv_3(drop_1)
+        conv_3_bh = BatchNormalization(conv_3)
+        conv_4 = Conv_4(conv_3_bh)
+        maxpool_2 = MaxPooling2D(pool_size = (3, 3))(conv_4)
+        drop_2 = Dropout(0.15)(maxpool_2)
 
-        self.model.add(Dropout(0.2))
-        self.model.add(Flatten())
+        Conv_5 = Conv2D(128, (3, 3), padding='same', activation='relu')
+        Conv_6 = Conv2D(128, (3, 3), padding='same', activation='relu')
 
-        self.model.add(Dense(15, activation='softmax'))
-        self.model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
+        conv_5 = Conv_5(drop_2)
+        conv_5_bh = BatchNormalization(conv_5)
+        conv_6 = Conv_6(conv_5_bh)
+        maxpool_3 = MaxPooling2D(pool_size = (3, 3))(conv_6)
+
+        lam_1 = Lambda(lam,output_shape=(7,128))(maxpool_3)
+        drop_3 = Dropout(0.2)(lam_1)
+
+        fla_1 = Flatten()(drop_3)
+
+        Dense_1 = Dense(15, activation='softmax', name = 'out_1')
+        out = Dense_1(fla_1)
+
+        self.model = Model(inputs = [mfcc ], outputs = [out])
+        self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=["accuracy"])
 
     def predict(self):
         output = self.model.predict(       
