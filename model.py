@@ -25,12 +25,12 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
-num_repeat = 10
+num_repeat = 6
 num_asd = 25
 num_classes = 15
-si_1 = 20
-si_2 = 80
-si_3 = 320
+si_1 = 32
+si_2 = 128
+si_3 = 512
 
 class Learner():
     def __init__(self):
@@ -220,36 +220,67 @@ class Learner():
 
         #-----------------------------------
 
-        in3_conv_1_1 = MaxPooling2D(pool_size = (1, K_2))(conv_1_ddd)
-        in3_conv_1_2 = UpSampling2D(size = (2, 1))(in3_conv_1_1)
+        in3_conv_1_1 = MaxPooling2D(pool_size = (K_2, K_2))(conv_1_ddd)
+        in3_conv_1_2 = UpSampling2D(size = (4, 1))(in3_conv_1_1)
 
         in3_conv_2_2 = MaxPooling2D(pool_size = (K_3, K_3))(conv_2_ddd)
+        in2_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_2_2)
+        in2_conv_2_3 = UpSampling2D(size = (4, 1))(in2_conv_2_2)
 
         in3_conv_3_3 = MaxPooling2D(pool_size = (K_3, K_3))(conv_3_ddd)
         in3_conv_3_2 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_3_3)
 
+        conv_1_in_3 = Concatenate(axis = 3)([in3_conv_1_1, in3_conv_2_1])
         conv_2_in_3 = Concatenate(axis = 3)([in3_conv_2_2, in3_conv_1_2, in3_conv_3_2])
+        conv_3_in_3 = Concatenate(axis = 3)([in3_conv_3_3, in3_conv_2_3])
 
         #-----------------------------------
 
-        Conv_1 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_2 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_7 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_8 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_7 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_8 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_7 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_8 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
 
-        conv2_1 = Conv_1(conv_2_in_3)
-        conv2_2 = Conv_2(conv2_1)
+        conv_1_7 = Conv_1_7(conv_1_in_3)
+        conv_1_8 = Conv_1_8(conv_1_7)
+        conv_2_7 = Conv_2_7(conv_2_in_3)
+        conv_2_8 = Conv_2_8(conv_2_7)
+        conv_3_7 = Conv_3_7(conv_3_in_3)
+        conv_3_8 = Conv_3_8(conv_3_7)
 
-        lam_1 = Lambda(lam, output_shape=(8, 128))(conv2_2)
-        drop = Dropout(0.2)(lam_1)
+        lam_1 = Lambda(lam, output_shape=(8, 128))(conv2_1)
+        lam_2 = Lambda(lam, output_shape=(8, 128))(conv2_2)
+        lam_3 = Lambda(lam, output_shape=(8, 128))(conv2_3)
+        drop_1 = Dropout(0.2)(lam_1)
+        drop_2 = Dropout(0.2)(lam_2)
+        drop_3 = Dropout(0.2)(lam_3)
 
-        fla_1 = Flatten()(drop)
+        fla_1 = Flatten()(drop_1)
+        fla_2 = Flatten()(drop_2)
+        fla_3 = Flatten()(drop_3)
 
-        Dense_2 = Dense(128, activation = 'relu')
-        Dense_1 = Dense(15, activation = 'softmax', name = 'out_1')
-        den_2 = Dense_2(fla_1)
-        out = Dense_1(den_2)
+        Dense_1_1 = Dense(128, activation = 'relu')
+        Dense_2_1 = Dense(128, activation = 'relu')
+        Dense_3_1 = Dense(128, activation = 'relu')
+        Dense_1_2 = Dense(15, activation = 'softmax', name = 'out_1')
+        Dense_2_2 = Dense(15, activation = 'softmax', name = 'out_2')
+        Dense_3_2 = Dense(15, activation = 'softmax', name = 'out_3')
 
-        self.model = Model(inputs = [mfcc_1, mfcc_2, mfcc_3], outputs = [out])
-        self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=["accuracy"])
+        den_1_1 = Dense_1_1(fla_1)
+        den_1_2 = Dense_1_2(den_1_1)
+        den_2_1 = Dense_2_1(fla_2)
+        den_2_2 = Dense_2_2(den_2_1)
+        den_3_1 = Dense_3_1(fla_3)
+        den_3_2 = Dense_3_2(den_3_1)
+
+        self.model = Model(inputs = [mfcc_1, mfcc_2, mfcc_3], outputs = [den_1_2, den_2_2, den_3_2])
+        self.model.compile({'out_1' : 'categorical_crossentropy', 'out_2' : 'categorical_crossentropy', \
+                            'out_3' : 'categorical_crossentropy'}, \
+                            loss_weights={'out_1' : 1., 'out_2' : 1., 'out_3' : 1.}, \
+                            optimizer = 'adam', \
+                            metrics= {'out_1' : 'accuracy', 'out_2' : 'accuracy', 'out_3' : 'accuracy'})
 
     def predict(self):
         output = self.model.predict(       
