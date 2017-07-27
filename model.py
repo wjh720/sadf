@@ -151,11 +151,11 @@ class Learner():
         #-----------------------------------
 
         in1_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_d)
-        in1_conv_1_2 = UpSampling2D(size = (2, 1))(in1_conv_1_1)
+        in1_conv_1_2 = UpSampling2D(size = (4, 1))(in1_conv_1_1)
 
         in1_conv_2_2 = MaxPooling2D(pool_size = (K_1, K_1))(conv_2_d)
         in1_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_2_2)
-        in1_conv_2_3 = UpSampling2D(size = (2, 1))(in1_conv_2_2)
+        in1_conv_2_3 = UpSampling2D(size = (4, 1))(in1_conv_2_2)
 
         in1_conv_3_3 = MaxPooling2D(pool_size = (K_1, K_1))(conv_3_d)
         in1_conv_3_2 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_3_3)
@@ -186,11 +186,11 @@ class Learner():
         #-----------------------------------
 
         in2_conv_1_1 = MaxPooling2D(pool_size = (K_2, K_2))(conv_1_dd)
-        in2_conv_1_2 = UpSampling2D(size = (2, 1))(in2_conv_1_1)
+        in2_conv_1_2 = UpSampling2D(size = (4, 1))(in2_conv_1_1)
 
         in2_conv_2_2 = MaxPooling2D(pool_size = (K_2, K_2))(conv_2_dd)
         in2_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_2_2)
-        in2_conv_2_3 = UpSampling2D(size = (2, 1))(in2_conv_2_2)
+        in2_conv_2_3 = UpSampling2D(size = (4, 1))(in2_conv_2_2)
 
         in2_conv_3_3 = MaxPooling2D(pool_size = (K_2, K_2))(conv_3_dd)
         in2_conv_3_2 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_3_3)
@@ -221,7 +221,7 @@ class Learner():
         #-----------------------------------
 
         in3_conv_1_1 = MaxPooling2D(pool_size = (K_2, K_2))(conv_1_ddd)
-        in3_conv_1_2 = UpSampling2D(size = (2, 1))(in3_conv_1_1)
+        in3_conv_1_2 = UpSampling2D(size = (4, 1))(in3_conv_1_1)
 
         in3_conv_2_2 = MaxPooling2D(pool_size = (K_3, K_3))(conv_2_ddd)
 
