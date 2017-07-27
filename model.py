@@ -13,7 +13,7 @@ import collections
 from keras.models import Sequential, Model
 from keras.layers.advanced_activations import LeakyReLU, PReLU
 from keras.layers import Dense, Dropout, Flatten,Permute
-from keras.layers import Conv1D, MaxPooling1D,Conv2D,MaxPooling2D, AveragePooling2D
+from keras.layers import Conv1D, MaxPooling1D,Conv2D,MaxPooling2D, AveragePooling2D, UpSampling2D
 from keras.layers import Dense, Dropout, Activation, Flatten, Input, Dense, LSTM, Lambda, Embedding, Reshape
 from keras.layers.merge import Concatenate
 from keras.layers import BatchNormalization
@@ -28,9 +28,9 @@ import keras
 num_repeat = 10
 num_asd = 25
 num_classes = 15
-si_1 = 40
+si_1 = 20
 si_2 = 80
-si_3 = 160
+si_3 = 320
 
 class Learner():
     def __init__(self):
@@ -110,6 +110,7 @@ class Learner():
     def create_mfcc(self):
 
         K_n = 5
+        K_11 = 4
         K_1 = 2
         K_2 = 2
         K_3 = 2
@@ -150,14 +151,14 @@ class Learner():
         #-----------------------------------
 
         in1_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_d)
-        in1_conv_1_2 = MaxPooling2D(pool_size = (1, K_1))(conv_1_d)
+        in1_conv_1_2 = UpSampling2D(size = (2, 1))(in1_conv_1_1)
 
         in1_conv_2_2 = MaxPooling2D(pool_size = (K_1, K_1))(conv_2_d)
-        in1_conv_2_1 = MaxPooling2D(pool_size = (K_1, 1))(in1_conv_2_2)
-        in1_conv_2_3 = MaxPooling2D(pool_size = (1, K_1))(conv_2_d)
+        in1_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_2_2)
+        in1_conv_2_3 = UpSampling2D(size = (2, 1))(in1_conv_2_2)
 
         in1_conv_3_3 = MaxPooling2D(pool_size = (K_1, K_1))(conv_3_d)
-        in1_conv_3_2 = MaxPooling2D(pool_size = (K_1, 1))(in1_conv_3_3)
+        in1_conv_3_2 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_3_3)
 
         conv_1_in_1 = Concatenate(axis = 3)([in1_conv_1_1, in1_conv_2_1])
         conv_2_in_1 = Concatenate(axis = 3)([in1_conv_2_2, in1_conv_1_2, in1_conv_3_2])
@@ -185,14 +186,14 @@ class Learner():
         #-----------------------------------
 
         in2_conv_1_1 = MaxPooling2D(pool_size = (K_2, K_2))(conv_1_dd)
-        in2_conv_1_2 = MaxPooling2D(pool_size = (1, K_2))(conv_1_dd)
+        in2_conv_1_2 = UpSampling2D(size = (2, 1))(in2_conv_1_1)
 
         in2_conv_2_2 = MaxPooling2D(pool_size = (K_2, K_2))(conv_2_dd)
-        in2_conv_2_1 = MaxPooling2D(pool_size = (K_2, 1))(in2_conv_2_2)
-        in2_conv_2_3 = MaxPooling2D(pool_size = (1, K_2))(conv_2_dd)
+        in2_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_2_2)
+        in2_conv_2_3 = UpSampling2D(size = (2, 1))(in2_conv_2_2)
 
         in2_conv_3_3 = MaxPooling2D(pool_size = (K_2, K_2))(conv_3_dd)
-        in2_conv_3_2 = MaxPooling2D(pool_size = (K_2, 1))(in2_conv_3_3)
+        in2_conv_3_2 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_3_3)
 
         conv_1_in_2 = Concatenate(axis = 3)([in2_conv_1_1, in2_conv_2_1])
         conv_2_in_2 = Concatenate(axis = 3)([in2_conv_2_2, in2_conv_1_2, in2_conv_3_2])
@@ -219,12 +220,13 @@ class Learner():
 
         #-----------------------------------
 
-        in3_conv_1_2 = MaxPooling2D(pool_size = (1, K_3))(conv_1_ddd)
+        in3_conv_1_1 = MaxPooling2D(pool_size = (K_2, K_2))(conv_1_ddd)
+        in3_conv_1_2 = UpSampling2D(size = (2, 1))(in3_conv_1_1)
 
         in3_conv_2_2 = MaxPooling2D(pool_size = (K_3, K_3))(conv_2_ddd)
 
         in3_conv_3_3 = MaxPooling2D(pool_size = (K_3, K_3))(conv_3_ddd)
-        in3_conv_3_2 = MaxPooling2D(pool_size = (K_3, 1))(in3_conv_3_3)
+        in3_conv_3_2 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_3_3)
 
         conv_2_in_3 = Concatenate(axis = 3)([in3_conv_2_2, in3_conv_1_2, in3_conv_3_2])
 
