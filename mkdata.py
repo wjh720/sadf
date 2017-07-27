@@ -105,9 +105,9 @@ def prepare_mfcc():
             y, sr=soundfile.read(item)
             y = np.mean(y.T, axis=0)
 
-            D_1 = np.abs(librosa.stft(y, n_fft = 1024)) ** 2
+            D_1 = np.abs(librosa.stft(y, n_fft = 512)) ** 2
             D_2 = np.abs(librosa.stft(y, n_fft = 2048)) ** 2
-            D_3 = np.abs(librosa.stft(y, n_fft = 4096)) ** 2
+            D_3 = np.abs(librosa.stft(y, n_fft = 8192)) ** 2
             
             S_1 = librosa.feature.melspectrogram(S = D_1)
             S_2 = librosa.feature.melspectrogram(S = D_2)
