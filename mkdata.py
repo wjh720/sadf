@@ -163,17 +163,17 @@ def prepare_others():
 
             mel = librosa.feature.melspectrogram(S = np.abs(librosa.stft(y, n_fft = 2048)) ** 2)
             mfcc_tmp = librosa.feature.mfcc(S=librosa.power_to_db(mel), n_mfcc = 64)
-            mfcc.append(mfcc_tmp)
+            mfcc.append(mfcc_tmp.T)
 
             chroma_cq = librosa.feature.chroma_cqt(y=y, sr=sr, n_chroma = 64)
-            cqt.append(chroma_cq)
+            cqt.append(chroma_cq.T)
 
             tonnetz = librosa.feature.tonnetz(y=y, sr=sr)
-            ttz.append(tonnetz)
+            ttz.append(tonnetz.T)
 
-            print(mfcc_tmp.shape)
-            print(chroma_cq.shape)
-            print(tonnetz.shape)
+            #print(mfcc_tmp.shape)
+            #print(chroma_cq.shape)
+            #print(tonnetz.shape)
 
             if (num % 100 == 0):
                 print(num)
