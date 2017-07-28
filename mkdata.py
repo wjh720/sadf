@@ -142,5 +142,61 @@ def prepare_mfcc():
         f_3.close()
         print(' Data End ')
 
+def prepare_others():
+    meta_path = path + 'meta.txt'
+    file_list = []
+
+    with open(meta_path, 'r') as ff:
+        for line in ff:
+            parts = line.split('\t')
+            file_list.append(path + parts[0])
+
+    if (overwrite):
+        mfcc = []
+        cqt = []
+        ttz = []
+        num = 0
+        for item in file_list:
+            #print(item)
+            y, sr=soundfile.read(item)
+            y = np.mean(y.T, axis=0)
+
+            mel = librosa.feature.melspectrogram(S = np.abs(librosa.stft(y, n_fft = 2048)) ** 2)
+            mfcc_tmp = librosa.feature.mfcc(S=librosa.power_to_db(mel), n_mfcc = 64)
+            mfcc.append(mfcc_tmp)
+
+            chroma_cq = librosa.feature.chroma_cqt(y=y, sr=sr, n_chroma = 64)
+            cqt.append(chroma_cq)
+
+            tonnetz = librosa.feature.tonnetz(y=y, sr=sr)
+            ttz.append(tonnetz)
+
+            print(mfcc_tmp.shape)
+            print(chroma_cq.shape)
+            print(tonnetz.shape)
+
+            if (num % 100 == 0):
+                print(num)
+            num = num + 1
+
+        mfcc = np.array(mfcc)
+        cqt = np.array(cqt)
+        ttz = np.array(ttz)
+        print(mfcc.shape)
+        print(cqt.shape)
+        print(ttz.shape)
+
+        f_1 = file('data_mfcc.npy', 'w')
+        f_2 = file('data_cqt.npy', 'w')
+        f_3 = file('data_ttz.npy', 'w')
+        np.save(f_1, mfcc)
+        np.save(f_2, cqt)
+        np.save(f_3, ttz)
+        f_1.close()
+        f_2.close()
+        f_3.close()
+        print(' Data End ')
+
 #prepare_mfcc()
-prepare_mel()
+#prepare_mel()
+prepare_others()
