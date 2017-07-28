@@ -276,11 +276,11 @@ class Learner():
         den_3_2 = Dense_3_2(den_3_1)
 
         self.model = Model(inputs = [mfcc_1, mfcc_2, mfcc_3], outputs = [den_1_2, den_2_2, den_3_2])
-        self.model.compile({'out_1' : 'categorical_crossentropy', 'out_2' : 'categorical_crossentropy', \
+        self.model.compile(loss = {'out_1' : 'categorical_crossentropy', 'out_2' : 'categorical_crossentropy', \
                             'out_3' : 'categorical_crossentropy'}, \
-                            loss_weights={'out_1' : 1., 'out_2' : 1., 'out_3' : 1.}, \
+                            loss_weights = {'out_1' : 1., 'out_2' : 1., 'out_3' : 1.}, \
                             optimizer = 'adam', \
-                            metrics= {'out_1' : 'accuracy', 'out_2' : 'accuracy', 'out_3' : 'accuracy'})
+                            metrics = {'out_1' : 'accuracy', 'out_2' : 'accuracy', 'out_3' : 'accuracy'})
 
     def predict(self):
         output = self.model.predict(       
