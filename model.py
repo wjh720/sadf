@@ -224,8 +224,8 @@ class Learner():
         in3_conv_1_2 = UpSampling2D(size = (4, 1))(in3_conv_1_1)
 
         in3_conv_2_2 = MaxPooling2D(pool_size = (K_3, K_3))(conv_2_ddd)
-        in2_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_2_2)
-        in2_conv_2_3 = UpSampling2D(size = (4, 1))(in2_conv_2_2)
+        in3_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_2_2)
+        in3_conv_2_3 = UpSampling2D(size = (4, 1))(in3_conv_2_2)
 
         in3_conv_3_3 = MaxPooling2D(pool_size = (K_3, K_3))(conv_3_ddd)
         in3_conv_3_2 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_3_3)
@@ -250,9 +250,9 @@ class Learner():
         conv_3_7 = Conv_3_7(conv_3_in_3)
         conv_3_8 = Conv_3_8(conv_3_7)
 
-        lam_1 = Lambda(lam, output_shape=(8, 128))(conv2_1)
-        lam_2 = Lambda(lam, output_shape=(8, 128))(conv2_2)
-        lam_3 = Lambda(lam, output_shape=(8, 128))(conv2_3)
+        lam_1 = Lambda(lam, output_shape=(8, 128))(conv_1_8)
+        lam_2 = Lambda(lam, output_shape=(8, 128))(conv_2_8)
+        lam_3 = Lambda(lam, output_shape=(8, 128))(conv_3_8)
         drop_1 = Dropout(0.2)(lam_1)
         drop_2 = Dropout(0.2)(lam_2)
         drop_3 = Dropout(0.2)(lam_3)
