@@ -96,7 +96,11 @@ class Learner():
                 'data_2' : self.data_2,
                 'data_3' : self.data_3
             },
-            y = self.label,
+            {
+                'out_1' : self.label,
+                'out_2' : self.label,
+                'out_3' : self.label
+            },
             batch_size = 64,
             epochs = 10000,
             validation_split = 0.2,
