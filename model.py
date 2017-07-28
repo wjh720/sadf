@@ -25,12 +25,12 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
-num_repeat = 6
+num_repeat = 13
 num_asd = 25
 num_classes = 15
-si_1 = 32
-si_2 = 128
-si_3 = 512
+si_1 = 16
+si_2 = 64
+si_3 = 256
 
 class Learner():
     def __init__(self):
