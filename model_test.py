@@ -96,7 +96,7 @@ class Learner():
         self.model.fit(
             x = self.data_cqt,
             y = self.label,
-            batch_size = 32,
+            batch_size = 128,
             epochs = 10000,
             validation_split = 0.2,
             verbose = 2,
