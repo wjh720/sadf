@@ -36,6 +36,58 @@ class Learner():
     def __init__(self):
         pass
 
+    def prepare_3(self):
+        f = file('label.npy', 'r')
+        self.label = np.load(f)
+        f.close()
+
+        self.label = self.label.repeat(num_repeat)
+        self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
+        print(self.label[0, 0])
+
+        # -----------------------------
+
+        f_mfcc = file('data_mfcc.npy', 'r')
+        self.data_mfcc = np.load(f_mfcc)
+        f_mfcc.close()
+
+        f_cqt = file('data_cqt.npy', 'r')
+        self.data_cqt = np.load(f_cqt)
+        f_cqt.close()
+
+        f_ttz = file('data_ttz.npy', 'r')
+        self.data_ttz = np.load(f_ttz)
+        f_ttz.close()
+
+        # -----------------------------
+
+        n = self.data_mfcc.shape[0]
+
+        mfcc = []
+        cqt = []
+        ttz = []
+        for i in range(n):
+            asd_mfcc = self.data_mfcc[i]
+            asd_cqt = self.data_cqt[i]
+            asd_ttz = self.data_ttz[i]
+
+            for j in range(num_repeat):
+                aa_mfcc = asd_mfcc[j * num_time : (j + 1) * num_time]
+                aa_cqt = asd_cqt[j * num_time : (j + 1) * num_time]
+                aa_ttz = asd_ttz[j * num_time : (j + 1) * num_time]
+                mfcc.append(aa_mfcc)
+                cqt.append(aa_cqt)
+                ttz.append(aa_ttz)
+
+        self.data_mfcc = np.array(mfcc)
+        self.data_cqt = np.array(cqt)
+        self.data_ttz = np.array(ttz)
+
+        print(self.data_mfcc.shape)
+        print(self.data_cqt.shape)
+        print(self.data_ttz.shape)
+        print(self.label.shape)
+
     def prepare(self):
         f = file('label.npy', 'r')
         self.label = np.load(f)
@@ -93,7 +145,7 @@ class Learner():
         self.model.fit(
             {
                 'data_1' : self.data_1,
-                'data_2' : self.data_2,
+                'data_2' : self.data_cqt,
                 'data_3' : self.data_3
             },
             {
@@ -307,6 +359,7 @@ class Learner():
 
     def work(self):
         self.prepare()
+        self.prepare_3()
         self.create_mfcc()
         self.learn()
         self.predict()

@@ -168,7 +168,7 @@ def prepare_others():
             mfcc.append(mfcc_tmp.T)
             '''
 
-            St = librosa.stft(y)
+            St = librosa.stft(y, n_fft = 2048)
             stft.append(St.T)
 
             '''
