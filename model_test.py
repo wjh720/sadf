@@ -94,7 +94,7 @@ class Learner():
         print(' Begin fitting ')
 
         self.model.fit(
-            x = data_cqt,
+            x = self.data_cqt,
             y = self.label,
             batch_size = 256,
             epochs = 10000,
