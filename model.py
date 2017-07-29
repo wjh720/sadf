@@ -31,6 +31,7 @@ num_classes = 15
 si_1 = 16
 si_2 = 64
 si_3 = 256
+num_time = 64
 
 class Learner():
     def __init__(self):
