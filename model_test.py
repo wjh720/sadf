@@ -94,7 +94,7 @@ class Learner():
         print(' Begin fitting ')
 
         self.model.fit(
-            x = self.data_cqt,
+            x = self.data_ttz,
             y = self.label,
             batch_size = 128,
             epochs = 10000,
@@ -117,7 +117,7 @@ class Learner():
 
         self.model = Sequential()
 
-        self.model.add(Reshape((64, 64, 1), input_shape=(64, 64)))
+        self.model.add(Reshape((64, 6, 1), input_shape=(64, 6)))
         self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
@@ -127,18 +127,19 @@ class Learner():
         self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
-        self.model.add(MaxPooling2D(pool_size = (3, 3)))
+        self.model.add(MaxPooling2D(pool_size = (2, 2)))
         self.model.add(Dropout(0.15))
 
         self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
 
-        self.model.add(Lambda(lam,output_shape=(7,128)))
+        self.model.add(Lambda(lam,output_shape=(1,128)))
 
         self.model.add(Dropout(0.2))
         self.model.add(Flatten())
 
+        self.model.add(Dense(128, activation='softmax'))
         self.model.add(Dense(15, activation='softmax'))
         self.model.compile(loss='categorical_crossentropy', optimizer='adam',metrics=["accuracy"])
 
