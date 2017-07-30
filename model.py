@@ -160,7 +160,8 @@ class Learner():
             {
                 'data_4096' : self.data_3,  # 16, 64
                 'data_cqt' : self.data_cqt, # 64, 64
-                'data_mel' : self.data_mel  # 64, 128
+                #'data_mel' : self.data_mel  # 64, 128
+                'data_2048' : self.data_2
             },
             {
                 'out_1' : self.label,
@@ -194,14 +195,14 @@ class Learner():
 
         mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_4096')
         mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_cqt')
-        mfcc_3 = Input(shape = (si_2, 128, ), dtype = 'float32', name = 'data_mel')
+        mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
         mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
-        mfcc_3_r = Reshape((si_2, 128, 1))(mfcc_3)
+        mfcc_3_r = Reshape((si_2, 64, 1))(mfcc_3)
 
         # -----------------------------
-
+        '''
         Conv_03_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
         Conv_03_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
 
@@ -210,7 +211,7 @@ class Learner():
         conv_03_d = BatchNormalization()(conv_03_2)
         conv_03 = MaxPooling2D(pool_size = (1, 2))(conv_03_d)
         conv_03_ok = Dropout(0.05)(conv_03)
-
+        '''
         # -----------------------------
 
 
@@ -225,8 +226,7 @@ class Learner():
         conv_1_2 = Conv_1_2(conv_1_1)
         conv_2_1 = Conv_2_1(mfcc_2_r)
         conv_2_2 = Conv_2_2(conv_2_1)
-
-        conv_3_1 = Conv_3_1(conv_03_ok) #
+        conv_3_1 = Conv_3_1(mfcc_3_r)
         conv_3_2 = Conv_3_2(conv_3_1)
         conv_1_d = BatchNormalization()(conv_1_2)
         conv_2_d = BatchNormalization()(conv_2_2)
