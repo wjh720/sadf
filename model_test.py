@@ -57,6 +57,10 @@ class Learner():
         self.data_ttz = np.load(f_ttz)
         f_ttz.close()
 
+        f_rhy = file('data_rhythm.npy', 'r')
+        self.data_rhy = np.load(f_rhy)
+        f_rhy.close()
+
         # -----------------------------
 
         n = self.data_mfcc.shape[0]
@@ -64,26 +68,33 @@ class Learner():
         mfcc = []
         cqt = []
         ttz = []
+        rhy = []
         for i in range(n):
             asd_mfcc = self.data_mfcc[i]
             asd_cqt = self.data_cqt[i]
             asd_ttz = self.data_ttz[i]
+            asd_rhy = self.data_rhy[i]
 
             for j in range(num_repeat):
                 aa_mfcc = asd_mfcc[j * num_time : (j + 1) * num_time]
                 aa_cqt = asd_cqt[j * num_time : (j + 1) * num_time]
                 aa_ttz = asd_ttz[j * num_time : (j + 1) * num_time]
+                aa_rhy = asd_rhy[j * num_time : (j + 1) * num_time]
+
                 mfcc.append(aa_mfcc)
                 cqt.append(aa_cqt)
                 ttz.append(aa_ttz)
+                rhy.append(aa_rhy)
 
         self.data_mfcc = np.array(mfcc)
         self.data_cqt = np.array(cqt)
         self.data_ttz = np.array(ttz)
+        self.data_rhy = np.array(rhy)
 
         print(self.data_mfcc.shape)
         print(self.data_cqt.shape)
         print(self.data_ttz.shape)
+        print(self.data_rhy.shape)
         print(self.label.shape)
 
     def learn(self):
@@ -94,7 +105,7 @@ class Learner():
         print(' Begin fitting ')
 
         self.model.fit(
-            x = self.data_ttz,
+            x = self.data_rhy,
             y = self.label,
             batch_size = 128,
             epochs = 10000,
@@ -117,7 +128,7 @@ class Learner():
 
         self.model = Sequential()
 
-        self.model.add(Reshape((64, 6, 1), input_shape=(64, 6)))
+        self.model.add(Reshape((64, 128, 1), input_shape=(64, 128)))
         self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(64, (3, 3), padding='same',activation='relu'))

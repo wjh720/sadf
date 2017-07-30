@@ -232,7 +232,7 @@ def prepare_rhythm():
             y = np.mean(y.T, axis=0)
 
             rhythm = librosa.feature.tempogram(y=y, sr=sr, win_length = 128) # 862, 384
-            print(rhythm.shape)
+            #print(rhythm.shape)
 
             rhy.append(rhythm.T)
 
