@@ -211,9 +211,41 @@ def prepare_others():
         f_2.close()
         f_3.close()
         '''
-        
+
+        print(' Data End ')
+
+def prepare_rhythm():
+    meta_path = path + 'meta.txt'
+    file_list = []
+
+    with open(meta_path, 'r') as ff:
+        for line in ff:
+            parts = line.split('\t')
+            file_list.append(path + parts[0])
+
+    if (overwrite):
+        rhy = []
+        num = 0
+        for item in file_list:
+            #print(item)
+            y, sr=soundfile.read(item)
+            y = np.mean(y.T, axis=0)
+
+            rhythm = librosa.feature.tempogram(y=y, sr=sr)
+            print(rhythm.shape)
+
+
+            if (num % 100 == 0):
+                print(num)
+            num = num + 1
+
+        f_4 = file('data_rhythm.npy', 'w')
+        np.save(f_4, rhy)
+        f_4.close()
+
         print(' Data End ')
 
 #prepare_mfcc()
 #prepare_mel()
-prepare_others()
+#prepare_others()
+prepare_rhythm()
