@@ -138,14 +138,14 @@ class Learner():
         self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
-        self.model.add(MaxPooling2D(pool_size = (2, 2)))
+        self.model.add(MaxPooling2D(pool_size = (3, 3)))
         self.model.add(Dropout(0.15))
 
         self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
         self.model.add(BatchNormalization())
         self.model.add(Conv2D(128, (3, 3), padding='same',activation='relu'))
 
-        self.model.add(Lambda(lam,output_shape=(1,128)))
+        self.model.add(Lambda(lam,output_shape=(14, 128)))
 
         self.model.add(Dropout(0.2))
         self.model.add(Flatten())
