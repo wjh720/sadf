@@ -97,57 +97,44 @@ class Learner():
         f_1 = file('data_mfcc_1024.npy', 'r')
         f_2 = file('data_mfcc_2048.npy', 'r')
         f_3 = file('data_mfcc_4096.npy', 'r')
-        ff = file('data.npy', 'r')
         self.data_1 = np.load(f_1)
         self.data_2 = np.load(f_2)
         self.data_3 = np.load(f_3)
-        self.data_mel = np.load(ff)
         f.close()
 
         self.label = self.label.repeat(num_repeat)
         self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
         print(self.label[0, 0])
 
-        print('-----------------')
-        print(self.data_mel.shape)
-        print('-----------------')
-
         n = self.data_1.shape[0]
 
         pdata_1 = []
         pdata_2 = []
         pdata_3 = []
-        mdata = []
         for i in range(n):
             asd_1 = self.data_1[i]
             asd_2 = self.data_2[i]
             asd_3 = self.data_3[i]
-            asd_m = self.data_mel[i]
 
             for j in range(num_repeat):
                 aa_1 = asd_1[j * si_3 : (j + 1) * si_3]
                 aa_2 = asd_2[j * si_2 : (j + 1) * si_2]
                 aa_3 = asd_3[j * si_1 : (j + 1) * si_1]
-                aa_m = asd_m[j * si_2 : (j + 1) * si_2]
                 
                 pdata_1.append(aa_1)
                 pdata_2.append(aa_2)
                 pdata_3.append(aa_3)
-                mdata.append(aa_m)
 
             #time.sleep(30)
 
         self.data_1 = np.array(pdata_1)
         self.data_2 = np.array(pdata_2)
         self.data_3 = np.array(pdata_3)
-        self.data_mel = np.array(mdata)
 
         print(self.data_1.shape)
         print(self.data_2.shape)
         print(self.data_3.shape)
-        print(self.data_mel.shape)
         print(self.label.shape)
-        print('----------------')
 
     def learn(self):
         tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph', histogram_freq=0, write_graph=True, write_images=True)
