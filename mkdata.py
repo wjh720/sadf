@@ -231,13 +231,16 @@ def prepare_rhythm():
             y, sr=soundfile.read(item)
             y = np.mean(y.T, axis=0)
 
-            rhythm = librosa.feature.tempogram(y=y, sr=sr)
+            rhythm = librosa.feature.tempogram(y=y, sr=sr, win_length = 128) # 862, 384
             print(rhythm.shape)
 
+            rhy.append(rhythm.T)
 
             if (num % 100 == 0):
                 print(num)
             num = num + 1
+
+        rhy = np.array(rhy)
 
         f_4 = file('data_rhythm.npy', 'w')
         np.save(f_4, rhy)
