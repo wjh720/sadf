@@ -183,8 +183,8 @@ class Learner():
         K_n = 5
         K_11 = 4
         K_1 = 2
-        K_2 = 1
-        K_3 = 1
+        K_2 = 2
+        K_3 = 2
 
         def lam(X):
             print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
@@ -231,7 +231,7 @@ class Learner():
         conv_3_1 = Conv_3_1(mfcc_3_r)
         conv_3_2_a = Conv_3_2(conv_3_1)
         conv_3_2 = Add()([conv_3_2_a, conv_3_1])
-        
+
         conv_1_d = BatchNormalization()(conv_1_2)
         conv_2_d = BatchNormalization()(conv_2_2)
         conv_3_d = BatchNormalization()(conv_3_2)
@@ -367,9 +367,9 @@ class Learner():
         conv_3_8_a = Conv_3_8(conv_3_7)
         conv_3_8 = Add()([conv_3_8_a, conv_3_7])
 
-        lam_1 = Lambda(lam, output_shape=(32, 128))(conv_1_8)
-        lam_2 = Lambda(lam, output_shape=(32, 128))(conv_2_8)
-        lam_3 = Lambda(lam, output_shape=(32, 128))(conv_3_8)
+        lam_1 = Lambda(lam, output_shape=(8, 128))(conv_1_8)
+        lam_2 = Lambda(lam, output_shape=(8, 128))(conv_2_8)
+        lam_3 = Lambda(lam, output_shape=(8, 128))(conv_3_8)
         drop_1 = Dropout(0.3)(lam_1)
         drop_2 = Dropout(0.3)(lam_2)
         drop_3 = Dropout(0.3)(lam_3)
