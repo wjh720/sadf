@@ -266,6 +266,7 @@ def prepare_mfcc_1w():
             y = np.mean(y.T, axis=0)
 
             asd = librosa.feature.rmse(y=y)
+            print(asd.shape)
 
             w1.append(asd.T)
 
