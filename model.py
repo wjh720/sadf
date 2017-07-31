@@ -153,7 +153,7 @@ class Learner():
         print(self.data_1.shape)
         print(self.data_2.shape)
         print(self.data_3.shape)
-        print(self.data_4.shape)
+        print(self.data_1w.shape)
         print(self.data_mel.shape)
         print(self.label.shape)
         print('----------------')
