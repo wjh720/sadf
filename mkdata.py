@@ -248,7 +248,44 @@ def prepare_rhythm():
 
         print(' Data End ')
 
+def prepare_mfcc_1w():
+    meta_path = path + 'meta.txt'
+    file_list = []
+
+    with open(meta_path, 'r') as ff:
+        for line in ff:
+            parts = line.split('\t')
+            file_list.append(path + parts[0])
+
+    if (overwrite):
+        w1 = []
+        num = 0
+        for item in file_list:
+            
+            y, sr=soundfile.read(item)
+            y = np.mean(y.T, axis=0)
+
+            asd = np.abs(librosa.stft(y, n_fft = (8192 * 2))) ** 2
+            
+            S_3 = librosa.feature.melspectrogram(S = asd)
+            S_3 = librosa.feature.mfcc(S=librosa.power_to_db(S_3), n_mfcc = 64)
+
+            w1.append(S_3.T)
+
+            if (num % 100 == 0):
+                print(num)
+            num = num + 1
+
+        w1 = np.array(w1)
+
+        f_4 = file('data_mfcc_1w.npy', 'w')
+        np.save(f_4, w1)
+        f_4.close()
+
+        print(' Data End ')
+
 #prepare_mfcc()
 #prepare_mel()
 #prepare_others()
-prepare_rhythm()
+#prepare_rhythm()
+prepare_mfcc_1w()
