@@ -151,7 +151,7 @@ class Learner():
 
     def learn(self):
         tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph', histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/', save_best_only=True, period = 10, \
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/test', save_best_only=True, period = 10, \
                         verbose = 1,save_weights_only = True)
         
         print(' Begin fitting ')
