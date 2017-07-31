@@ -274,6 +274,7 @@ def prepare_mfcc_1w():
             num = num + 1
 
         w1 = np.array(w1)
+        print(w1.shape)
 
         f_4 = file('data_rmse.npy', 'w')
         np.save(f_4, w1)
