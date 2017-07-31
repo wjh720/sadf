@@ -261,16 +261,13 @@ def prepare_mfcc_1w():
         w1 = []
         num = 0
         for item in file_list:
-            
+
             y, sr=soundfile.read(item)
             y = np.mean(y.T, axis=0)
 
-            asd = np.abs(librosa.stft(y, n_fft = (8192 * 2))) ** 2
-            
-            S_3 = librosa.feature.melspectrogram(S = asd)
-            S_3 = librosa.feature.mfcc(S=librosa.power_to_db(S_3), n_mfcc = 64)
+            asd = librosa.feature.rmse(y=y)
 
-            w1.append(S_3.T)
+            w1.append(asd.T)
 
             if (num % 100 == 0):
                 print(num)
@@ -278,7 +275,7 @@ def prepare_mfcc_1w():
 
         w1 = np.array(w1)
 
-        f_4 = file('data_mfcc_1w.npy', 'w')
+        f_4 = file('data_rmse.npy', 'w')
         np.save(f_4, w1)
         f_4.close()
 
