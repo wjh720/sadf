@@ -28,6 +28,7 @@ import keras
 num_repeat = 13
 num_asd = 25
 num_classes = 15
+si_0 = 8
 si_1 = 16
 si_2 = 64
 si_3 = 256
@@ -97,11 +98,13 @@ class Learner():
         f_1 = file('data_mfcc_1024.npy', 'r')
         f_2 = file('data_mfcc_2048.npy', 'r')
         f_3 = file('data_mfcc_4096.npy', 'r')
+        f_4 = file('data_mfcc_1w.npy', 'r')
         ff = file('data.npy', 'r')
         self.data_1 = np.load(f_1)
         self.data_2 = np.load(f_2)
         self.data_3 = np.load(f_3)
         self.data_mel = np.load(ff)
+        self.data_1w = np.load(f_4)
         f.close()
 
         self.label = self.label.repeat(num_repeat)
@@ -117,22 +120,26 @@ class Learner():
         pdata_1 = []
         pdata_2 = []
         pdata_3 = []
+        pdata_4 = []
         mdata = []
         for i in range(n):
             asd_1 = self.data_1[i]
             asd_2 = self.data_2[i]
             asd_3 = self.data_3[i]
+            asd_4 = self.data_1w[i]
             asd_m = self.data_mel[i]
 
             for j in range(num_repeat):
                 aa_1 = asd_1[j * si_3 : (j + 1) * si_3]
                 aa_2 = asd_2[j * si_2 : (j + 1) * si_2]
                 aa_3 = asd_3[j * si_1 : (j + 1) * si_1]
+                aa_4 = asd_4[j * si_0 : (j + 1) * si_0]
                 aa_m = asd_m[j * si_2 : (j + 1) * si_2]
                 
                 pdata_1.append(aa_1)
                 pdata_2.append(aa_2)
                 pdata_3.append(aa_3)
+                pdata_4.append(aa_4)
                 mdata.append(aa_m)
 
             #time.sleep(30)
@@ -140,11 +147,13 @@ class Learner():
         self.data_1 = np.array(pdata_1)
         self.data_2 = np.array(pdata_2)
         self.data_3 = np.array(pdata_3)
+        self.data_1w = np.array(pdata_4)
         self.data_mel = np.array(mdata)
 
         print(self.data_1.shape)
         print(self.data_2.shape)
         print(self.data_3.shape)
+        print(self.data_4.shape)
         print(self.data_mel.shape)
         print(self.label.shape)
         print('----------------')
@@ -161,7 +170,8 @@ class Learner():
                 'data_4096' : self.data_3,  # 16, 64
                 'data_cqt' : self.data_cqt, # 64, 64
                 #'data_mel' : self.data_mel  # 64, 128
-                'data_2048' : self.data_2
+                #'data_2048' : self.data_2
+                'data_1w' : self.data_1w
             },
             {
                 'out_1' : self.label,
@@ -183,8 +193,8 @@ class Learner():
         K_n = 5
         K_11 = 4
         K_1 = 2
-        K_2 = 1
-        K_3 = 1
+        K_2 = 2
+        K_3 = 2
 
         def lam(X):
             print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
@@ -195,11 +205,11 @@ class Learner():
 
         mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_4096')
         mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_cqt')
-        mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
+        mfcc_3 = Input(shape = (si_0, 64, ), dtype = 'float32', name = 'data_1w')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
         mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
-        mfcc_3_r = Reshape((si_2, 64, 1))(mfcc_3)
+        mfcc_3_r = Reshape((si_0, 64, 1))(mfcc_3)
 
         # -----------------------------
         '''
@@ -236,19 +246,19 @@ class Learner():
 
         in1_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_d)
         in1_conv_1_2 = UpSampling2D(size = (4, 1))(in1_conv_1_1)
-        in1_conv_1_3 = in1_conv_1_2
+        in1_conv_1_3 = MaxPooling2D(pool_size = (2, 1))(in1_conv_1_1)
 
         in1_conv_2_2 = MaxPooling2D(pool_size = (K_1, K_1))(conv_2_d)
         in1_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_2_2)
-        in1_conv_2_3 = in1_conv_2_2
+        in1_conv_2_3 = MaxPooling2D(pool_size = (2, 1))(in1_conv_2_1)
 
         in1_conv_3_3 = MaxPooling2D(pool_size = (K_1, K_1))(conv_3_d)
-        in1_conv_3_2 = in1_conv_3_3
-        in1_conv_3_1 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_3_3)
+        in1_conv_3_1 = UpSampling2D(size = (2, 1))(in1_conv_3_3)
+        in1_conv_3_2 = UpSampling2D(size = (4, 1))(in1_conv_3_1)
 
         conv_1_in_1_d = Concatenate(axis = 3)([in1_conv_1_1, in1_conv_2_1, in1_conv_3_1])
-        conv_2_in_1_d = Concatenate(axis = 3)([in1_conv_2_2, in1_conv_1_2, in1_conv_3_2])
-        conv_3_in_1_d = Concatenate(axis = 3)([in1_conv_3_3, in1_conv_1_3, in1_conv_2_3])
+        conv_2_in_1_d = Concatenate(axis = 3)([in1_conv_1_2, in1_conv_2_2, in1_conv_3_2])
+        conv_3_in_1_d = Concatenate(axis = 3)([in1_conv_1_3, in1_conv_2_3, in1_conv_3_3])
 
         conv_1_in_1 = Dropout(0.1)(conv_1_in_1_d)
         conv_2_in_1 = Dropout(0.1)(conv_2_in_1_d)
@@ -275,21 +285,21 @@ class Learner():
 
         #-----------------------------------
 
-        in2_conv_1_1 = MaxPooling2D(pool_size = (K_2, K_2))(conv_1_dd)
+        in2_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_dd)
         in2_conv_1_2 = UpSampling2D(size = (4, 1))(in2_conv_1_1)
-        in2_conv_1_3 = in2_conv_1_2
+        in2_conv_1_3 = MaxPooling2D(pool_size = (2, 1))(in2_conv_1_1)
 
-        in2_conv_2_2 = MaxPooling2D(pool_size = (K_2, K_2))(conv_2_dd)
+        in2_conv_2_2 = MaxPooling2D(pool_size = (K_1, K_1))(conv_2_dd)
         in2_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_2_2)
-        in2_conv_2_3 = in2_conv_2_2
+        in2_conv_2_3 = MaxPooling2D(pool_size = (2, 1))(in2_conv_2_1)
 
-        in2_conv_3_3 = MaxPooling2D(pool_size = (K_2, K_2))(conv_3_dd)
-        in2_conv_3_2 = in2_conv_3_3
-        in2_conv_3_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_3_3)
+        in2_conv_3_3 = MaxPooling2D(pool_size = (K_1, K_1))(conv_3_dd)
+        in2_conv_3_1 = UpSampling2D(size = (2, 1))(in2_conv_3_3)
+        in2_conv_3_2 = UpSampling2D(size = (4, 1))(in2_conv_3_1)
 
         conv_1_in_2_d = Concatenate(axis = 3)([in2_conv_1_1, in2_conv_2_1, in2_conv_3_1])
-        conv_2_in_2_d = Concatenate(axis = 3)([in2_conv_2_2, in2_conv_1_2, in2_conv_3_2])
-        conv_3_in_2_d = Concatenate(axis = 3)([in2_conv_3_3, in2_conv_1_3, in2_conv_2_3])
+        conv_2_in_2_d = Concatenate(axis = 3)([in2_conv_1_2, in2_conv_2_2, in2_conv_3_2])
+        conv_3_in_2_d = Concatenate(axis = 3)([in2_conv_1_3, in2_conv_2_3, in2_conv_3_3])
 
         conv_1_in_2 = Dropout(0.15)(conv_1_in_2_d)
         conv_2_in_2 = Dropout(0.15)(conv_2_in_2_d)
@@ -316,21 +326,21 @@ class Learner():
 
         #-----------------------------------
 
-        in3_conv_1_1 = MaxPooling2D(pool_size = (K_3, K_3))(conv_1_ddd)
+        in3_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_ddd)
         in3_conv_1_2 = UpSampling2D(size = (4, 1))(in3_conv_1_1)
-        in3_conv_1_3 = in3_conv_1_2
+        in3_conv_1_3 = MaxPooling2D(pool_size = (2, 1))(in3_conv_1_1)
 
-        in3_conv_2_2 = MaxPooling2D(pool_size = (K_3, K_3))(conv_2_ddd)
+        in3_conv_2_2 = MaxPooling2D(pool_size = (K_1, K_1))(conv_2_ddd)
         in3_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_2_2)
-        in3_conv_2_3 = in3_conv_2_2
+        in3_conv_2_3 = MaxPooling2D(pool_size = (2, 1))(in3_conv_2_1)
 
-        in3_conv_3_3 = MaxPooling2D(pool_size = (K_3, K_3))(conv_3_ddd)
-        in3_conv_3_2 = in3_conv_3_3
-        in3_conv_3_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_3_3)
+        in3_conv_3_3 = MaxPooling2D(pool_size = (K_1, K_1))(conv_3_ddd)
+        in3_conv_3_1 = UpSampling2D(size = (2, 1))(in3_conv_3_3)
+        in3_conv_3_2 = UpSampling2D(size = (4, 1))(in3_conv_3_1)
 
         conv_1_in_3_d = Concatenate(axis = 3)([in3_conv_1_1, in3_conv_2_1, in3_conv_3_1])
-        conv_2_in_3_d = Concatenate(axis = 3)([in3_conv_2_2, in3_conv_1_2, in3_conv_3_2])
-        conv_3_in_3_d = Concatenate(axis = 3)([in3_conv_3_3, in3_conv_1_3, in3_conv_2_3])
+        conv_2_in_3_d = Concatenate(axis = 3)([in3_conv_1_2, in3_conv_2_2, in3_conv_3_2])
+        conv_3_in_3_d = Concatenate(axis = 3)([in3_conv_1_3, in3_conv_2_3, in3_conv_3_3])
 
         conv_1_in_3 = Dropout(0.2)(conv_1_in_3_d)
         conv_2_in_3 = Dropout(0.2)(conv_2_in_3_d)
