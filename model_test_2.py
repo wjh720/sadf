@@ -169,7 +169,7 @@ class Learner():
                 'out_3' : self.label,
                 'out_4' : self.label
             },
-            batch_size = 128,
+            batch_size = 64,
             epochs = 10000,
             validation_split = 0.2,
             verbose = 2,
