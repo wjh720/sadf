@@ -347,12 +347,12 @@ class Learner():
         in3_conv_1_3 = in3_conv_1_2
         in3_conv_1_4 = in3_conv_1_2
 
-        in3_conv_2_2 = MaxPooling2D(pool_size = (2, K_2))(conv_2_ddd)
+        in3_conv_2_2 = MaxPooling2D(pool_size = (2, K_3))(conv_2_ddd)
         in3_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_2_2)
         in3_conv_2_3 = in3_conv_2_2
         in3_conv_2_4 = in3_conv_2_2
 
-        in3_conv_3_3 = MaxPooling2D(pool_size = (2, K_2))(conv_3_ddd)
+        in3_conv_3_3 = MaxPooling2D(pool_size = (2, K_3))(conv_3_ddd)
         in3_conv_3_2 = in3_conv_3_3
         in3_conv_3_4 = in3_conv_3_3
         in3_conv_3_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_3_3)
