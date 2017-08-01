@@ -150,8 +150,8 @@ class Learner():
         print('----------------')
 
     def learn(self):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test_2', histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/test_2', period = 5, verbose = 1,save_weights_only = True)
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test_3', histogram_freq=0, write_graph=True, write_images=True)
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/test_3', period = 5, verbose = 1,save_weights_only = True)
         
         print(' Begin fitting ')
 
