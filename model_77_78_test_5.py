@@ -76,9 +76,14 @@ class Learner():
                 aa_mfcc = asd_mfcc[j * num_time : (j + 1) * num_time]
                 aa_cqt = asd_cqt[j * num_time : (j + 1) * num_time]
                 aa_ttz = asd_ttz[j * num_time : (j + 1) * num_time]
+
                 mfcc.append(aa_mfcc)
                 cqt.append(aa_cqt)
                 ttz.append(aa_ttz)
+                
+                mfcc.append(aa_mfcc[::-1])
+                cqt.append(aa_cqt[::-1])
+                ttz.append(aa_ttz[::-1])
 
         self.data_mfcc = np.array(mfcc)
         self.data_cqt = np.array(cqt)
@@ -134,6 +139,11 @@ class Learner():
                 pdata_2.append(aa_2)
                 pdata_3.append(aa_3)
                 mdata.append(aa_m)
+
+                pdata_1.append(aa_1[::-1])
+                pdata_2.append(aa_2[::-1])
+                pdata_3.append(aa_3[::-1])
+                mdata.append(aa_m[::-1])
 
             #time.sleep(30)
 
