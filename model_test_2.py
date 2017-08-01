@@ -161,7 +161,7 @@ class Learner():
                 'data_cqt' : self.data_cqt, # 64, 64
                 #'data_mel' : self.data_mel  # 64, 128
                 'data_2048' : self.data_2,
-                'data_ttz' : self.data_ttz
+                'data_ttz' : self.data_1
             },
             {
                 'out_1' : self.label,
@@ -169,7 +169,7 @@ class Learner():
                 'out_3' : self.label,
                 'out_4' : self.label
             },
-            batch_size = 64,
+            batch_size = 128,
             epochs = 10000,
             validation_split = 0.2,
             verbose = 2,
@@ -184,7 +184,7 @@ class Learner():
         K_n = 7
         K_11 = 4
         K_1 = 2
-        K_2 = 5
+        K_2 = 2
         K_3 = 2
 
         def lam(X):
@@ -197,12 +197,12 @@ class Learner():
         mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_4096')
         mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_cqt')
         mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
-        ttz = Input(shape = (si_2, 6, ), dtype = 'float32', name = 'data_ttz')
+        mfcc_4 = Input(shape = (si_3, 64, ), dtype = 'float32', name = 'data_ttz')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
         mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
         mfcc_3_r = Reshape((si_2, 64, 1))(mfcc_3)
-        ttz_r = Reshape((si_2, 6, 1))(ttz)
+        mfcc_4_r = Reshape((si_3, 64, 1))(mfcc_4)
         
         # -----------------------------
 
@@ -213,6 +213,8 @@ class Learner():
         Conv_2_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
         Conv_3_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
         Conv_3_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_4_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_4_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
 
         conv_1_1 = Conv_1_1(mfcc_1_r)
         conv_1_2 = Conv_1_2(conv_1_1)
@@ -220,31 +222,45 @@ class Learner():
         conv_2_2 = Conv_2_2(conv_2_1)
         conv_3_1 = Conv_3_1(mfcc_3_r)
         conv_3_2 = Conv_3_2(conv_3_1)
+        conv_4_1 = Conv_4_1(mfcc_4_r)
+        conv_4_2 = Conv_4_2(conv_4_1)
+
         conv_1_d = BatchNormalization()(conv_1_2)
         conv_2_d = BatchNormalization()(conv_2_2)
         conv_3_d = BatchNormalization()(conv_3_2)
+        conv_4_d = BatchNormalization()(conv_4_2)
 
         #-----------------------------------
 
         in1_conv_1_1 = MaxPooling2D(pool_size = (2, K_1))(conv_1_d)
         in1_conv_1_2 = UpSampling2D(size = (4, 1))(in1_conv_1_1)
         in1_conv_1_3 = in1_conv_1_2
+        in1_conv_1_4 = UpSampling2D(size = (4, 1))(in1_conv_1_2)
 
         in1_conv_2_2 = MaxPooling2D(pool_size = (2, K_1))(conv_2_d)
         in1_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_2_2)
         in1_conv_2_3 = in1_conv_2_2
+        in1_conv_2_4 = UpSampling2D(size = (4, 1))(in1_conv_2_2)
 
         in1_conv_3_3 = MaxPooling2D(pool_size = (2, K_1))(conv_3_d)
         in1_conv_3_2 = in1_conv_3_3
+        in1_conv_3_4 = UpSampling2D(size = (4, 1))(in1_conv_3_3)
         in1_conv_3_1 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_3_3)
 
-        conv_1_in_1_d = Concatenate(axis = 3)([in1_conv_1_1, in1_conv_2_1, in1_conv_3_1])
-        conv_2_in_1_d = Concatenate(axis = 3)([in1_conv_1_2, in1_conv_2_2, in1_conv_3_2])
-        conv_3_in_1_d = Concatenate(axis = 3)([in1_conv_1_3, in1_conv_2_3, in1_conv_3_3])
+        in1_conv_4_4 = MaxPooling2D(pool_size = (2, K_1))(conv_4_d)
+        in1_conv_4_3 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_4_4)
+        in1_conv_4_2 = in1_conv_4_3
+        in1_conv_4_1 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_4_3)
+
+        conv_1_in_1_d = Concatenate(axis = 3)([in1_conv_1_1, in1_conv_2_1, in1_conv_3_1, in1_conv_4_1])
+        conv_2_in_1_d = Concatenate(axis = 3)([in1_conv_1_2, in1_conv_2_2, in1_conv_3_2, in1_conv_4_2])
+        conv_3_in_1_d = Concatenate(axis = 3)([in1_conv_1_3, in1_conv_2_3, in1_conv_3_3, in1_conv_4_3])
+        conv_4_in_1_d = Concatenate(axis = 3)([in1_conv_1_4, in1_conv_2_4, in1_conv_3_4, in1_conv_4_4])
 
         conv_1_in_1 = Dropout(0.1)(conv_1_in_1_d)
         conv_2_in_1 = Dropout(0.1)(conv_2_in_1_d)
         conv_3_in_1 = Dropout(0.1)(conv_3_in_1_d)
+        conv_4_in_1 = Dropout(0.1)(conv_4_in_1_d)
 
         #-----------------------------------
 
@@ -254,6 +270,8 @@ class Learner():
         Conv_2_4 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
         Conv_3_3 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
         Conv_3_4 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_4_3 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_4_4 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
 
         conv_1_3 = Conv_1_3(conv_1_in_1)
         conv_1_4 = Conv_1_4(conv_1_3)
@@ -261,50 +279,35 @@ class Learner():
         conv_2_4 = Conv_2_4(conv_2_3)
         conv_3_3 = Conv_3_3(conv_3_in_1)
         conv_3_4 = Conv_3_4(conv_3_3)
+        conv_4_3 = Conv_4_3(conv_4_in_1)
+        conv_4_4 = Conv_4_4(conv_4_3)
+
         conv_1_dd = BatchNormalization()(conv_1_4)
         conv_2_dd = BatchNormalization()(conv_2_4)
         conv_3_dd = BatchNormalization()(conv_3_4)
+        conv_4_dd = BatchNormalization()(conv_4_4)
 
-        #-----------------------------------
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        Conv_4_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_4_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_4_3 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_4_4 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-
-        conv_4_1 = Conv_4_1(ttz_r)
-        conv_4_2 = Conv_4_2(conv_4_1)
-        conv_4_1_p = MaxPooling2D(pool_size = (2, 1))(conv_4_2)
-        conv_4_1_d = Dropout(0.1)(conv_4_1_p)
-
-        conv_4_3 = Conv_4_3(conv_4_1_d)
-        conv_4_4 = Conv_4_4(conv_4_3)
-        conv_4_2_b = BatchNormalization()(conv_4_4)
-
-        in2_conv_4_4 = MaxPooling2D(pool_size = (2, 1))(conv_4_2_b)
-        in2_conv_4_3 = in2_conv_4_4
-        in2_conv_4_2 = in2_conv_4_4
-        in2_conv_4_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_4_4)
-
-
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         #-----------------------------------
 
         in2_conv_1_1 = MaxPooling2D(pool_size = (2, K_2))(conv_1_dd)
         in2_conv_1_2 = UpSampling2D(size = (4, 1))(in2_conv_1_1)
         in2_conv_1_3 = in2_conv_1_2
-        in2_conv_1_4 = in2_conv_1_2
+        in2_conv_1_4 = UpSampling2D(size = (4, 1))(in2_conv_1_2)
 
         in2_conv_2_2 = MaxPooling2D(pool_size = (2, K_2))(conv_2_dd)
         in2_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_2_2)
         in2_conv_2_3 = in2_conv_2_2
-        in2_conv_2_4 = in2_conv_2_2
+        in2_conv_2_4 = UpSampling2D(size = (4, 1))(in2_conv_2_2)
 
         in2_conv_3_3 = MaxPooling2D(pool_size = (2, K_2))(conv_3_dd)
         in2_conv_3_2 = in2_conv_3_3
-        in2_conv_3_4 = in2_conv_3_3
+        in2_conv_3_4 = UpSampling2D(size = (4, 1))(in2_conv_3_3)
         in2_conv_3_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_3_3)
+
+        in2_conv_4_4 = MaxPooling2D(pool_size = (2, K_2))(conv_4_dd)
+        in2_conv_4_3 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_4_4)
+        in2_conv_4_2 = in2_conv_4_3
+        in2_conv_4_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_4_3)
 
         conv_1_in_2_d = Concatenate(axis = 3)([in2_conv_1_1, in2_conv_2_1, in2_conv_3_1, in2_conv_4_1])
         conv_2_in_2_d = Concatenate(axis = 3)([in2_conv_1_2, in2_conv_2_2, in2_conv_3_2, in2_conv_4_2])
@@ -335,6 +338,7 @@ class Learner():
         conv_3_6 = Conv_3_6(conv_3_5)
         conv_4_5 = Conv_4_5(conv_4_in_2)
         conv_4_6 = Conv_4_6(conv_4_5)
+
         conv_1_ddd = BatchNormalization()(conv_1_6)
         conv_2_ddd = BatchNormalization()(conv_2_6)
         conv_3_ddd = BatchNormalization()(conv_3_6)
@@ -345,22 +349,22 @@ class Learner():
         in3_conv_1_1 = MaxPooling2D(pool_size = (2, K_3))(conv_1_ddd)
         in3_conv_1_2 = UpSampling2D(size = (4, 1))(in3_conv_1_1)
         in3_conv_1_3 = in3_conv_1_2
-        in3_conv_1_4 = in3_conv_1_2
+        in3_conv_1_4 = UpSampling2D(size = (4, 1))(in3_conv_1_2)
 
         in3_conv_2_2 = MaxPooling2D(pool_size = (2, K_3))(conv_2_ddd)
         in3_conv_2_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_2_2)
         in3_conv_2_3 = in3_conv_2_2
-        in3_conv_2_4 = in3_conv_2_2
+        in3_conv_2_4 = UpSampling2D(size = (4, 1))(in3_conv_2_2)
 
         in3_conv_3_3 = MaxPooling2D(pool_size = (2, K_3))(conv_3_ddd)
         in3_conv_3_2 = in3_conv_3_3
-        in3_conv_3_4 = in3_conv_3_3
+        in3_conv_3_4 = UpSampling2D(size = (4, 1))(in3_conv_3_3)
         in3_conv_3_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_3_3)
 
         in3_conv_4_4 = MaxPooling2D(pool_size = (2, K_3))(conv_4_ddd)
-        in3_conv_4_3 = in3_conv_4_4
-        in3_conv_4_2 = in3_conv_4_4
-        in3_conv_4_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_4_4)
+        in3_conv_4_3 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_4_4)
+        in3_conv_4_2 = in3_conv_4_3
+        in3_conv_4_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_4_3)
 
         conv_1_in_3_d = Concatenate(axis = 3)([in3_conv_1_1, in3_conv_2_1, in3_conv_3_1, in3_conv_4_1])
         conv_2_in_3_d = Concatenate(axis = 3)([in3_conv_1_2, in3_conv_2_2, in3_conv_3_2, in3_conv_4_2])
@@ -392,10 +396,10 @@ class Learner():
         conv_4_7 = Conv_4_7(conv_4_in_3)
         conv_4_8 = Conv_4_8(conv_4_7)
 
-        lam_1 = Lambda(lam, output_shape=(3, 64))(conv_1_8)
-        lam_2 = Lambda(lam, output_shape=(3, 64))(conv_2_8)
-        lam_3 = Lambda(lam, output_shape=(3, 64))(conv_3_8)
-        lam_4 = Lambda(lam, output_shape=(3, 64))(conv_4_8)
+        lam_1 = Lambda(lam, output_shape=(8, 64))(conv_1_8)
+        lam_2 = Lambda(lam, output_shape=(8, 64))(conv_2_8)
+        lam_3 = Lambda(lam, output_shape=(8, 64))(conv_3_8)
+        lam_4 = Lambda(lam, output_shape=(8, 64))(conv_4_8)
         drop_1 = Dropout(0.3)(lam_1)
         drop_2 = Dropout(0.3)(lam_2)
         drop_3 = Dropout(0.3)(lam_3)
