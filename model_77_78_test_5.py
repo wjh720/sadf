@@ -42,7 +42,7 @@ class Learner():
         self.label = np.load(f)
         f.close()
 
-        self.label = self.label.repeat(num_repeat)
+        self.label = self.label.repeat(num_repeat * 2)
         self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
         print(self.label[0, 0])
 
@@ -80,7 +80,7 @@ class Learner():
                 mfcc.append(aa_mfcc)
                 cqt.append(aa_cqt)
                 ttz.append(aa_ttz)
-                
+
                 mfcc.append(aa_mfcc[::-1])
                 cqt.append(aa_cqt[::-1])
                 ttz.append(aa_ttz[::-1])
@@ -109,7 +109,7 @@ class Learner():
         self.data_mel = np.load(ff)
         f.close()
 
-        self.label = self.label.repeat(num_repeat)
+        self.label = self.label.repeat(num_repeat * 2)
         self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
         print(self.label[0, 0])
 
