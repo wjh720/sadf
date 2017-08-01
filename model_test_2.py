@@ -150,8 +150,8 @@ class Learner():
         print('----------------')
 
     def learn(self):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test_3', histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/test_3', period = 5, verbose = 1,save_weights_only = True)
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test_4', histogram_freq=0, write_graph=True, write_images=True)
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/test_4', period = 5, verbose = 1,save_weights_only = True)
         
         print(' Begin fitting ')
 
@@ -181,7 +181,7 @@ class Learner():
 
     def create_mfcc(self):
 
-        K_n = 7
+        K_n = 5
         K_11 = 4
         K_1 = 2
         K_2 = 2
@@ -252,10 +252,10 @@ class Learner():
         in1_conv_4_2 = in1_conv_4_3
         in1_conv_4_1 = MaxPooling2D(pool_size = (K_11, 1))(in1_conv_4_3)
 
-        conv_1_in_1_d = Concatenate(axis = 3)([in1_conv_1_1, in1_conv_2_1, in1_conv_3_1, in1_conv_4_1])
+        conv_1_in_1_d = Concatenate(axis = 3)([in1_conv_1_1, in1_conv_2_1, in1_conv_3_1])
         conv_2_in_1_d = Concatenate(axis = 3)([in1_conv_1_2, in1_conv_2_2, in1_conv_3_2, in1_conv_4_2])
         conv_3_in_1_d = Concatenate(axis = 3)([in1_conv_1_3, in1_conv_2_3, in1_conv_3_3, in1_conv_4_3])
-        conv_4_in_1_d = Concatenate(axis = 3)([in1_conv_1_4, in1_conv_2_4, in1_conv_3_4, in1_conv_4_4])
+        conv_4_in_1_d = Concatenate(axis = 3)([in1_conv_2_4, in1_conv_3_4, in1_conv_4_4])
 
         conv_1_in_1 = Dropout(0.1)(conv_1_in_1_d)
         conv_2_in_1 = Dropout(0.1)(conv_2_in_1_d)
@@ -309,10 +309,10 @@ class Learner():
         in2_conv_4_2 = in2_conv_4_3
         in2_conv_4_1 = MaxPooling2D(pool_size = (K_11, 1))(in2_conv_4_3)
 
-        conv_1_in_2_d = Concatenate(axis = 3)([in2_conv_1_1, in2_conv_2_1, in2_conv_3_1, in2_conv_4_1])
+        conv_1_in_2_d = Concatenate(axis = 3)([in2_conv_1_1, in2_conv_2_1, in2_conv_3_1])
         conv_2_in_2_d = Concatenate(axis = 3)([in2_conv_1_2, in2_conv_2_2, in2_conv_3_2, in2_conv_4_2])
         conv_3_in_2_d = Concatenate(axis = 3)([in2_conv_1_3, in2_conv_2_3, in2_conv_3_3, in2_conv_4_3])
-        conv_4_in_2_d = Concatenate(axis = 3)([in2_conv_1_4, in2_conv_2_4, in2_conv_3_4, in2_conv_4_4])
+        conv_4_in_2_d = Concatenate(axis = 3)([in2_conv_2_4, in2_conv_3_4, in2_conv_4_4])
 
         conv_1_in_2 = Dropout(0.15)(conv_1_in_2_d)
         conv_2_in_2 = Dropout(0.15)(conv_2_in_2_d)
@@ -366,10 +366,10 @@ class Learner():
         in3_conv_4_2 = in3_conv_4_3
         in3_conv_4_1 = MaxPooling2D(pool_size = (K_11, 1))(in3_conv_4_3)
 
-        conv_1_in_3_d = Concatenate(axis = 3)([in3_conv_1_1, in3_conv_2_1, in3_conv_3_1, in3_conv_4_1])
+        conv_1_in_3_d = Concatenate(axis = 3)([in3_conv_1_1, in3_conv_2_1, in3_conv_3_1])
         conv_2_in_3_d = Concatenate(axis = 3)([in3_conv_1_2, in3_conv_2_2, in3_conv_3_2, in3_conv_4_2])
         conv_3_in_3_d = Concatenate(axis = 3)([in3_conv_1_3, in3_conv_2_3, in3_conv_3_3, in3_conv_4_3])
-        conv_4_in_3_d = Concatenate(axis = 3)([in3_conv_1_4, in3_conv_2_4, in3_conv_3_4, in3_conv_4_4])
+        conv_4_in_3_d = Concatenate(axis = 3)([in3_conv_2_4, in3_conv_3_4, in3_conv_4_4])
 
         conv_1_in_3 = Dropout(0.2)(conv_1_in_3_d)
         conv_2_in_3 = Dropout(0.2)(conv_2_in_3_d)
