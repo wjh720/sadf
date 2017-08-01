@@ -428,7 +428,7 @@ class Learner():
         den_4_1 = Dense_4_1(fla_4)
         den_4_2 = Dense_4_2(den_4_1)
 
-        self.model = Model(inputs = [mfcc_1, mfcc_2, mfcc_3, ttz], outputs = [den_1_2, den_2_2, den_3_2, den_4_2])
+        self.model = Model(inputs = [mfcc_1, mfcc_2, mfcc_3, mfcc_4], outputs = [den_1_2, den_2_2, den_3_2, den_4_2])
         self.model.compile(loss = {'out_1' : 'categorical_crossentropy', 'out_2' : 'categorical_crossentropy', \
                             'out_3' : 'categorical_crossentropy', 'out_4' : 'categorical_crossentropy'}, \
                             loss_weights = {'out_1' : 1., 'out_2' : 1., 'out_3' : 1., 'out_4' : 1.}, \
