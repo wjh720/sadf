@@ -150,7 +150,7 @@ class Learner():
         print('----------------')
 
     def learn(self):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test_1', histogram_freq=0, write_graph=True, write_images=True)
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_7778', histogram_freq=0, write_graph=True, write_images=True)
         checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights.{epoch:02d}-{val_loss:.2f}.hdf5', \
                         period = 1, verbose = 1,save_weights_only = True)
         
