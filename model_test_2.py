@@ -278,8 +278,8 @@ class Learner():
         conv_4_1_p = MaxPooling2D(pool_size = (2, 1))(conv_4_2)
         conv_4_1_d = Dropout(0.1)(conv_4_1_p)
 
-        conv_4_3 = Conv_4_1(conv_4_1_d)
-        conv_4_4 = Conv_4_2(conv_4_3)
+        conv_4_3 = Conv_4_3(conv_4_1_d)
+        conv_4_4 = Conv_4_4(conv_4_3)
         conv_4_2_b = BatchNormalization()(conv_4_4)
 
         in2_conv_4_4 = MaxPooling2D(pool_size = (2, 1))(conv_4_2_b)
