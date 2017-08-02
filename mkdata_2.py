@@ -14,6 +14,15 @@ Type = 'development'
 path = '../data/TUT-acoustic-scenes-2017-' + Type + '/'
 overwrite = True
 
+def Save(data, name, train):
+    f = file(name + 'train', 'w')
+    np.save(f, data[:train])
+    f.close()
+
+    f = file(name + 'valid', 'w')
+    np.save(f, data[train:])
+    f.close()
+
 def prepare_mfcc():
     meta_path = path + 'meta.txt'
     file_list = []
@@ -30,7 +39,7 @@ def prepare_mfcc():
 
     print('num_list : %d' % len(line_list))
 
-    num_valid = len(line_list) * 0.2
+    num_train = len(line_list) * 0.8
 
     print('num_valid : %d' % num_valid)
 
@@ -45,55 +54,48 @@ def prepare_mfcc():
 
     print(num_label)
 
-    if (overwrite):
-        data_1 = []
-        data_2 = []
-        data_3 = []
-        num = 0
-        for item in file_list:
-            #print(item)
-            y, sr=soundfile.read(item)
-            y = np.mean(y.T, axis=0)
+    label = np.array(label_list)
+    print(label.shape)
 
-            D_1 = np.abs(librosa.stft(y, n_fft = 512)) ** 2
-            D_2 = np.abs(librosa.stft(y, n_fft = 2048)) ** 2
-            D_3 = np.abs(librosa.stft(y, n_fft = 8192)) ** 2
-            
-            S_1 = librosa.feature.melspectrogram(S = D_1)
-            S_2 = librosa.feature.melspectrogram(S = D_2)
-            S_3 = librosa.feature.melspectrogram(S = D_3)
-            #print(S.shape)
+    Save(label, 'label', num_train)
+    data_2048 = []
+    data_8196 = []
+    data_cqt = []
+    num = 0
+    for item in file_list:
+        y, sr=soundfile.read(item)
+        y = np.mean(y.T, axis=0)
 
-            S_1 = librosa.feature.mfcc(S=librosa.power_to_db(S_1), n_mfcc = 64)
-            S_2 = librosa.feature.mfcc(S=librosa.power_to_db(S_2), n_mfcc = 64)
-            S_3 = librosa.feature.mfcc(S=librosa.power_to_db(S_3), n_mfcc = 64)
-            #print(S.shape)
-            #time.sleep(1000)
+        D_2 = np.abs(librosa.stft(y, n_fft = 2048)) ** 2
+        D_3 = np.abs(librosa.stft(y, n_fft = 8192)) ** 2
+        
+        S_2 = librosa.feature.melspectrogram(S = D_2)
+        S_3 = librosa.feature.melspectrogram(S = D_3)
 
-            data_1.append(S_1.T)
-            data_2.append(S_2.T)
-            data_3.append(S_3.T)
+        S_2 = librosa.feature.mfcc(S=librosa.power_to_db(S_2), n_mfcc = 64)
+        S_3 = librosa.feature.mfcc(S=librosa.power_to_db(S_3), n_mfcc = 64)
 
-            if (num % 100 == 0):
-                print(num)
-            num = num + 1
+        data_2048.append(S_2.T)
+        data_8196.append(S_3.T)
 
-        data_1 = np.array(data_1)
-        data_2 = np.array(data_2)
-        data_3 = np.array(data_3)
-        print(data_1.shape)
-        print(data_2.shape)
-        print(data_3.shape)
+        chroma_cq = librosa.feature.chroma_cqt(y=y, sr=sr, n_chroma = 64)
+        data_cqt.append(chroma_cq.T)
 
-        f_1 = file('data_mfcc_1024.npy', 'w')
-        f_2 = file('data_mfcc_2048.npy', 'w')
-        f_3 = file('data_mfcc_4096.npy', 'w')
-        np.save(f_1, data_1)
-        np.save(f_2, data_2)
-        np.save(f_3, data_3)
-        f_1.close()
-        f_2.close()
-        f_3.close()
-        print(' Data End ')
+        if (num % 100 == 0):
+            print(num)
+        num = num + 1
+
+    data_2048 = np.array(data_2048)
+    data_8196 = np.array(data_8196)
+    data_cqt = np.array(data_cqt)
+    print(data_2048.shape)
+    print(data_8196.shape)
+    print(data_cqt.shape)
+
+    Save(data_2048, 'data_2048', num_train)
+    Save(data_8196, 'data_8196', num_train)
+    Save(data_cqt, 'data_cqt', num_train)
+    
+    print(' Data End ')
 
 prepare_mfcc()
