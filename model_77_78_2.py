@@ -362,17 +362,20 @@ class Learner():
 
         def Calc(label, data):
             num = np.argmax(label, axis = 1)
-            #print(num)
 
             if (np.max(num) != np.min(num)):
                 print('calc error!')
 
             asd = np.argmax(data, axis = 1)
-            #print(asd)
-            #time.sleep(1)
 
             counts = np.bincount(asd)
             ans = np.argmax(counts)
+
+            if (ans != num[0]):
+                print(num)
+                print(asd[:50])
+                time.sleep(10)
+
             return float(ans == num[0])
 
         filename = '/data/tmpsrt1/log_new/ha_weights.09.hdf5'
