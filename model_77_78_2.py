@@ -42,8 +42,8 @@ class Learner():
         self.name_list = []
         for line in open(name):
             line = f.readline()
-            print(line)
-            time.sleep(10)
+            #print(line)
+            #time.sleep(10)
             self.name_list.append(line)
         f.close()
 
