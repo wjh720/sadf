@@ -458,8 +458,8 @@ class Learner():
     def work(self):
         self.prepare()
         self.create_mfcc()
-        #self.learn()
-        self.predict()
+        self.learn()
+        #self.predict()
 
 a = Learner()
 a.work()
