@@ -270,12 +270,12 @@ class Learner():
 
         #-----------------------------------
 
-        Conv_1_5 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_1_6 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_2_5 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_2_6 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_3_5 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_3_6 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_5 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_6 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_5 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_6 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_5 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_6 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
 
         conv_1_5 = Conv_1_5(conv_1_in_2)
         conv_1_6 = Conv_1_6(conv_1_5)
@@ -311,12 +311,12 @@ class Learner():
 
         #-----------------------------------
 
-        Conv_1_7 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_1_8 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_2_7 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_2_8 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_3_7 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_3_8 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_7 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_8 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_7 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_8 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_7 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_8 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
 
         conv_1_7 = Conv_1_7(conv_1_in_3)
         conv_1_8 = Conv_1_8(conv_1_7)
