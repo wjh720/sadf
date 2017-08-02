@@ -362,7 +362,6 @@ class Learner():
 
     def work(self):
         self.prepare()
-        self.prepare_3()
         self.create_mfcc()
         self.learn()
         #self.predict()
