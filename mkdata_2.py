@@ -93,7 +93,7 @@ def prepare_mfcc():
     print(data_cqt.shape)
 
     Save(data_2048, 'data_2048', num_train)
-    Save(data_8196, 'data_8196', num_train)
+    Save(data_8196, 'data_8192', num_train)
     Save(data_cqt, 'data_cqt', num_train)
     
     print(' Data End ')

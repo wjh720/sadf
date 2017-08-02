@@ -37,118 +37,102 @@ class Learner():
     def __init__(self):
         pass
 
-    def prepare(self):
-        f = file('label.npy', 'r')
-        self.label = np.load(f)
+    def prepare_label(data):
+        data = data.repeat(num_repeat)
+        data = np.eye(num_classes)[data]
+        print(data.shape)
+
+    def Load1(data, name):
+        f = file(name + 'train', 'r')
+        data.append(np.load(f))
         f.close()
 
-        f_cqt = file('data_cqt.npy', 'r')
-        f_2048 = file('data_mfcc_2048.npy', 'r')
-        f_8196 = file('data_mfcc_8196.npy', 'r')
-        
-        self.data_1 = np.load(f_1)
-        self.data_2 = np.load(f_2)
-        self.data_3 = np.load(f_3)
-        self.data_mel = np.load(ff)
+        f = file(name + 'valid', 'r')
+        data.append(np.load(f))
         f.close()
 
-        self.label = self.label.repeat(num_repeat * 2)
-        self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
-        print(self.label[0, 0])
-
-        
-        self.data_cqt = np.load(f_cqt)
-        f_cqt.close()
-
-        # -----------------------------
-
-        n = self.data_1.shape[0]
-
-        pdata_1 = []
-        pdata_2 = []
-        pdata_3 = []
-        mdata = []
-        mfcc = []
-        cqt = []
-        ttz = []
-        for i in range(n):
-            asd_1 = self.data_1[i]
-            asd_2 = self.data_2[i]
-            asd_3 = self.data_3[i]
-            asd_m = self.data_mel[i]
-            asd_mfcc = self.data_mfcc[i]
-            asd_cqt = self.data_cqt[i]
-            asd_ttz = self.data_ttz[i]
-
-            for j in range(num_repeat):
-                aa_1 = asd_1[j * si_3 : (j + 1) * si_3]
-                aa_2 = asd_2[j * si_2 : (j + 1) * si_2]
-                aa_3 = asd_3[j * si_1 : (j + 1) * si_1]
-                aa_m = asd_m[j * si_2 : (j + 1) * si_2]
-                aa_mfcc = asd_mfcc[j * num_time : (j + 1) * num_time]
-                aa_cqt = asd_cqt[j * num_time : (j + 1) * num_time]
-                aa_ttz = asd_ttz[j * num_time : (j + 1) * num_time]
-                
-                pdata_1.append(aa_1)
-                pdata_2.append(aa_2)
-                pdata_3.append(aa_3)
-                mdata.append(aa_m)
-
-                pdata_1.append(aa_1[::-1])
-                pdata_2.append(aa_2[::-1])
-                pdata_3.append(aa_3[::-1])
-                mdata.append(aa_m[::-1])
-
-                mfcc.append(aa_mfcc)
-                cqt.append(aa_cqt)
-                ttz.append(aa_ttz)
-
-                mfcc.append(aa_mfcc[::-1])
-                cqt.append(aa_cqt[::-1])
-                ttz.append(aa_ttz[::-1])
-
-            #time.sleep(30)
-
-        self.data_1 = np.array(pdata_1)
-        self.data_2 = np.array(pdata_2)
-        self.data_3 = np.array(pdata_3)
-        self.data_mel = np.array(mdata)
-        self.data_mfcc = np.array(mfcc)
-        self.data_cqt = np.array(cqt)
-        self.data_ttz = np.array(ttz)
-
-        print(self.data_1.shape)
-        print(self.data_2.shape)
-        print(self.data_3.shape)
-        print(self.data_mel.shape)
-        print(self.data_mfcc.shape)
-        print(self.data_cqt.shape)
-        print(self.data_ttz.shape)
-        print(self.label.shape)
+        print('----------------')
+        prepare_label(data[0])
+        prepare_label(data[1])
         print('----------------')
 
+    def prepare_data(data, length):
+        n = data.shape[0]
+        pdata = []
+
+        for i in range(n):
+            asd = data[i]
+            for j in range(num_repeat):
+                aa = asd[j * length : (j + 1) * length]
+                pdata.append(aa)
+                #$pdata.append(aa[::-1])
+        pdata = pdata.append(pdata)
+        print(pdata.shape)
+
+
+    def Load2(data, name, length):
+        f = file(name + 'train', 'r')
+        data.append(np.load(f))
+        f.close()
+
+        f = file(name + 'valid', 'r')
+        data.append(np.load(f))
+        f.close()
+
+        print('----------------')
+        prepare_data(data[0], length)
+        prepare_data(data[1], length)
+        print('----------------')
+
+    def prepare(self):
+        self.label = []
+        self.data_cqt = []
+        self.data_2048 = []
+        self.data_8192 = []
+
+        Load_1(self.label, 'label')
+        Load_2(self.data_cqt, 'data_cqt', si_2)
+        Load_2(self.data_2048, 'data_2048', si_2)
+        Load_2(self.data_8192, 'data_8192', si_1)
+
+
     def learn(self):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_77_2', histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/77_2_weights.{epoch:02d}-{val_loss:.2f}.hdf5', \
-                        period = 5, verbose = 1,save_weights_only = True)
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_new_ha', histogram_freq=0, write_graph=True, write_images=True)
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/ha_weights.{epoch:02d}.hdf5', \
+                        period = 5, verbose = 1, save_weights_only = True)
         
         print(' Begin fitting ')
 
+        self.x_data = {
+            'data_2048' : self.data_2048[0],
+            'data_cqt' : self.data_cqt[0],
+            'data_8192' : self.data_8192[0]
+        }
+        self.y_data = {
+            'out_1' : self.label[0],
+            'out_2' : self.label[0],
+            'out_3' : self.label[0]
+        }
+
+        self.valid_data = (
+            {
+                'data_2048' : self.data_2048[1],
+                'data_cqt' : self.data_cqt[1],
+                'data_8192' : self.data_8192[1]
+            }, \
+            {
+                'out_1' : self.label[1],
+                'out_2' : self.label[1],
+                'out_3' : self.label[1]
+            }
+        )
+
         self.model.fit(
-            {
-                'data_4096' : self.data_3,  # 16, 64
-                'data_cqt' : self.data_cqt, # 64, 64
-                #'data_mel' : self.data_mel  # 64, 128
-                'data_2048' : self.data_2
-            },
-            {
-                'out_1' : self.label,
-                'out_2' : self.label,
-                'out_3' : self.label
-            },
+            x = self.x_data,
+            y = self.y_data,
+            valid_data = self.valid_data
             batch_size = 64,
             epochs = 10000,
-            validation_split = 0.2,
             verbose = 2,
             shuffle = True,
             callbacks = [tbCallBack,checkpointer]
@@ -369,8 +353,8 @@ class Learner():
         self.prepare()
         self.prepare_3()
         self.create_mfcc()
-        #self.learn()
-        self.predict()
+        self.learn()
+        #self.predict()
 
 a = Learner()
 a.work()
