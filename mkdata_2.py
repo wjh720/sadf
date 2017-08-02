@@ -14,6 +14,11 @@ Type = 'development'
 path = '../data/TUT-acoustic-scenes-2017-' + Type + '/'
 overwrite = True
 
+def save_list(data, name):
+    f = open(name, 'w')
+    f.write(data)
+    f.close()
+
 def Save(data, name, train):
     f = file(name + 'train', 'w')
     np.save(f, data[:train])
@@ -51,6 +56,7 @@ def prepare_mfcc():
     print(num_name)
     #time.sleep(1000)
     random.shuffle(name_list)
+    save_list(name_list, 'name_list.txt')
 
     print('num_list : %d' % len(name_list))
 
