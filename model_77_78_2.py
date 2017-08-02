@@ -328,9 +328,9 @@ class Learner():
         conv_3_7 = Conv_3_7(conv_3_in_1)
         conv_3_8 = Conv_3_8(conv_3_7)
 
-        lam_1 = Lambda(lam, output_shape=(8, size))(conv_1_8)
-        lam_2 = Lambda(lam, output_shape=(8, size))(conv_2_8)
-        lam_3 = Lambda(lam, output_shape=(8, size))(conv_3_8)
+        lam_1 = Lambda(lam, output_shape=(32, size))(conv_1_8)
+        lam_2 = Lambda(lam, output_shape=(32, size))(conv_2_8)
+        lam_3 = Lambda(lam, output_shape=(32, size))(conv_3_8)
         drop_1 = Dropout(0.3)(lam_1)
         drop_2 = Dropout(0.3)(lam_2)
         drop_3 = Dropout(0.3)(lam_3)
