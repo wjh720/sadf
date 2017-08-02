@@ -37,6 +37,16 @@ class Learner():
     def __init__(self):
         pass
 
+    def Load_list(self, name):
+        f = open(name, 'r')
+        self.name_list = []
+        for line in open(name):
+            line = f.readline()
+            print(line)
+            time.sleep(10)
+            self.name_list.append(line)
+        f.close()
+
     def prepare_label(self, data):
         data = data.repeat(num_repeat)
         data = np.eye(num_classes)[data]
@@ -347,7 +357,17 @@ class Learner():
                             metrics = {'out_1' : 'accuracy', 'out_2' : 'accuracy', 'out_3' : 'accuracy'})
 
     def predict(self):
-        filename = '/data/tmpsrt1/log_new/ha_weights.04.hdf5'
+
+        def Calc(label, data):
+            num = np.argmax(label, axis = 1)
+            print(num)
+
+            asd = np.argmax(data, axis = 1)
+            print(asd)
+            time.sleep(100)
+            return 0.
+
+        filename = '/data/tmpsrt1/log_new/ha_weights.14.hdf5'
 
         self.model.load_weights(filename)
 
@@ -374,8 +394,37 @@ class Learner():
         data = output[0]
         label = self.valid_data[1]['out_1']
 
-        print(label[:10])
-        print(output[:10])
+        #print(label[:10])
+        #print(output[:10])
+
+        meta_path = path + 'meta.txt'
+
+        line_list = []
+        dict_name = {}
+        with open(meta_path, 'r') as ff:
+        for line in ff:
+            line_list.append(line)
+
+            if (name not in dict_name):
+                dict_name[name] = 0
+            dict_name[name] = dict_name[name] + 1
+
+        self.Load_list('name_list.txt')
+
+        num_list = 248
+        num_train_name = 198
+
+        Start = 0
+        ans = []
+        for i in (num_train_name, num_list):
+            name = self.name_list[i]
+            End = Start + dict_name[name]
+
+            asd = label[Start * num_repeat : End * num_repeat]
+            data_asd = data[Start * num_repeat : End * num_repeat]
+            ans.append(Calc(asd, data_asd))
+
+        print(np.mean(np.array(ans)))
 
 
     def work(self):
