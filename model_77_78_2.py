@@ -37,14 +37,14 @@ class Learner():
     def __init__(self):
         pass
 
-    
+    def prepare_label(self, data):
+        data = data.repeat(num_repeat)
+        data = np.eye(num_classes)[data]
+        print(data.shape)
+        return data
 
     def Load_1(self, data, name):
-
-        def prepare_label(data):
-            data = data.repeat(num_repeat)
-            data = np.eye(num_classes)[data]
-            return data
+        data = []
 
         f = file(name + 'train', 'r')
         data.append(np.load(f))
@@ -55,11 +55,11 @@ class Learner():
         f.close()
 
         print('----------------')
-        data[0] = prepare_label(data[0])
-        data[1] = prepare_label(data[1])
-        print(data[0].shape)
-        time.sleep(100)
+        data[0] = self.prepare_label(data[0])
+        data[1] = self.prepare_label(data[1])
         print('----------------')
+
+        return data
 
     def prepare_data(self, data, length):
         n = data.shape[0]
@@ -73,9 +73,11 @@ class Learner():
                 #$pdata.append(aa[::-1])
         pdata = pdata.append(pdata)
         print(pdata.shape)
-
+        return pdata
 
     def Load_2(self, data, name, length):
+        data = []
+
         f = file(name + 'train', 'r')
         data.append(np.load(f))
         f.close()
@@ -85,20 +87,24 @@ class Learner():
         f.close()
 
         print('----------------')
-        self.prepare_data(data[0], length)
-        self.prepare_data(data[1], length)
+        data[0] = self.prepare_data(data[0], length)
+        data[1] = self.prepare_data(data[1], length)
         print('----------------')
 
-    def prepare(self):
-        self.label = []
-        self.data_cqt = []
-        self.data_2048 = []
-        self.data_8192 = []
+        return data
 
-        self.Load_1(self.label, 'label')
-        self.Load_2(self.data_cqt, 'data_cqt', si_2)
-        self.Load_2(self.data_2048, 'data_2048', si_2)
-        self.Load_2(self.data_8192, 'data_8192', si_1)
+    def prepare(self):
+        self.label = self.Load_1('label')
+        self.data_cqt = self.Load_2('data_cqt', si_2)
+        self.data_2048 = self.Load_2('data_2048', si_2)
+        self.data_8192 = self.Load_2('data_8192', si_1)
+
+        print('----------------')
+        print(self.label.shape)
+        print(self.data_cqt.shape)
+        print(self.data_2048.shape)
+        print(self.data_8192.shape)
+        print('----------------')
 
 
     def learn(self):
