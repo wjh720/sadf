@@ -166,7 +166,7 @@ class Learner():
             print(X.shape)
             return X
 
-        mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_4096')
+        mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_8192')
         mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_cqt')
         mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
 
