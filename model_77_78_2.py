@@ -321,11 +321,11 @@ class Learner():
         Conv_3_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
         Conv_3_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
 
-        conv_1_7 = Conv_1_7(conv_1_in_3)
+        conv_1_7 = Conv_1_7(conv_1_in_1)
         conv_1_8 = Conv_1_8(conv_1_7)
-        conv_2_7 = Conv_2_7(conv_2_in_3)
+        conv_2_7 = Conv_2_7(conv_2_in_1)
         conv_2_8 = Conv_2_8(conv_2_7)
-        conv_3_7 = Conv_3_7(conv_3_in_3)
+        conv_3_7 = Conv_3_7(conv_3_in_1)
         conv_3_8 = Conv_3_8(conv_3_7)
 
         lam_1 = Lambda(lam, output_shape=(8, size))(conv_1_8)
