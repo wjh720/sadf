@@ -352,13 +352,18 @@ class Learner():
         self.model.load_weights(filename)
 
         output = self.model.predict(       
-                x = self.data,
-                batch_size = 256,
+                x = self.valid_data[0],
+                batch_size = 64,
                 verbose = 2
             )
         print("!!!!!!!!!!!!!!!!!!!!")
-        print(self.label[:10])
+
+        data = output['out_1']
+        label = self.valid_data[1]['out_1']
+
+        print(label[:10])
         print(output[:10])
+        
 
     def work(self):
         self.prepare()
