@@ -42,7 +42,7 @@ class Learner():
         data = np.eye(num_classes)[data]
         print(data.shape)
 
-    def Load1(data, name):
+    def Load_1(data, name):
         f = file(name + 'train', 'r')
         data.append(np.load(f))
         f.close()
@@ -70,7 +70,7 @@ class Learner():
         print(pdata.shape)
 
 
-    def Load2(data, name, length):
+    def Load_2(data, name, length):
         f = file(name + 'train', 'r')
         data.append(np.load(f))
         f.close()
