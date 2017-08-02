@@ -71,7 +71,7 @@ class Learner():
                 aa = asd[j * length : (j + 1) * length]
                 pdata.append(aa)
                 #$pdata.append(aa[::-1])
-        pdata = pdata.append(pdata)
+        pdata = pdata.array(pdata)
         print(pdata.shape)
         return pdata
 
@@ -100,10 +100,10 @@ class Learner():
         self.data_8192 = self.Load_2('data_8192', si_1)
 
         print('----------------')
-        print(self.label.shape)
-        print(self.data_cqt.shape)
-        print(self.data_2048.shape)
-        print(self.data_8192.shape)
+        print(self.label[0].shape)
+        print(self.data_cqt[0].shape)
+        print(self.data_2048[0].shape)
+        print(self.data_8192[0].shape)
         print('----------------')
 
 
