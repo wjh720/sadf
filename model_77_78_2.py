@@ -141,7 +141,7 @@ class Learner():
         self.model.fit(
             x = self.x_data,
             y = self.y_data,
-            valid_data = self.valid_data,
+            validation_data = self.valid_data,
             batch_size = 64,
             epochs = 10000,
             verbose = 2,
