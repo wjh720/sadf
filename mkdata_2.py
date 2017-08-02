@@ -106,6 +106,7 @@ def prepare_mfcc():
     data_2048 = []
     data_8196 = []
     data_cqt = []
+    data_mel = []
     num = 0
     for item in file_list:
         y, sr=soundfile.read(item)
@@ -116,6 +117,8 @@ def prepare_mfcc():
         
         S_2 = librosa.feature.melspectrogram(S = D_2)
         S_3 = librosa.feature.melspectrogram(S = D_3)
+
+        data_mel.append(S_2.T)
 
         S_2 = librosa.feature.mfcc(S=librosa.power_to_db(S_2), n_mfcc = 64)
         S_3 = librosa.feature.mfcc(S=librosa.power_to_db(S_3), n_mfcc = 64)
@@ -133,13 +136,16 @@ def prepare_mfcc():
     data_2048 = np.array(data_2048)
     data_8196 = np.array(data_8196)
     data_cqt = np.array(data_cqt)
+    data_mel = np.array(data_mel)
     print(data_2048.shape)
     print(data_8196.shape)
     print(data_cqt.shape)
+    print(data_mel.shape)
 
     Save(data_2048, 'data_2048', num_train)
     Save(data_8196, 'data_8192', num_train)
     Save(data_cqt, 'data_cqt', num_train)
+    Save(data_mel, 'data_mel', num_train)
     
     print(' Data End ')
 
