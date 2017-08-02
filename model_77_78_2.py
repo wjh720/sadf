@@ -109,25 +109,27 @@ class Learner():
         self.data_cqt = self.Load_2('data_cqt', si_2)
         self.data_2048 = self.Load_2('data_2048', si_2)
         self.data_8192 = self.Load_2('data_8192', si_1)
+        self.mel = self.Load_2('data_mel', si_2)
 
         print('----------------')
         print(self.label[0].shape)
         print(self.data_cqt[0].shape)
         print(self.data_2048[0].shape)
         print(self.data_8192[0].shape)
+        print(self.data_mel[0].shape)
         print('----------------')
 
 
     def learn(self):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_new_ha', histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/ha_weights.{epoch:02d}.hdf5', \
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_new_ha_1', histogram_freq=0, write_graph=True, write_images=True)
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/ha_1_weights.{epoch:02d}.hdf5', \
                         period = 1, verbose = 1, save_weights_only = True)
         
         print(' Begin fitting ')
 
         self.x_data = {
             'data_2048' : self.data_2048[0],
-            'data_cqt' : self.data_cqt[0],
+            'data_mel' : self.data_mel[0],
             'data_8192' : self.data_8192[0]
         }
         self.y_data = {
@@ -139,7 +141,7 @@ class Learner():
         self.valid_data = (
             {
                 'data_2048' : self.data_2048[1],
-                'data_cqt' : self.data_cqt[1],
+                'data_mel' : self.data_mel[1],
                 'data_8192' : self.data_8192[1]
             }, \
             {
@@ -179,11 +181,11 @@ class Learner():
             return X
 
         mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_8192')
-        mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_cqt')
+        mfcc_2 = Input(shape = (si_2, 128, ), dtype = 'float32', name = 'data_cqt')
         mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
-        mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
+        mfcc_2_r = Reshape((si_2, 128, 1))(mfcc_2)
         mfcc_3_r = Reshape((si_2, 64, 1))(mfcc_3)
 
         # -----------------------------
@@ -327,7 +329,7 @@ class Learner():
         conv_3_8 = Conv_3_8(conv_3_7)
 
         lam_1 = Lambda(lam, output_shape=(32, size))(conv_1_8)
-        lam_2 = Lambda(lam, output_shape=(32, size))(conv_2_8)
+        lam_2 = Lambda(lam, output_shape=(64, size))(conv_2_8)
         lam_3 = Lambda(lam, output_shape=(32, size))(conv_3_8)
         drop_1 = Dropout(0.3)(lam_1)
         drop_2 = Dropout(0.3)(lam_2)
