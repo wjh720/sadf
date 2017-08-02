@@ -420,6 +420,12 @@ class Learner():
         num_train_name = 198
 
         Start = 0
+        for i in (num_train_name):
+            name = self.name_list[i]
+            Start = Start + dict_name[name]
+        print(Start)
+
+        Start = 0
         ans = []
         for i in (num_train_name, num_list):
             name = self.name_list[i]
