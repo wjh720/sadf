@@ -445,7 +445,7 @@ class Learner():
             data_3 = output[2][Start * num_repeat : End * num_repeat]
 
             data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
-            res = Calc(asd, data_1)
+            res = Calc(asd, data_3)
             ans.append(res)
             if (res == 0):
                 print(name)
