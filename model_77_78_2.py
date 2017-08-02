@@ -375,7 +375,7 @@ class Learner():
                 print([self.dict_class[num[0]]])
                 print([self.dict_class[ans]])
                 print([self.dict_class[x] for x in asd[:50]])
-                time.sleep(20)
+                time.sleep(5)
 
             return float(ans == num[0])
 
