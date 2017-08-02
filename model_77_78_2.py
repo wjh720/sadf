@@ -371,7 +371,7 @@ class Learner():
             )
         print("!!!!!!!!!!!!!!!!!!!!")
 
-        data = output['out_1']
+        data = output[0]
         label = self.valid_data[1]['out_1']
 
         print(label[:10])
