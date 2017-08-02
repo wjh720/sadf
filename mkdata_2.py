@@ -28,10 +28,11 @@ def prepare_mfcc():
 
     random.shuffle(line_list)
 
-    print(line_list[0])
-    print(len(line_list))
+    print('num_list : %d' % len(line_list))
 
     num_valid = len(line_list) * 0.2
+
+    print('num_valid : %d' % num_valid)
 
     for line in line_list:
         parts = line.split('\t')
