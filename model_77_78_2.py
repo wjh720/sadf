@@ -378,11 +378,12 @@ class Learner():
                 print([(self.dict_class[i], counts[i]) for i in range(counts.shape[0])])
                 print('--------------------')
                 print([self.dict_class[x] for x in asd[:50]])
-                time.sleep(5)
+                print('--------------------')
+                #time.sleep(5)
 
             return float(ans == num[0])
 
-        filename = '/data/tmpsrt1/log_new/ha_weights.09.hdf5'
+        filename = '/data/tmpsrt1/log_new/ha_weights.14.hdf5'
 
         self.model.load_weights(filename)
 
