@@ -109,7 +109,7 @@ class Learner():
         self.data_cqt = self.Load_2('data_cqt', si_2)
         self.data_2048 = self.Load_2('data_2048', si_2)
         self.data_8192 = self.Load_2('data_8192', si_1)
-        self.mel = self.Load_2('data_mel', si_2)
+        self.data_mel = self.Load_2('data_mel', si_2)
 
         print('----------------')
         print(self.label[0].shape)
