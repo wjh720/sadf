@@ -28,6 +28,7 @@ def prepare_mfcc():
     file_list = []
     line_list = []
     label_list = []
+    name_list = []
     dict_label = {}
     dict_name = {}
     num_label = 0
@@ -40,18 +41,28 @@ def prepare_mfcc():
             name = parts[2]
             print(name)
             if (name not in dict_name):
-                dict_name[name] = num_name
+                name_list.append(name)
+                dict_name[name] = 0
                 num_name = num_name + 1
+            dict_name[name] = dict_name[name] + 1
+
     print(num_name)
+    #time.sleep(1000)
+    random.shuffle(name_list)
+
+    print('num_list : %d' % len(name_list))
+
+    num_train_name = int(len(name_list) * 0.8)
+
+    print('num_train_name : %d' % num_train_name)
+
+    num_train = 0
+
+    for i in range(num_train_name):
+        num_train = num_train + dict_name[name_list[i]]
+    print('num_train : %d' % num_train)
     time.sleep(1000)
 
-    random.shuffle(line_list)
-
-    print('num_list : %d' % len(line_list))
-
-    num_train = int(len(line_list) * 0.8)
-
-    print('num_train : %d' % num_train)
 
     for line in line_list:
         parts = line.split('\t')
