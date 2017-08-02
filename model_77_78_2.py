@@ -372,9 +372,9 @@ class Learner():
             ans = np.argmax(counts)
 
             if (ans != num[0]):
-                print(self.dict_class[num])
-                print(asd[:200])
-                time.sleep(10)
+                print([self.dict_class[x] for x in num])
+                print([self.dict_class[x] for x in asd[:200]])
+                time.sleep(20)
 
             return float(ans == num[0])
 
