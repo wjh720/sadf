@@ -347,7 +347,7 @@ class Learner():
                             metrics = {'out_1' : 'accuracy', 'out_2' : 'accuracy', 'out_3' : 'accuracy'})
 
     def predict(self):
-        filename = '/data/tmpsrt1/log_new/77_2_weights.19-6.38.hdf5'
+        filename = '/data/tmpsrt1/log_new/ha_weights.04.hdf5'
 
         self.model.load_weights(filename)
 
@@ -368,8 +368,8 @@ class Learner():
     def work(self):
         self.prepare()
         self.create_mfcc()
-        self.learn()
-        #self.predict()
+        #self.learn()
+        self.predict()
 
 a = Learner()
 a.work()
