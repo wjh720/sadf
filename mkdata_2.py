@@ -31,7 +31,7 @@ def prepare_mfcc():
     dict_label = {}
     dict_name = {}
     num_label = 0
-    num_name
+    num_name = 0
 
     with open(meta_path, 'r') as ff:
         for line in ff:
