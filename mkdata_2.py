@@ -29,11 +29,21 @@ def prepare_mfcc():
     line_list = []
     label_list = []
     dict_label = {}
+    dict_name = {}
     num_label = 0
+    num_name
 
     with open(meta_path, 'r') as ff:
         for line in ff:
             line_list.append(line)
+            parts = line.split('\t')
+            name = parts[2]
+            print(name)
+            if (name not in dict_name):
+                dict_name[name] = num_name
+                num_name = num_name + 1
+    print(num_name)
+    time.sleep(1000)
 
     random.shuffle(line_list)
 
