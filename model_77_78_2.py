@@ -413,7 +413,6 @@ class Learner():
         meta_path = path + 'meta.txt'
 
         line_list = []
-        name_list = []
         dict_name = {}
         with open(meta_path, 'r') as ff:
             for line in ff:
@@ -422,14 +421,15 @@ class Learner():
                 name = parts[2]
 
                 if (name not in dict_name):
-                    name_list.append(name)
                     dict_name[name] = 0
                 dict_name[name] = dict_name[name] + 1
+
+        self.Load_list('name_list.txt')
 
         dict_label = {}
         num_label = 0
         self.dict_class = {}
-        for name in name_list:
+        for name in self.name_list:
             for line in line_list:
                 parts = line.split('\t')
                 if (parts[2] != name):
@@ -438,8 +438,6 @@ class Learner():
                     dict_label[parts[1]] = num_label
                     self.dict_class[num_label] = parts[1]
                     num_label = num_label + 1
-
-        self.Load_list('name_list.txt')
 
         num_list = 248
         num_train_name = 198
