@@ -181,7 +181,7 @@ class Learner():
             return X
 
         mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_8192')
-        mfcc_2 = Input(shape = (si_2, 128, ), dtype = 'float32', name = 'data_cqt')
+        mfcc_2 = Input(shape = (si_2, 128, ), dtype = 'float32', name = 'data_mel')
         mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
