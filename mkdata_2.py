@@ -41,7 +41,7 @@ def prepare_mfcc():
 
     num_train = len(line_list) * 0.8
 
-    print('num_valid : %d' % num_valid)
+    print('num_train : %d' % num_train)
 
     for line in line_list:
         parts = line.split('\t')
