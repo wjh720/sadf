@@ -37,72 +37,15 @@ class Learner():
     def __init__(self):
         pass
 
-    def prepare_3(self):
-        f = file('label.npy', 'r')
-        self.label = np.load(f)
-        f.close()
-
-        self.label = self.label.repeat(num_repeat * 2)
-        self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
-        print(self.label[0, 0])
-
-        # -----------------------------
-
-        f_mfcc = file('data_mfcc.npy', 'r')
-        self.data_mfcc = np.load(f_mfcc)
-        f_mfcc.close()
-
-        f_cqt = file('data_cqt.npy', 'r')
-        self.data_cqt = np.load(f_cqt)
-        f_cqt.close()
-
-        f_ttz = file('data_ttz.npy', 'r')
-        self.data_ttz = np.load(f_ttz)
-        f_ttz.close()
-
-        # -----------------------------
-
-        n = self.data_mfcc.shape[0]
-
-        mfcc = []
-        cqt = []
-        ttz = []
-        for i in range(n):
-            asd_mfcc = self.data_mfcc[i]
-            asd_cqt = self.data_cqt[i]
-            asd_ttz = self.data_ttz[i]
-
-            for j in range(num_repeat):
-                aa_mfcc = asd_mfcc[j * num_time : (j + 1) * num_time]
-                aa_cqt = asd_cqt[j * num_time : (j + 1) * num_time]
-                aa_ttz = asd_ttz[j * num_time : (j + 1) * num_time]
-                
-                mfcc.append(aa_mfcc)
-                cqt.append(aa_cqt)
-                ttz.append(aa_ttz)
-
-                mfcc.append(aa_mfcc[::-1])
-                cqt.append(aa_cqt[::-1])
-                ttz.append(aa_ttz[::-1])
-
-        self.data_mfcc = np.array(mfcc)
-        self.data_cqt = np.array(cqt)
-        self.data_ttz = np.array(ttz)
-
-        print(self.data_mfcc.shape)
-        print(self.data_cqt.shape)
-        print(self.data_ttz.shape)
-        print(self.label.shape)
-
     def prepare(self):
         f = file('label.npy', 'r')
         self.label = np.load(f)
         f.close()
 
-        f_1 = file('data_mfcc_1024.npy', 'r')
-        f_2 = file('data_mfcc_2048.npy', 'r')
-        f_3 = file('data_mfcc_4096.npy', 'r')
-        ff = file('data.npy', 'r')
+        f_cqt = file('data_cqt.npy', 'r')
+        f_2048 = file('data_mfcc_2048.npy', 'r')
+        f_8196 = file('data_mfcc_8196.npy', 'r')
+        
         self.data_1 = np.load(f_1)
         self.data_2 = np.load(f_2)
         self.data_3 = np.load(f_3)
@@ -113,9 +56,11 @@ class Learner():
         self.label = np.eye(num_classes)[self.label]#.reshape(-1, 1, 15).repeat(num_asd, axis = 1)
         print(self.label[0, 0])
 
-        print('-----------------')
-        print(self.data_mel.shape)
-        print('-----------------')
+        
+        self.data_cqt = np.load(f_cqt)
+        f_cqt.close()
+
+        # -----------------------------
 
         n = self.data_1.shape[0]
 
@@ -123,17 +68,26 @@ class Learner():
         pdata_2 = []
         pdata_3 = []
         mdata = []
+        mfcc = []
+        cqt = []
+        ttz = []
         for i in range(n):
             asd_1 = self.data_1[i]
             asd_2 = self.data_2[i]
             asd_3 = self.data_3[i]
             asd_m = self.data_mel[i]
+            asd_mfcc = self.data_mfcc[i]
+            asd_cqt = self.data_cqt[i]
+            asd_ttz = self.data_ttz[i]
 
             for j in range(num_repeat):
                 aa_1 = asd_1[j * si_3 : (j + 1) * si_3]
                 aa_2 = asd_2[j * si_2 : (j + 1) * si_2]
                 aa_3 = asd_3[j * si_1 : (j + 1) * si_1]
                 aa_m = asd_m[j * si_2 : (j + 1) * si_2]
+                aa_mfcc = asd_mfcc[j * num_time : (j + 1) * num_time]
+                aa_cqt = asd_cqt[j * num_time : (j + 1) * num_time]
+                aa_ttz = asd_ttz[j * num_time : (j + 1) * num_time]
                 
                 pdata_1.append(aa_1)
                 pdata_2.append(aa_2)
@@ -145,17 +99,31 @@ class Learner():
                 pdata_3.append(aa_3[::-1])
                 mdata.append(aa_m[::-1])
 
+                mfcc.append(aa_mfcc)
+                cqt.append(aa_cqt)
+                ttz.append(aa_ttz)
+
+                mfcc.append(aa_mfcc[::-1])
+                cqt.append(aa_cqt[::-1])
+                ttz.append(aa_ttz[::-1])
+
             #time.sleep(30)
 
         self.data_1 = np.array(pdata_1)
         self.data_2 = np.array(pdata_2)
         self.data_3 = np.array(pdata_3)
         self.data_mel = np.array(mdata)
+        self.data_mfcc = np.array(mfcc)
+        self.data_cqt = np.array(cqt)
+        self.data_ttz = np.array(ttz)
 
         print(self.data_1.shape)
         print(self.data_2.shape)
         print(self.data_3.shape)
         print(self.data_mel.shape)
+        print(self.data_mfcc.shape)
+        print(self.data_cqt.shape)
+        print(self.data_ttz.shape)
         print(self.label.shape)
         print('----------------')
 
@@ -211,17 +179,6 @@ class Learner():
         mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
         mfcc_3_r = Reshape((si_2, 64, 1))(mfcc_3)
 
-        # -----------------------------
-        '''
-        Conv_03_1 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-        Conv_03_2 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
-
-        conv_03_1 = Conv_03_1(mfcc_3_r)
-        conv_03_2 = Conv_03_2(conv_03_1)
-        conv_03_d = BatchNormalization()(conv_03_2)
-        conv_03 = MaxPooling2D(pool_size = (1, 2))(conv_03_d)
-        conv_03_ok = Dropout(0.05)(conv_03)
-        '''
         # -----------------------------
 
 
@@ -395,6 +352,10 @@ class Learner():
                             metrics = {'out_1' : 'accuracy', 'out_2' : 'accuracy', 'out_3' : 'accuracy'})
 
     def predict(self):
+        filename = '/data/tmpsrt1/log_new/77_2_weights.19-6.38.hdf5'
+
+        self.model.load_weights(filename)
+
         output = self.model.predict(       
                 x = self.data,
                 batch_size = 256,
@@ -408,7 +369,7 @@ class Learner():
         self.prepare()
         self.prepare_3()
         self.create_mfcc()
-        self.learn()
+        #self.learn()
         self.predict()
 
 a = Learner()
