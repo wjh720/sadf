@@ -361,14 +361,14 @@ class Learner():
 
         def Calc(label, data):
             num = np.argmax(label, axis = 1)
-            print(num)
+            #print(num)
 
             if (np.max(num) != np.min(num)):
                 print('calc error!')
 
             asd = np.argmax(data, axis = 1)
-            print(asd)
-            time.sleep(1)
+            #print(asd)
+            #time.sleep(1)
 
             counts = np.bincount(asd)
             ans = np.argmax(counts)
@@ -448,7 +448,7 @@ class Learner():
             data_3 = output[2][Start * num_repeat : End * num_repeat]
 
             data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
-            ans.append(Calc(asd, data_3))
+            ans.append(Calc(asd, data_asd))
 
             Start = End
 
