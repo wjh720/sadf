@@ -29,8 +29,9 @@ def prepare_mfcc():
     random.shuffle(line_list)
 
     print(line_list[0])
+    print(len(line_list))
 
-    num_valid = line_list[0] * 0.2
+    num_valid = len(line_list) * 0.2
 
     for line in line_list:
         parts = line.split('\t')
