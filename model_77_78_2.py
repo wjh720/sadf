@@ -52,8 +52,8 @@ class Learner():
         f.close()
 
         print('----------------')
-        prepare_label(data[0])
-        prepare_label(data[1])
+        self.prepare_label(data[0])
+        self.prepare_label(data[1])
         print('----------------')
 
     def prepare_data(data, length):
@@ -80,8 +80,8 @@ class Learner():
         f.close()
 
         print('----------------')
-        prepare_data(data[0], length)
-        prepare_data(data[1], length)
+        self.prepare_data(data[0], length)
+        self.prepare_data(data[1], length)
         print('----------------')
 
     def prepare(self):
@@ -90,10 +90,10 @@ class Learner():
         self.data_2048 = []
         self.data_8192 = []
 
-        Load_1(self.label, 'label')
-        Load_2(self.data_cqt, 'data_cqt', si_2)
-        Load_2(self.data_2048, 'data_2048', si_2)
-        Load_2(self.data_8192, 'data_8192', si_1)
+        self.Load_1(self.label, 'label')
+        self.Load_2(self.data_cqt, 'data_cqt', si_2)
+        self.Load_2(self.data_2048, 'data_2048', si_2)
+        self.Load_2(self.data_8192, 'data_8192', si_1)
 
 
     def learn(self):
