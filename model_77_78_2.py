@@ -396,7 +396,7 @@ class Learner():
 
         #print(label[:10])
         #print(output[:10])
-        
+
         Type = 'development'
         path = '../data/TUT-acoustic-scenes-2017-' + Type + '/'
         meta_path = path + 'meta.txt'
@@ -406,6 +406,8 @@ class Learner():
         with open(meta_path, 'r') as ff:
             for line in ff:
                 line_list.append(line)
+                parts = line.split('\t')
+                name = parts[2]
 
                 if (name not in dict_name):
                     dict_name[name] = 0
