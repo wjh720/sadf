@@ -423,7 +423,7 @@ class Learner():
         for i in range(num_train_name):
             name = self.name_list[i]
             Start = Start + dict_name[name]
-            
+
         print(Start)
 
         Start = 0
