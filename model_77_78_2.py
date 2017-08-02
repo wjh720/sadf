@@ -169,6 +169,7 @@ class Learner():
         K_1 = 2
         K_2 = 2
         K_3 = 2
+        size = 64
 
         def lam(X):
             print("xxxxxxxxxxxxxxxxxxxxxxxxxx")
@@ -270,12 +271,12 @@ class Learner():
 
         #-----------------------------------
 
-        Conv_1_5 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_1_6 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_2_5 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_2_6 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_3_5 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_3_6 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_5 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_6 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_5 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_6 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_5 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_6 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
 
         conv_1_5 = Conv_1_5(conv_1_in_2)
         conv_1_6 = Conv_1_6(conv_1_5)
@@ -311,12 +312,12 @@ class Learner():
 
         #-----------------------------------
 
-        Conv_1_7 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_1_8 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_2_7 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_2_8 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_3_7 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
-        Conv_3_8 = Conv2D(128, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
 
         conv_1_7 = Conv_1_7(conv_1_in_3)
         conv_1_8 = Conv_1_8(conv_1_7)
@@ -325,9 +326,9 @@ class Learner():
         conv_3_7 = Conv_3_7(conv_3_in_3)
         conv_3_8 = Conv_3_8(conv_3_7)
 
-        lam_1 = Lambda(lam, output_shape=(8, 128))(conv_1_8)
-        lam_2 = Lambda(lam, output_shape=(8, 128))(conv_2_8)
-        lam_3 = Lambda(lam, output_shape=(8, 128))(conv_3_8)
+        lam_1 = Lambda(lam, output_shape=(8, size))(conv_1_8)
+        lam_2 = Lambda(lam, output_shape=(8, size))(conv_2_8)
+        lam_3 = Lambda(lam, output_shape=(8, size))(conv_3_8)
         drop_1 = Dropout(0.3)(lam_1)
         drop_2 = Dropout(0.3)(lam_2)
         drop_3 = Dropout(0.3)(lam_3)
