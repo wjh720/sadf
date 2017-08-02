@@ -428,7 +428,9 @@ class Learner():
         Start = 0
         for i in range(num_train_name):
             name = self.name_list[i]
+            print('-------')
             print(name)
+            print('-------')
             Start = Start + dict_name[name]
 
         print(Start)
