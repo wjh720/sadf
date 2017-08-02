@@ -40,8 +40,8 @@ class Learner():
     
 
     def Load_1(self, data, name):
-        
-        def prepare_label(self, data):
+
+        def prepare_label(data):
             data = data.repeat(num_repeat)
             data = np.eye(num_classes)[data]
             print(data.shape)
