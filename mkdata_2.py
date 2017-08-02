@@ -64,19 +64,23 @@ def prepare_mfcc():
         num_train = num_train + dict_name[name_list[i]]
     print('num_train : %d' % num_train)
     print('total_num : %d' % num_num)
-    time.sleep(1000)
+    #time.sleep(1000)
+    #--------------------------------------
 
+    for name in name_list:
+        for line in line_list:
+            parts = line.split('\t')
+            if (parts[2] != name):
+                continue
 
-    for line in line_list:
-        parts = line.split('\t')
-        file_list.append(path + parts[0])
+            file_list.append(path + parts[0])
 
-        if (parts[1] not in dict_label):
-            dict_label[parts[1]] = num_label
-            num_label = num_label + 1
-        label_list.append(dict_label[parts[1]])
+            if (parts[1] not in dict_label):
+                dict_label[parts[1]] = num_label
+                num_label = num_label + 1
+            label_list.append(dict_label[parts[1]])
 
-    print(num_label)
+    print('num_label : %d' % num_label)
 
     label = np.array(label_list)
     print(label.shape)
