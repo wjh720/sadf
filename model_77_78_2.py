@@ -208,6 +208,10 @@ class Learner():
         conv_2_d = BatchNormalization()(conv_2_2)
         conv_3_d = BatchNormalization()(conv_3_2)
 
+        in1_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_d)
+        in1_conv_2_2 = MaxPooling2D(pool_size = (K_1, K_1))(conv_2_d)
+        in1_conv_3_3 = MaxPooling2D(pool_size = (K_1, K_1))(conv_3_d)
+        '''
         #-----------------------------------
 
         in1_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_d)
@@ -311,7 +315,7 @@ class Learner():
         conv_1_in_3 = Dropout(0.2)(conv_1_in_3_d)
         conv_2_in_3 = Dropout(0.2)(conv_2_in_3_d)
         conv_3_in_3 = Dropout(0.2)(conv_3_in_3_d)
-
+        '''
         #-----------------------------------
 
         Conv_1_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
