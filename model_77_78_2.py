@@ -121,8 +121,8 @@ class Learner():
 
 
     def learn(self):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_new_ha_1', histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/ha_1_weights.{epoch:02d}.hdf5', \
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_new_ha_2', histogram_freq=0, write_graph=True, write_images=True)
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/ha_2_weights.{epoch:02d}.hdf5', \
                         period = 1, verbose = 1, save_weights_only = True)
         
         print(' Begin fitting ')
