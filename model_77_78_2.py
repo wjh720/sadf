@@ -423,10 +423,15 @@ class Learner():
         for i in (num_train_name, num_list):
             name = self.name_list[i]
             End = Start + dict_name[name]
+            print(name)
+            print(Start)
+            print(End)
 
             asd = label[Start * num_repeat : End * num_repeat]
             data_asd = data[Start * num_repeat : End * num_repeat]
             ans.append(Calc(asd, data_asd))
+
+            Start = End
 
         print(np.mean(np.array(ans)))
 
