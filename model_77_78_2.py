@@ -363,10 +363,16 @@ class Learner():
             num = np.argmax(label, axis = 1)
             print(num)
 
+            if (np.max(num) != np.min(num)):
+                print('calc error!')
+
             asd = np.argmax(data, axis = 1)
             print(asd)
             time.sleep(100)
-            return 0.
+
+            counts = np.bincount(asd)
+            ans = np.argmax(counts)
+            return float(ans == num[0])
 
         filename = '/data/tmpsrt1/log_new/ha_weights.14.hdf5'
 
@@ -422,6 +428,7 @@ class Learner():
         Start = 0
         for i in range(num_train_name):
             name = self.name_list[i]
+            print(name)
             Start = Start + dict_name[name]
 
         print(Start)
@@ -436,7 +443,12 @@ class Learner():
             print(End)
 
             asd = label[Start * num_repeat : End * num_repeat]
-            data_asd = data[Start * num_repeat : End * num_repeat]
+
+            data_1 = output[0][Start * num_repeat : End * num_repeat]
+            data_2 = output[1][Start * num_repeat : End * num_repeat]
+            data_3 = output[2][Start * num_repeat : End * num_repeat]
+
+            data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
             ans.append(Calc(asd, data_asd))
 
             Start = End
