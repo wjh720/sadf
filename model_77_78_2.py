@@ -166,7 +166,7 @@ class Learner():
 
     def create_mfcc(self):
 
-        K_n = 5
+        K_n = 7
         K_11 = 4
         K_1 = 2
         K_2 = 2
