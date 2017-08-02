@@ -368,7 +368,7 @@ class Learner():
 
             asd = np.argmax(data, axis = 1)
             print(asd)
-            time.sleep(100)
+            time.sleep(1)
 
             counts = np.bincount(asd)
             ans = np.argmax(counts)
