@@ -17,7 +17,7 @@ overwrite = True
 def save_list(data, name):
     f = open(name, 'w')
     for item in data:
-        f.write('%s\n' % item)
+        f.write('%s\r' % item)
     f.close()
 
 def Save(data, name, train):
