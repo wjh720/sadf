@@ -372,8 +372,8 @@ class Learner():
             ans = np.argmax(counts)
 
             if (ans != num[0]):
-                print(num)
-                print(asd[:50])
+                print(self.dict_class[num])
+                print(asd[:200])
                 time.sleep(10)
 
             return float(ans == num[0])
@@ -423,6 +423,19 @@ class Learner():
                 if (name not in dict_name):
                     dict_name[name] = 0
                 dict_name[name] = dict_name[name] + 1
+
+        dict_label = {}
+        num_label = 0
+        self.dict_class = {}
+        for name in name_list:
+            for line in line_list:
+                parts = line.split('\t')
+                if (parts[2] != name):
+                    continue
+                if (parts[1] not in dict_label):
+                    dict_label[parts[1]] = num_label
+                    self.dict_class[num_label] = parts[1]
+                    num_label = num_label + 1
 
         self.Load_list('name_list.txt')
 
