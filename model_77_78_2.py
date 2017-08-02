@@ -351,6 +351,19 @@ class Learner():
 
         self.model.load_weights(filename)
 
+        self.valid_data = (
+            {
+                'data_2048' : self.data_2048[1],
+                'data_cqt' : self.data_cqt[1],
+                'data_8192' : self.data_8192[1]
+            }, \
+            {
+                'out_1' : self.label[1],
+                'out_2' : self.label[1],
+                'out_3' : self.label[1]
+            }
+        )
+
         output = self.model.predict(       
                 x = self.valid_data[0],
                 batch_size = 64,
