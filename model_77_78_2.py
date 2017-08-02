@@ -375,7 +375,7 @@ class Learner():
                 print([self.dict_class[num[0]]])
                 print([self.dict_class[ans]])
                 print('--------------------')
-                print([(self.dict_class[i], counts[i]) for i in range(15)])
+                print([(self.dict_class[i], counts[i]) for i in range(counts.shape[0])])
                 print('--------------------')
                 print([self.dict_class[x] for x in asd[:50]])
                 time.sleep(5)
