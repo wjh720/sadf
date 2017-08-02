@@ -33,18 +33,20 @@ def prepare_mfcc():
     dict_name = {}
     num_label = 0
     num_name = 0
+    num_num = 0
 
     with open(meta_path, 'r') as ff:
         for line in ff:
             line_list.append(line)
             parts = line.split('\t')
             name = parts[2]
-            print(name)
+            #print(name)
             if (name not in dict_name):
                 name_list.append(name)
                 dict_name[name] = 0
                 num_name = num_name + 1
             dict_name[name] = dict_name[name] + 1
+            num_num = num_num + 1
 
     print(num_name)
     #time.sleep(1000)
@@ -61,6 +63,7 @@ def prepare_mfcc():
     for i in range(num_train_name):
         num_train = num_train + dict_name[name_list[i]]
     print('num_train : %d' % num_train)
+    print('total_num : %d' % num_num)
     time.sleep(1000)
 
 
