@@ -402,12 +402,12 @@ class Learner():
         line_list = []
         dict_name = {}
         with open(meta_path, 'r') as ff:
-        for line in ff:
-            line_list.append(line)
+            for line in ff:
+                line_list.append(line)
 
-            if (name not in dict_name):
-                dict_name[name] = 0
-            dict_name[name] = dict_name[name] + 1
+                if (name not in dict_name):
+                    dict_name[name] = 0
+                dict_name[name] = dict_name[name] + 1
 
         self.Load_list('name_list.txt')
 
