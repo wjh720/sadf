@@ -373,7 +373,7 @@ class Learner():
 
             if (ans != num[0]):
                 print([self.dict_class[num[0]]])
-                print([ans])
+                print([self.dict_class[ans]])
                 print([self.dict_class[x] for x in asd[:50]])
                 time.sleep(20)
 
