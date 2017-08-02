@@ -396,7 +396,9 @@ class Learner():
 
         #print(label[:10])
         #print(output[:10])
-
+        
+        Type = 'development'
+        path = '../data/TUT-acoustic-scenes-2017-' + Type + '/'
         meta_path = path + 'meta.txt'
 
         line_list = []
