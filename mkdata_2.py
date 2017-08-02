@@ -39,10 +39,9 @@ def prepare_mfcc():
 
     print('num_list : %d' % len(line_list))
 
-    num_train = len(line_list) * 0.8
+    num_train = int(len(line_list) * 0.8)
 
     print('num_train : %d' % num_train)
-    print(type(num_train))
 
     for line in line_list:
         parts = line.split('\t')
