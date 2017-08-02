@@ -413,6 +413,7 @@ class Learner():
         meta_path = path + 'meta.txt'
 
         line_list = []
+        name_list = []
         dict_name = {}
         with open(meta_path, 'r') as ff:
             for line in ff:
@@ -421,6 +422,7 @@ class Learner():
                 name = parts[2]
 
                 if (name not in dict_name):
+                    name_list.append(name)
                     dict_name[name] = 0
                 dict_name[name] = dict_name[name] + 1
 
