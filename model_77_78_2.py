@@ -48,6 +48,7 @@ class Learner():
         f.close()
 
     def prepare_label(self, data):
+        print(data[:22])
         data = data.repeat(num_repeat)
         data = np.eye(num_classes)[data]
         print(data.shape)
