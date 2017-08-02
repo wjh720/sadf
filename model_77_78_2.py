@@ -43,7 +43,7 @@ class Learner():
         print(data.shape)
         return data
 
-    def Load_1(self, data, name):
+    def Load_1(self, name):
         data = []
 
         f = file(name + 'train', 'r')
@@ -75,7 +75,7 @@ class Learner():
         print(pdata.shape)
         return pdata
 
-    def Load_2(self, data, name, length):
+    def Load_2(self, name, length):
         data = []
 
         f = file(name + 'train', 'r')
