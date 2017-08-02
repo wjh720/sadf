@@ -37,12 +37,15 @@ class Learner():
     def __init__(self):
         pass
 
-    def prepare_label(self, data):
-        data = data.repeat(num_repeat)
-        data = np.eye(num_classes)[data]
-        print(data.shape)
+    
 
     def Load_1(self, data, name):
+        
+        def prepare_label(self, data):
+            data = data.repeat(num_repeat)
+            data = np.eye(num_classes)[data]
+            print(data.shape)
+
         f = file(name + 'train', 'r')
         data.append(np.load(f))
         f.close()
@@ -52,8 +55,8 @@ class Learner():
         f.close()
 
         print('----------------')
-        self.prepare_label(data[0])
-        self.prepare_label(data[1])
+        prepare_label(data[0])
+        prepare_label(data[1])
         print(data[0].shape)
         time.sleep(100)
         print('----------------')
