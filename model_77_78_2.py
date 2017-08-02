@@ -71,7 +71,7 @@ class Learner():
                 aa = asd[j * length : (j + 1) * length]
                 pdata.append(aa)
                 #$pdata.append(aa[::-1])
-        pdata = pdata.array(pdata)
+        pdata = np.array(pdata)
         print(pdata.shape)
         return pdata
 
