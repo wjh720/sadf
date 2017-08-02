@@ -374,7 +374,7 @@ class Learner():
             ans = np.argmax(counts)
             return float(ans == num[0])
 
-        filename = '/data/tmpsrt1/log_new/ha_weights.14.hdf5'
+        filename = '/data/tmpsrt1/log_new/ha_weights.09.hdf5'
 
         self.model.load_weights(filename)
 
@@ -448,7 +448,7 @@ class Learner():
             data_3 = output[2][Start * num_repeat : End * num_repeat]
 
             data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
-            ans.append(Calc(asd, data_asd))
+            ans.append(Calc(asd, data_3))
 
             Start = End
 
