@@ -58,8 +58,8 @@ def prepare_mfcc():
     #time.sleep(1000)
     random.shuffle(name_list)
     save_list(name_list, 'name_list.txt')
-    
-    for i in range(100):
+
+    for i in range(5):
         name = name_list[i]
         print(name)
         for line in line_list:
