@@ -374,7 +374,7 @@ class Learner():
             ans = np.argmax(counts)
             return float(ans == num[0])
 
-        filename = '/data/tmpsrt1/log_new/ha_weights.04.hdf5'
+        filename = '/data/tmpsrt1/log_new/ha_weights.09.hdf5'
 
         self.model.load_weights(filename)
 
@@ -459,8 +459,8 @@ class Learner():
     def work(self):
         self.prepare()
         self.create_mfcc()
-        self.learn()
-        #self.predict()
+        #self.learn()
+        self.predict()
 
 a = Learner()
 a.work()
