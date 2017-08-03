@@ -207,7 +207,9 @@ def Random():
             parts = line.split('\t')
             if (parts[2] != name):
                 continue
-
+            print(parts[2])
+            print(name)
+            time.sleep(10)
             if (parts[1] not in dict_label):
                 iid[parts[2]] = num_label
                 dict_label[parts[1]] = num_label
