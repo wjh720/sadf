@@ -216,6 +216,8 @@ def Random():
     Satistics = np.zeros(15)
     for i in range(num_train_name):
         Id = iid[load_name_list[i]]
+        print(Id)
+        Id = int(Id)
         Satistics[Id] = Satistics[Id] + dict_name[load_name_list[i]]
 
     Total = np.zeros(15)
