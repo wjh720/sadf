@@ -224,7 +224,7 @@ def Random():
 
     for i in range(15):
         valid = Total[i] - Satistics[i]
-        print('total : %d, train : %d, valid : %d, valid_ratio : %lf', % (Total[i], Satistics[i], valid, 1. * valid / Total[i]))
+        print('total : %d, train : %d, valid : %d, valid_ratio : %lf' % (Total[i], Satistics[i], valid, 1. * valid / Total[i]))
 
 #prepare_mfcc()
 Random()
