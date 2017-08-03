@@ -231,8 +231,9 @@ def Random():
 
     for i in range(15):
         valid = Total[i] - Satistics[i]
-        print('class : %s, total : %d, train : %d, valid : %d, valid_ratio : %lf' \
-            % (dict_class[i], Total[i], Satistics[i], valid, 1. * valid / Total[i]))
+        print('class : %s' % dict_class[i])
+        print('total : %d, train : %d, valid : %d, valid_ratio : %lf' \
+            % (Total[i], Satistics[i], valid, 1. * valid / Total[i]))
 
 #prepare_mfcc()
 Random()
