@@ -39,6 +39,44 @@ def Save(data, name, train):
     f.close()
 
 def prepare_mfcc():
+
+    def Fail(load_name_list):
+        iid = {}
+        dict_class = {}
+        for name in load_name_list:
+            for line in line_list:
+                parts = line.split('\t')
+                if (parts[2] != name):
+                    continue
+
+                if (parts[1] not in dict_label):
+                    dict_label[parts[1]] = num_label
+                    dict_class[num_label] = parts[1]
+                    num_label = num_label + 1
+
+                iid[parts[2]] = dict_label[parts[1]]
+
+        Satistics = np.zeros(15)
+        for i in range(num_train_name):
+            Id = iid[load_name_list[i]]
+            Satistics[Id] = Satistics[Id] + 1
+
+        Total = np.zeros(15)
+        for i in range(num_total):
+            Id = iid[load_name_list[i]]
+            Total[Id] = Total[Id] + 1
+
+        Min = 2
+        for i in range(15):
+            valid = Total[i] - Satistics[i]
+            Min = min(valid, Min)
+            print('class : %s' % dict_class[i])
+            print('total : %d, train : %d, valid : %d, valid_ratio : %lf' \
+                % (Total[i], Satistics[i], valid, 1. * valid / Total[i]))  
+
+        return Min >= 2 
+
+
     meta_path = path + 'meta.txt'
     file_list = []
     line_list = []
@@ -66,17 +104,10 @@ def prepare_mfcc():
     print(num_name)
     #time.sleep(1000)
     random.shuffle(name_list)
-    save_list(name_list, 'name_list.txt')
+    while (Fail(num_list)):
+        random.shuffle(name_list)
 
-    for i in range(5):
-        name = name_list[i]
-        print(name)
-        for line in line_list:
-            parts = line.split('\t')
-            if (parts[2] == name):
-                print(parts[1])
-                break
-    #-----------------------------
+    save_list(name_list, 'name_list.txt')
 
     print('num_list : %d' % len(name_list))
 
@@ -218,7 +249,6 @@ def Random():
 
             iid[parts[2]] = dict_label[parts[1]]
 
-    print(iid)
     Satistics = np.zeros(15)
     for i in range(num_train_name):
         Id = iid[load_name_list[i]]
@@ -235,5 +265,5 @@ def Random():
         print('total : %d, train : %d, valid : %d, valid_ratio : %lf' \
             % (Total[i], Satistics[i], valid, 1. * valid / Total[i]))
 
-#prepare_mfcc()
-Random()
+prepare_mfcc()
+#Random()
