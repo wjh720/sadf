@@ -186,7 +186,9 @@ def Random():
 
     load_name_list = Load_list('name_list.txt')
 
-    print('num_list : %d' % len(load_name_list))
+    num_total = len(load_name_list)
+
+    print('num_list : %d' % num_total)
 
     num_train_name = int(len(load_name_list) * 0.8)
 
@@ -221,7 +223,7 @@ def Random():
         Satistics[Id] = Satistics[Id] + dict_name[load_name_list[i]]
 
     Total = np.zeros(15)
-    for i in range(num_train_name):
+    for i in range(num_total):
         Id = iid[load_name_list[i]]
         Total[Id] = Total[Id] + dict_name[load_name_list[i]]
 
