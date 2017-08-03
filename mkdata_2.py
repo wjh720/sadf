@@ -220,12 +220,12 @@ def Random():
     Satistics = np.zeros(15)
     for i in range(num_train_name):
         Id = iid[load_name_list[i]]
-        Satistics[Id] = Satistics[Id] + dict_name[load_name_list[i]]
+        Satistics[Id] = Satistics[Id] + 1
 
     Total = np.zeros(15)
     for i in range(num_total):
         Id = iid[load_name_list[i]]
-        Total[Id] = Total[Id] + dict_name[load_name_list[i]]
+        Total[Id] = Total[Id] + 1
 
     for i in range(15):
         valid = Total[i] - Satistics[i]
