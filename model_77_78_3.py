@@ -32,6 +32,8 @@ si_1 = 16
 si_2 = 64
 si_3 = 32
 
+path = '../data/TUT-acoustic-scenes-2017-development/'
+
 class Learner():
     def __init__(self):
         pass
@@ -93,8 +95,9 @@ class Learner():
 
         return data
 
-    def prepare(self, fol):
-        name = 'fold%d' % fol
+    def prepare(self, fol): 
+        meta_path = path + 'evaluation_setup/'
+        name = meta_path + ('fold%d' % fol)
 
         self.label = self.Load_1(name, '_label')
         self.data_cqt = self.Load_2(name, '_data_cqt', si_2)
