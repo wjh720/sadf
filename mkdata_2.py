@@ -40,9 +40,10 @@ def Save(data, name, train):
 
 def prepare_mfcc():
 
-    def Fail(load_name_list):
+    def Fail(load_name_list, line_list):
         iid = {}
         dict_class = {}
+        dict_label = {}
         num_label = 0
         for name in load_name_list:
             for line in line_list:
@@ -112,7 +113,7 @@ def prepare_mfcc():
     print(num_name)
     #time.sleep(1000)
     random.shuffle(name_list)
-    while (Fail(name_list)):
+    while (Fail(name_list, line_list)):
         random.shuffle(name_list)
 
     save_list(name_list, 'name_list.txt')
