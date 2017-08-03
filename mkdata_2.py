@@ -207,14 +207,13 @@ def Random():
             parts = line.split('\t')
             if (parts[2] != name):
                 continue
-            print(parts[2])
-            print(name)
-            time.sleep(10)
+
             if (parts[1] not in dict_label):
                 iid[parts[2]] = num_label
                 dict_label[parts[1]] = num_label
                 num_label = num_label + 1
 
+    print(iid)
     Satistics = np.zeros(15)
     for i in range(num_train_name):
         Id = iid[load_name_list[i]]
