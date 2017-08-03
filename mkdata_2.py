@@ -21,6 +21,7 @@ def Load_list(name):
         line = f.readline()
         load_name_list.append(line)
     f.close()
+    return load_name_list
 
 def save_list(data, name):
     f = open(name, 'w')
@@ -183,7 +184,7 @@ def Random():
 
     print(num_name)
 
-    Load_list('name_list.txt')
+    load_name_list = Load_list('name_list.txt')
 
     print('num_list : %d' % len(name_list))
 
