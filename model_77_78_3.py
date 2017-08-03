@@ -118,15 +118,15 @@ class Learner():
 
 
     def learn(self, fol):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_paper_fold%d' % fol, \
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_merge_fold%d' % fol, \
                             histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_paper_fold%d.{epoch:02d}.hdf5' % fol, \
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_merge_fold%d.{epoch:02d}.hdf5' % fol, \
                         period = 1, verbose = 1, save_weights_only = True)
         
         print(' Begin fitting %d' % fol)
 
         self.x_data = {
-            'data_mel' : self.data_mel[0],
+            'data_8192' : self.data_mel[0],
             'data_4096' : self.data_4096[0],
             'data_2048' : self.data_2048[0]
         }
@@ -138,7 +138,7 @@ class Learner():
 
         self.valid_data = (
             {
-                'data_mel' : self.data_mel[1],
+                'data_8192' : self.data_mel[1],
                 'data_4096' : self.data_4096[1],
                 'data_2048' : self.data_2048[1]
             }, \
@@ -154,7 +154,7 @@ class Learner():
             y = self.y_data,
             validation_data = self.valid_data,
             batch_size = 64,
-            epochs = 50,
+            epochs = 5,
             verbose = 2,
             shuffle = True,
             callbacks = [tbCallBack,checkpointer]
@@ -178,11 +178,11 @@ class Learner():
             print(X.shape)
             return X
 
-        mfcc_1 = Input(shape = (si_2, 128, ), dtype = 'float32', name = 'data_mel')
+        mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_8192')
         mfcc_2 = Input(shape = (si_3, 64, ), dtype = 'float32', name = 'data_4096')
         mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
 
-        mfcc_1_r = Reshape((si_2, 128, 1))(mfcc_1)
+        mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
         mfcc_2_r = Reshape((si_3, 64, 1))(mfcc_2)
         mfcc_3_r = Reshape((si_2, 64, 1))(mfcc_3)
 
@@ -205,7 +205,7 @@ class Learner():
         conv_1_d = BatchNormalization()(conv_1_2)
         conv_2_d = BatchNormalization()(conv_2_2)
         conv_3_d = BatchNormalization()(conv_3_2)
-
+        '''
         in1_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_d)
         in1_conv_2_2 = MaxPooling2D(pool_size = (K_1, K_1))(conv_2_d)
         in1_conv_3_3 = MaxPooling2D(pool_size = (K_1, K_1))(conv_3_d)
@@ -313,7 +313,7 @@ class Learner():
         conv_1_in_3 = Dropout(0.2)(conv_1_in_3_d)
         conv_2_in_3 = Dropout(0.2)(conv_2_in_3_d)
         conv_3_in_3 = Dropout(0.2)(conv_3_in_3_d)
-        '''
+        
         #-----------------------------------
 
         Conv_1_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
@@ -323,14 +323,14 @@ class Learner():
         Conv_3_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
         Conv_3_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
 
-        conv_1_7 = Conv_1_7(in1_conv_1_1)
+        conv_1_7 = Conv_1_7(conv_1_in_1)
         conv_1_8 = Conv_1_8(conv_1_7)
-        conv_2_7 = Conv_2_7(in1_conv_2_2)
+        conv_2_7 = Conv_2_7(conv_2_in_1)
         conv_2_8 = Conv_2_8(conv_2_7)
-        conv_3_7 = Conv_3_7(in1_conv_3_3)
+        conv_3_7 = Conv_3_7(conv_3_in_1)
         conv_3_8 = Conv_3_8(conv_3_7)
 
-        lam_1 = Lambda(lam, output_shape=(64, size))(conv_1_8)
+        lam_1 = Lambda(lam, output_shape=(32, size))(conv_1_8)
         lam_2 = Lambda(lam, output_shape=(32, size))(conv_2_8)
         lam_3 = Lambda(lam, output_shape=(32, size))(conv_3_8)
         drop_1 = Dropout(0.3)(lam_1)
@@ -388,100 +388,63 @@ class Learner():
 
             return float(ans == num[0])
 
-        filename = '/data/tmpsrt1/log_new/weights.26.hdf5'
+        meta_path = path + 'evaluation_setup/'
+        self.create_mfcc()
 
-        self.model.load_weights(filename)
+        for fol in range(1, 5):
+            filename = '/data/tmpsrt1/log_new/weights_paper_fold%d.{epoch:02d}.hdf5' % fol
+            self.model.load_weights(filename)
+            self.prepare(fol)
 
-        self.valid_data = (
-            {
-                'data_2048' : self.data_2048[1],
-                'data_cqt' : self.data_cqt[1],
-                'data_8192' : self.data_8192[1]
-            }, \
-            {
-                'out_1' : self.label[1],
-                'out_2' : self.label[1],
-                'out_3' : self.label[1]
-            }
-        )
-
-        output = self.model.predict(       
-                x = self.valid_data[0],
-                batch_size = 64,
-                verbose = 2
+            self.valid_data = (
+                {
+                    'data_mel' : self.data_mel[1],
+                    'data_4096' : self.data_4096[1],
+                    'data_2048' : self.data_2048[1]
+                }, \
+                {
+                    'out_1' : self.label[1],
+                    'out_2' : self.label[1],
+                    'out_3' : self.label[1]
+                }
             )
-        print("!!!!!!!!!!!!!!!!!!!!")
 
-        data = output[0]
-        label = self.valid_data[1]['out_1']
+            output = self.model.predict(       
+                    x = self.valid_data[0],
+                    batch_size = 64,
+                    verbose = 2
+                )
+            print("!!!!!!!!!!!!!!!!!!!!")
 
-        #print(label[:10])
-        #print(output[:10])
+            label = self.valid_data[1]['out_1']
 
-        Type = 'development'
-        path = '../data/TUT-acoustic-scenes-2017-' + Type + '/'
-        meta_path = path + 'meta.txt'
+            fold_name = meta_path + ('fold%d' % fol)
+            load_name = fold_name + '_evaluate.txt'
 
-        line_list = []
-        dict_name = {}
-        with open(meta_path, 'r') as ff:
+            dict_label = {}
+            dict_class = {}
+            with open(load_name, 'r') as ff:
             for line in ff:
-                line_list.append(line)
                 parts = line.split('\t')
-                name = parts[2]
 
-                if (name not in dict_name):
-                    dict_name[name] = 0
-                dict_name[name] = dict_name[name] + 1
-
-        self.Load_list('name_list.txt')
-
-        dict_label = {}
-        num_label = 0
-        self.dict_class = {}
-        for name in self.name_list:
-            for line in line_list:
-                parts = line.split('\t')
-                if (parts[2] != name):
-                    continue
                 if (parts[1] not in dict_label):
                     dict_label[parts[1]] = num_label
-                    self.dict_class[num_label] = parts[1]
+                    dict_class[num_label] = parts[1]
                     num_label = num_label + 1
 
-        num_list = 248
-        num_train_name = 198
-
-        Start = 0
-        for i in range(num_train_name):
-            name = self.name_list[i]
-            Start = Start + dict_name[name]
-
-        print(Start)
-
-        Start = 0
-        ans = []
-        for i in range(num_train_name, num_list):
-            name = self.name_list[i]
-
-            for j in range(dict_name[name]):
-                End = Start + 1
-                asd = label[Start * num_repeat : End * num_repeat]
-
-                data_1 = output[0][Start * num_repeat : End * num_repeat]
-                data_2 = output[1][Start * num_repeat : End * num_repeat]
-                data_3 = output[2][Start * num_repeat : End * num_repeat]
+            n = label.shape[0] / num_repeat
+            ans = []
+            for i in range(n):
+                asd = label[i * num_repeat : (i + 1) * num_repeat]
+                data_1 = output[0][i * num_repeat : (i + 1) * num_repeat]
+                data_2 = output[1][i * num_repeat : (i + 1) * num_repeat]
+                data_3 = output[2][i * num_repeat : (i + 1) * num_repeat]
 
                 data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
                 res = Calc(asd, data_asd)
                 ans.append(res)
-                if (res == 0):
-                    print(name)
 
-                Start = End
-
-        #print(ans)
-        print(np.mean(np.array(ans)))
+            print(np.mean(np.array(ans)))
 
 
     def work(self):
@@ -489,10 +452,8 @@ class Learner():
             self.prepare(fol)
             self.create_mfcc()
             self.learn(fol)
-        
-        #self.predict()
 
 a = Learner()
 a.work()
-
+a.predict()
 
