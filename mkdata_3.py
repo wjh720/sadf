@@ -24,9 +24,8 @@ def Work(name, save_name):
     file_list = []
     with open(name, 'r') as ff:
         for line in ff:
-            line_list.append(line)
             parts = line.split('\t')
-
+            
             file_list.append(path + parts[0])
 
             if (parts[1] not in dict_label):
