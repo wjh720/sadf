@@ -39,10 +39,10 @@ class Learner():
         pass
 
     def prepare_label(self, data):
-        print(data[:22])
+        #print(data[:22])
         data = data.repeat(num_repeat)
         data = np.eye(num_classes)[data]
-        print(data.shape)
+        #print(data.shape)
         return data
 
     def Load_1(self, name1, name2):
@@ -74,7 +74,7 @@ class Learner():
                 pdata.append(aa)
                 #$pdata.append(aa[::-1])
         pdata = np.array(pdata)
-        print(pdata.shape)
+        #print(pdata.shape)
         return pdata
 
     def Load_2(self, name1, name2, length):
@@ -106,14 +106,15 @@ class Learner():
         self.data_8192 = self.Load_2(name, '_data_8192', si_1)
         self.data_mel = self.Load_2(name, '_data_mel', si_2)
 
-        print('----------------')
-        print(self.label[0].shape)
-        print(self.data_cqt[0].shape)
-        print(self.data_2048[0].shape)
-        print(self.data_4096[0].shape)
-        print(self.data_8192[0].shape)
-        print(self.data_mel[0].shape)
-        print('----------------')
+        if (fol == 0):
+            print('----------------')
+            print(self.label[0].shape)
+            print(self.data_cqt[0].shape)
+            print(self.data_2048[0].shape)
+            print(self.data_4096[0].shape)
+            print(self.data_8192[0].shape)
+            print(self.data_mel[0].shape)
+            print('----------------')
 
 
     def learn(self, fol):
@@ -153,7 +154,7 @@ class Learner():
             y = self.y_data,
             validation_data = self.valid_data,
             batch_size = 64,
-            epochs = 1,
+            epochs = 50,
             verbose = 2,
             shuffle = True,
             callbacks = [tbCallBack,checkpointer]
