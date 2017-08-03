@@ -210,9 +210,10 @@ def Random():
                 continue
 
             if (parts[1] not in dict_label):
-                iid[parts[2]] = num_label
                 dict_label[parts[1]] = num_label
                 num_label = num_label + 1
+
+            iid[parts[2]] = num_label
 
     print(iid)
     Satistics = np.zeros(15)
