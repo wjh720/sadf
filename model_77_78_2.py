@@ -25,12 +25,12 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
-num_repeat = 6
+num_repeat = 13
 num_asd = 25
 num_classes = 15
-si_1 = 32
-si_2 = 128
-si_3 = 512
+si_1 = 16
+si_2 = 64
+si_3 = 256
 
 class Learner():
     def __init__(self):
@@ -120,8 +120,8 @@ class Learner():
 
 
     def learn(self):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_new', histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights.{epoch:02d}.hdf5', \
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_new_1', histogram_freq=0, write_graph=True, write_images=True)
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_1.{epoch:02d}.hdf5', \
                         period = 1, verbose = 1, save_weights_only = True)
         
         print(' Begin fitting ')
@@ -320,11 +320,11 @@ class Learner():
         Conv_3_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
         Conv_3_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
 
-        conv_1_7 = Conv_1_7(in1_conv_1_1)
+        conv_1_7 = Conv_1_7(conv_1_in_1)
         conv_1_8 = Conv_1_8(conv_1_7)
-        conv_2_7 = Conv_2_7(in1_conv_2_2)
+        conv_2_7 = Conv_2_7(conv_2_in_1)
         conv_2_8 = Conv_2_8(conv_2_7)
-        conv_3_7 = Conv_3_7(in1_conv_3_3)
+        conv_3_7 = Conv_3_7(conv_3_in_1)
         conv_3_8 = Conv_3_8(conv_3_7)
 
         lam_1 = Lambda(lam, output_shape=(32, size))(conv_1_8)
