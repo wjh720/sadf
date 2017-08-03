@@ -384,7 +384,7 @@ class Learner():
 
             return float(ans == num[0])
 
-        filename = '/data/tmpsrt1/log_new/ha_weights.24.hdf5'
+        filename = '/data/tmpsrt1/log_new/ha_weights.26.hdf5'
 
         self.model.load_weights(filename)
 
@@ -459,21 +459,22 @@ class Learner():
         ans = []
         for i in range(num_train_name, num_list):
             name = self.name_list[i]
-            End = Start + dict_name[name]
 
-            asd = label[Start * num_repeat : End * num_repeat]
+            for j in range(dict_name[name]):
+                End = Start + 1
+                asd = label[Start * num_repeat : End * num_repeat]
 
-            data_1 = output[0][Start * num_repeat : End * num_repeat]
-            data_2 = output[1][Start * num_repeat : End * num_repeat]
-            data_3 = output[2][Start * num_repeat : End * num_repeat]
+                data_1 = output[0][Start * num_repeat : End * num_repeat]
+                data_2 = output[1][Start * num_repeat : End * num_repeat]
+                data_3 = output[2][Start * num_repeat : End * num_repeat]
 
-            data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
-            res = Calc(asd, data_asd)
-            ans.append(res)
-            if (res == 0):
-                print(name)
+                data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
+                res = Calc(asd, data_1)
+                ans.append(res)
+                if (res == 0):
+                    print(name)
 
-            Start = End
+                Start = End
 
         print(ans)
         print(np.mean(np.array(ans)))
@@ -482,8 +483,8 @@ class Learner():
     def work(self):
         self.prepare()
         self.create_mfcc()
-        self.learn()
-        #self.predict()
+        #self.learn()
+        self.predict()
 
 a = Learner()
 a.work()
