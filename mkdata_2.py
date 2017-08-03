@@ -80,7 +80,7 @@ def prepare_mfcc():
             print('total : %d, train : %d, valid : %d, valid_ratio : %lf' \
                 % (Total[i], Satistics[i], valid, 1. * valid / Total[i]))  
 
-        time.sleep(5)
+        time.sleep(1)
         print(Min)
         print('-----------')
         return Min < 2 
