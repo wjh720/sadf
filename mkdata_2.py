@@ -43,6 +43,7 @@ def prepare_mfcc():
     def Fail(load_name_list):
         iid = {}
         dict_class = {}
+        num_label = 0
         for name in load_name_list:
             for line in line_list:
                 parts = line.split('\t')
