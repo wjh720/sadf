@@ -215,7 +215,6 @@ def Random():
 
             iid[parts[2]] = num_label
 
-    print(iid)
     Satistics = np.zeros(15)
     for i in range(num_train_name):
         Id = iid[load_name_list[i]]
