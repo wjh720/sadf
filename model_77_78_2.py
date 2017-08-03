@@ -384,7 +384,7 @@ class Learner():
 
             return float(ans == num[0])
 
-        filename = '/data/tmpsrt1/log_new/ha_weights.26.hdf5'
+        filename = '/data/tmpsrt1/log_new/weights.26.hdf5'
 
         self.model.load_weights(filename)
 
