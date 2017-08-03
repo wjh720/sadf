@@ -183,7 +183,7 @@ def Random():
 
     print(num_name)
 
-    load_name_list('name_list.txt')
+    Load_list('name_list.txt')
 
     print('num_list : %d' % len(name_list))
 
