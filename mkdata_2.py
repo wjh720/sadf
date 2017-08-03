@@ -212,7 +212,7 @@ def Random():
                 dict_label[parts[1]] = num_label
                 num_label = num_label + 1
 
-            iid[parts[2]] = num_label
+            iid[parts[2]] = dict_label[parts[1]]
 
     print(iid)
     Satistics = np.zeros(15)
