@@ -204,6 +204,7 @@ def Random():
     #--------------------------------------
 
     iid = {}
+    dict_class = {}
     for name in load_name_list:
         for line in line_list:
             parts = line.split('\t')
@@ -212,6 +213,7 @@ def Random():
 
             if (parts[1] not in dict_label):
                 dict_label[parts[1]] = num_label
+                dict_class[num_label] = parts[1]
                 num_label = num_label + 1
 
             iid[parts[2]] = dict_label[parts[1]]
@@ -229,7 +231,8 @@ def Random():
 
     for i in range(15):
         valid = Total[i] - Satistics[i]
-        print('total : %d, train : %d, valid : %d, valid_ratio : %lf' % (Total[i], Satistics[i], valid, 1. * valid / Total[i]))
+        print('class : %s, total : %d, train : %d, valid : %d, valid_ratio : %lf' \
+            % (dict_class[i], Total[i], Satistics[i], valid, 1. * valid / Total[i]))
 
 #prepare_mfcc()
 Random()
