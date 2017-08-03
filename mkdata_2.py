@@ -186,9 +186,9 @@ def Random():
 
     load_name_list = Load_list('name_list.txt')
 
-    print('num_list : %d' % len(name_list))
+    print('num_list : %d' % len(load_name_list))
 
-    num_train_name = int(len(name_list) * 0.8)
+    num_train_name = int(len(load_name_list) * 0.8)
 
     print('num_train_name : %d' % num_train_name)
 
