@@ -46,11 +46,11 @@ class Learner():
     def Load_1(self, name1, name2):
         data = []
 
-        f = file(name1 + '_train' + name2, 'r')
+        f = file(name1 + '_train' + name2 + '.py', 'r')
         data.append(np.load(f))
         f.close()
 
-        f = file(name1 + '_evaluate' + name2, 'r')
+        f = file(name1 + '_evaluate' + name2 + '.py', 'r')
         data.append(np.load(f))
         f.close()
 
@@ -78,11 +78,11 @@ class Learner():
     def Load_2(self, name1, name2, length):
         data = []
 
-        f = file(name1 + '_train' + name2, 'r')
+        f = file(name1 + '_train' + name2 + '.py', 'r')
         data.append(np.load(f))
         f.close()
 
-        f = file(name1 + '_evaluate' + name2, 'r')
+        f = file(name1 + '_evaluate' + name2 + '.py', 'r')
         data.append(np.load(f))
         f.close()
 
