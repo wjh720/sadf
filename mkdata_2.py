@@ -106,7 +106,7 @@ def prepare_mfcc():
     print(num_name)
     #time.sleep(1000)
     random.shuffle(name_list)
-    while (Fail(num_list)):
+    while (Fail(name_list)):
         random.shuffle(name_list)
 
     save_list(name_list, 'name_list.txt')
