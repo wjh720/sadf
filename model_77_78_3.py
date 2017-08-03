@@ -30,21 +30,11 @@ num_asd = 25
 num_classes = 15
 si_1 = 16
 si_2 = 64
-si_3 = 256
+si_3 = 32
 
 class Learner():
     def __init__(self):
         pass
-
-    def Load_list(self, name):
-        f = open(name, 'r')
-        self.name_list = []
-        for line in open(name):
-            line = f.readline()
-            #print(line)
-            #time.sleep(10)
-            self.name_list.append(line)
-        f.close()
 
     def prepare_label(self, data):
         print(data[:22])
@@ -56,11 +46,11 @@ class Learner():
     def Load_1(self, name):
         data = []
 
-        f = file(name + 'train', 'r')
+        f = file(name1 + '_train' + name2, 'r')
         data.append(np.load(f))
         f.close()
 
-        f = file(name + 'valid', 'r')
+        f = file(name1 + '_evaluate' + name2, 'r')
         data.append(np.load(f))
         f.close()
 
@@ -85,14 +75,14 @@ class Learner():
         print(pdata.shape)
         return pdata
 
-    def Load_2(self, name, length):
+    def Load_2(self, name1, name2, length):
         data = []
 
-        f = file(name + 'train', 'r')
+        f = file(name1 + '_train' + name2, 'r')
         data.append(np.load(f))
         f.close()
 
-        f = file(name + 'valid', 'r')
+        f = file(name1 + '_evaluate' + name2, 'r')
         data.append(np.load(f))
         f.close()
 
@@ -103,28 +93,32 @@ class Learner():
 
         return data
 
-    def prepare(self):
-        self.label = self.Load_1('label')
-        self.data_cqt = self.Load_2('data_cqt', si_2)
-        self.data_2048 = self.Load_2('data_2048', si_2)
-        self.data_8192 = self.Load_2('data_8192', si_1)
-        self.data_mel = self.Load_2('data_mel', si_2)
+    def prepare(self, fol):
+        name = 'fold%d' % fol
+
+        self.label = self.Load_1(name, '_label')
+        self.data_cqt = self.Load_2(name, '_data_cqt', si_2)
+        self.data_2048 = self.Load_2(name, '_data_2048', si_2)
+        self.data_4096 = self.Load_2(name, '_data_4096', si_3)
+        self.data_8192 = self.Load_2(name, '_data_8192', si_1)
+        self.data_mel = self.Load_2(name, '_data_mel', si_2)
 
         print('----------------')
         print(self.label[0].shape)
         print(self.data_cqt[0].shape)
         print(self.data_2048[0].shape)
+        print(self.data_4096[0].shape)
         print(self.data_8192[0].shape)
         print(self.data_mel[0].shape)
         print('----------------')
 
 
-    def learn(self):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_new_1', histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_1.{epoch:02d}.hdf5', \
+    def learn(self, fol):
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_paper', histogram_freq=0, write_graph=True, write_images=True)
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_paper.{epoch:02d}.hdf5', \
                         period = 1, verbose = 1, save_weights_only = True)
         
-        print(' Begin fitting ')
+        print(' Begin fitting %d' % fol)
 
         self.x_data = {
             'data_2048' : self.data_2048[0],
@@ -161,11 +155,11 @@ class Learner():
             callbacks = [tbCallBack,checkpointer]
         )
 
-        print(' End fitting ')
+        print(' End fitting %d' % fol)
 
     def create_mfcc(self):
 
-        K_n = 7
+        K_n = 5
         K_11 = 4
         K_1 = 2
         K_2 = 2
@@ -320,11 +314,11 @@ class Learner():
         Conv_3_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
         Conv_3_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
 
-        conv_1_7 = Conv_1_7(conv_1_in_1)
+        conv_1_7 = Conv_1_7(in1_conv_1_1)
         conv_1_8 = Conv_1_8(conv_1_7)
-        conv_2_7 = Conv_2_7(conv_2_in_1)
+        conv_2_7 = Conv_2_7(in1_conv_2_2)
         conv_2_8 = Conv_2_8(conv_2_7)
-        conv_3_7 = Conv_3_7(conv_3_in_1)
+        conv_3_7 = Conv_3_7(in1_conv_3_3)
         conv_3_8 = Conv_3_8(conv_3_7)
 
         lam_1 = Lambda(lam, output_shape=(32, size))(conv_1_8)
@@ -358,6 +352,7 @@ class Learner():
                             loss_weights = {'out_1' : 1., 'out_2' : 1., 'out_3' : 1.}, \
                             optimizer = 'adam', \
                             metrics = {'out_1' : 'accuracy', 'out_2' : 'accuracy', 'out_3' : 'accuracy'})
+
 
     def predict(self):
 
@@ -481,9 +476,11 @@ class Learner():
 
 
     def work(self):
-        self.prepare()
-        self.create_mfcc()
-        #self.learn()
+        for fol in range(1, 5):
+            self.prepare(fol)
+            self.create_mfcc()
+            self.learn(fol)
+        
         self.predict()
 
 a = Learner()
