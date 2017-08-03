@@ -125,7 +125,7 @@ class Learner():
 
         self.x_data = {
             'data_2048' : self.data_2048[0],
-            'data_cqt' : self.data_cqt[0],
+            'data_4096' : self.data_4096[0],
             'data_8192' : self.data_8192[0]
         }
         self.y_data = {
@@ -137,7 +137,7 @@ class Learner():
         self.valid_data = (
             {
                 'data_2048' : self.data_2048[1],
-                'data_cqt' : self.data_cqt[1],
+                'data_4096' : self.data_4096[1],
                 'data_8192' : self.data_8192[1]
             }, \
             {
@@ -177,7 +177,7 @@ class Learner():
             return X
 
         mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_8192')
-        mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_cqt')
+        mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_4096')
         mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
