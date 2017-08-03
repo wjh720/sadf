@@ -57,6 +57,9 @@ def prepare_mfcc():
 
                 iid[parts[2]] = dict_label[parts[1]]
 
+        num_train_name = int(len(load_name_list) * 0.8)
+        num_total = len(load_name_list)
+        
         Satistics = np.zeros(15)
         for i in range(num_train_name):
             Id = iid[load_name_list[i]]
