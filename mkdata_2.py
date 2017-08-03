@@ -59,7 +59,7 @@ def prepare_mfcc():
 
         num_train_name = int(len(load_name_list) * 0.8)
         num_total = len(load_name_list)
-        
+
         Satistics = np.zeros(15)
         for i in range(num_train_name):
             Id = iid[load_name_list[i]]
@@ -80,7 +80,7 @@ def prepare_mfcc():
 
         time.sleep(5)
         print('-----------')
-        return Min >= 2 
+        return Min < 2 
 
 
     meta_path = path + 'meta.txt'
