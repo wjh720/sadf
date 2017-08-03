@@ -201,6 +201,7 @@ def Random():
 
     #--------------------------------------
 
+    print(load_name_list)
     iid = {}
     for name in load_name_list:
         for line in line_list:
