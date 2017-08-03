@@ -14,6 +14,14 @@ Type = 'development'
 path = '../data/TUT-acoustic-scenes-2017-' + Type + '/'
 overwrite = True
 
+def Load_list(name):
+    f = open(name, 'r')
+    load_name_list = []
+    for line in open(name):
+        line = f.readline()
+        load_name_list.append(line)
+    f.close()
+
 def save_list(data, name):
     f = open(name, 'w')
     for item in data:
@@ -149,5 +157,74 @@ def prepare_mfcc():
     
     print(' Data End ')
 
-prepare_mfcc()
-#prepare_mel()
+def Random():
+    meta_path = path + 'meta.txt'
+    file_list = []
+    line_list = []
+    label_list = []
+    name_list = []
+    dict_label = {}
+    dict_name = {}
+    num_label = 0
+    num_name = 0
+    num_num = 0
+
+    with open(meta_path, 'r') as ff:
+        for line in ff:
+            line_list.append(line)
+            parts = line.split('\t')
+            name = parts[2]
+
+            if (name not in dict_name):
+                dict_name[name] = 0
+                num_name = num_name + 1
+            dict_name[name] = dict_name[name] + 1
+            num_num = num_num + 1
+
+    print(num_name)
+
+    load_name_list('name_list.txt')
+
+    print('num_list : %d' % len(name_list))
+
+    num_train_name = int(len(name_list) * 0.8)
+
+    print('num_train_name : %d' % num_train_name)
+
+    num_train = 0
+
+    for i in range(num_train_name):
+        num_train = num_train + dict_name[load_name_list[i]]
+    print('num_train : %d' % num_train)
+    print('total_num : %d' % num_num)
+
+    #--------------------------------------
+
+    iid = {}
+    for name in load_name_list:
+        for line in line_list:
+            parts = line.split('\t')
+            if (parts[2] != name):
+                continue
+
+            if (parts[1] not in dict_label):
+                iid[parts[2]] = parts[1]
+                dict_label[parts[1]] = num_label
+                num_label = num_label + 1
+
+    Satistics = np.zeros(15)
+    for i in range(num_train_name):
+        Id = iid[load_name_list[i]]
+        Satistics[Id] = Satistics[Id] + dict_name[load_name_list[i]]
+
+    Total = np.zeros(15)
+    for i in range(num_train_name):
+        Id = iid[load_name_list[i]]
+        Total[Id] = Total[Id] + dict_name[load_name_list[i]]
+
+    for i in range(15):
+        valid = Total[i] - Satistics[i]
+        print('total : %d, train : %d, valid : %d, valid_ratio : %lf', % (Total[i], Satistics[i], valid, 1. * valid / Total[i]))
+
+#prepare_mfcc()
+Random()
