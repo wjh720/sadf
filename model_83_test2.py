@@ -25,7 +25,7 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
-num_repeat = 13 * 2
+num_repeat = 13
 num_asd = 25
 num_classes = 15
 si_1 = 16
@@ -72,7 +72,7 @@ class Learner():
             for j in range(num_repeat / 2):
                 aa = asd[j * length : (j + 1) * length]
                 pdata.append(aa)
-                pdata.append(aa[::-1])
+                #pdata.append(aa[::-1])
 
         pdata = np.array(pdata)
         #print(pdata.shape)
