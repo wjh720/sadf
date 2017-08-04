@@ -56,10 +56,10 @@ class Learner():
         data.append(np.load(f))
         f.close()
 
-        print('----------------')
+        #print('----------------')
         data[0] = self.prepare_label(data[0])
         data[1] = self.prepare_label(data[1])
-        print('----------------')
+        #print('----------------')
 
         return data
 
@@ -88,10 +88,10 @@ class Learner():
         data.append(np.load(f))
         f.close()
 
-        print('----------------')
+        #print('----------------')
         data[0] = self.prepare_data(data[0], length)
         data[1] = self.prepare_data(data[1], length)
-        print('----------------')
+        #print('----------------')
 
         return data
 
@@ -399,7 +399,7 @@ class Learner():
         acc = []
 
         for fol in range(1, 4):
-            filename = '/data/tmpsrt1/log_new/weights_test_fold%d.25.hdf5' % fol
+            filename = '/data/tmpsrt1/log_new/weights_test_fold%d.15.hdf5' % fol
             self.model.load_weights(filename)
             self.prepare(fol)
 
