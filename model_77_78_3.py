@@ -118,16 +118,16 @@ class Learner():
 
 
     def learn(self, fol):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_merge_fold%d' % fol, \
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test_fold%d' % fol, \
                             histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_merge_fold%d.{epoch:02d}.hdf5' % fol, \
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_test_fold%d.{epoch:02d}.hdf5' % fol, \
                         period = 1, verbose = 1, save_weights_only = True)
         
         print(' Begin fitting %d' % fol)
 
         self.x_data = {
-            'data_8192' : self.data_mel[0],
-            'data_4096' : self.data_4096[0],
+            'data_8192' : self.data_8192[0],
+            'data_cqt' : self.data_cqt[0],
             'data_2048' : self.data_2048[0]
         }
         self.y_data = {
@@ -138,8 +138,8 @@ class Learner():
 
         self.valid_data = (
             {
-                'data_8192' : self.data_mel[1],
-                'data_4096' : self.data_4096[1],
+                'data_8192' : self.data_8192[1],
+                'data_cqt' : self.data_cqt[1],
                 'data_2048' : self.data_2048[1]
             }, \
             {
@@ -154,7 +154,7 @@ class Learner():
             y = self.y_data,
             validation_data = self.valid_data,
             batch_size = 64,
-            epochs = 5,
+            epochs = 30,
             verbose = 2,
             shuffle = True,
             callbacks = [tbCallBack,checkpointer]
@@ -179,11 +179,11 @@ class Learner():
             return X
 
         mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_8192')
-        mfcc_2 = Input(shape = (si_3, 64, ), dtype = 'float32', name = 'data_4096')
+        mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_cqt')
         mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
-        mfcc_2_r = Reshape((si_3, 64, 1))(mfcc_2)
+        mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
         mfcc_3_r = Reshape((si_2, 64, 1))(mfcc_3)
 
         # -----------------------------
@@ -323,11 +323,11 @@ class Learner():
         Conv_3_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
         Conv_3_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
 
-        conv_1_7 = Conv_1_7(conv_1_in_1)
+        conv_1_7 = Conv_1_7(conv_1_in_3)
         conv_1_8 = Conv_1_8(conv_1_7)
-        conv_2_7 = Conv_2_7(conv_2_in_1)
+        conv_2_7 = Conv_2_7(conv_2_in_3)
         conv_2_8 = Conv_2_8(conv_2_7)
-        conv_3_7 = Conv_3_7(conv_3_in_1)
+        conv_3_7 = Conv_3_7(conv_3_in_3)
         conv_3_8 = Conv_3_8(conv_3_7)
 
         lam_1 = Lambda(lam, output_shape=(32, size))(conv_1_8)
@@ -424,13 +424,13 @@ class Learner():
             dict_label = {}
             dict_class = {}
             with open(load_name, 'r') as ff:
-            for line in ff:
-                parts = line.split('\t')
+                for line in ff:
+                    parts = line.split('\t')
 
-                if (parts[1] not in dict_label):
-                    dict_label[parts[1]] = num_label
-                    dict_class[num_label] = parts[1]
-                    num_label = num_label + 1
+                    if (parts[1] not in dict_label):
+                        dict_label[parts[1]] = num_label
+                        dict_class[num_label] = parts[1]
+                        num_label = num_label + 1
 
             n = label.shape[0] / num_repeat
             ans = []
