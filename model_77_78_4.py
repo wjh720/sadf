@@ -174,8 +174,7 @@ class Learner():
                 epochs = 1,
                 verbose = 2,
                 shuffle = True,
-                callbacks = [tbCallBack,checkpointer],
-                initial_epoch = i
+                callbacks = [tbCallBack,checkpointer]
             )
             self.model.save_weights('/data/tmpsrt1/log_new/model_weights_%d.h5' % (i + 1))
             print('epoch num : %d' % i)
