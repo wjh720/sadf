@@ -164,7 +164,7 @@ class Learner():
                 }
             )
 
-            model.load_weights('log_new/model_weights_%d.h5' % i)
+            self.model.load_weights('log_new/model_weights_%d.h5' % i)
             self.model.fit(
                 x = self.x_data,
                 y = self.y_data,
@@ -176,7 +176,7 @@ class Learner():
                 callbacks = [tbCallBack,checkpointer],
                 initial_epoch = i
             )
-            model.save_weights('log_new/model_weights_%d.h5' % (i + 1))
+            self.model.save_weights('log_new/model_weights_%d.h5' % (i + 1))
             #print('epoch num : %d' % i)
 
         print(' End fitting %d' % fol)
