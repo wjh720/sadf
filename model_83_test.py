@@ -73,7 +73,7 @@ class Learner():
                 aa = asd[j * length : (j + 1) * length]
                 pdata.append(aa)
                 pdata.append(aa[::-1])
-                
+
         pdata = np.array(pdata)
         #print(pdata.shape)
         return pdata
@@ -317,7 +317,7 @@ class Learner():
         acc = []
 
         for fol in range(1, 2):
-            filename = '/data/tmpsrt1/log_new/weights_merge_fold%d.29.hdf5' % fol
+            filename = '/data/tmpsrt1/log_new/weights_merge2_fold%d.29.hdf5' % fol
             self.model.load_weights(filename)
             self.prepare(fol)
 
@@ -384,6 +384,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-#a.work()
-a.predict()
+a.work()
+#a.predict()
 
