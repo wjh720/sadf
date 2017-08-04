@@ -332,14 +332,12 @@ class Learner():
         acc = []
 
         for fol in range(1, 2):
-            filename = '/data/tmpsrt1/log_new/weights_merge2_fold%d.29.hdf5' % fol
+            filename = '/data/tmpsrt1/log_new/weights_test2_fold%d.16.hdf5' % fol
             self.model.load_weights(filename)
             self.prepare(fol)
 
             self.valid_data = (
                 {
-                    'data_8192' : self.data_8192[1],
-                    'data_cqt' : self.data_cqt[1],
                     'data_2048' : self.data_2048[1]
                 }, \
                 {
@@ -399,6 +397,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-a.work()
-#a.predict()
+#a.work()
+a.predict()
 
