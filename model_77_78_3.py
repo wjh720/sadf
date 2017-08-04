@@ -399,7 +399,7 @@ class Learner():
         acc = []
 
         for fol in range(1, 4):
-            filename = '/data/tmpsrt1/log_new/weights_test_fold%d.15.hdf5' % fol
+            filename = '/data/tmpsrt1/log_new/weights_test2_fold%d.00.hdf5' % fol
             self.model.load_weights(filename)
             self.prepare(fol)
 
