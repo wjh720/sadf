@@ -422,7 +422,7 @@ class Learner():
             load_name = fold_name + '_evaluate.txt'
 
             dict_label = {}
-            dict_class = {}
+            self.dict_class = {}
             num_label = 0
             with open(load_name, 'r') as ff:
                 for line in ff:
@@ -430,7 +430,7 @@ class Learner():
 
                     if (parts[1] not in dict_label):
                         dict_label[parts[1]] = num_label
-                        dict_class[num_label] = parts[1]
+                        self.dict_class[num_label] = parts[1]
                         num_label = num_label + 1
 
             n = label.shape[0] / num_repeat
