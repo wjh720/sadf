@@ -393,6 +393,8 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
+        acc = []
+
         for fol in range(1, 5):
             filename = '/data/tmpsrt1/log_new/weights_merge_fold%d.20.hdf5' % fol
             self.model.load_weights(filename)
@@ -447,7 +449,11 @@ class Learner():
                 res = Calc(asd, data_asd)
                 ans.append(res)
 
-            print(np.mean(np.array(ans)))
+            acc_fol = np.mean(np.array(ans))
+            print(acc_fol)
+            acc.append(acc_fol)
+
+        print('totoal_acc : %lf' % np.mean(acc))
 
 
     def work(self):
