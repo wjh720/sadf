@@ -304,13 +304,13 @@ class Learner():
             if (np.max(num) != np.min(num)):
                 print('calc error!')
 
-            #asd = np.argmax(data, axis = 1)
+            asd = np.argmax(data, axis = 1)
 
-            #counts = np.bincount(asd)
-            #ans = np.argmax(counts)
+            counts = np.bincount(asd)
+            ans = np.argmax(counts)
 
-            asd = np.sum(data, axis = 0)
-            ans = np.argmax(asd)
+            #asd = np.sum(data, axis = 0)
+            #ans = np.argmax(asd)
 
             '''
             if (ans != num[0]):
@@ -329,7 +329,7 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(40, 45, 5):
+        for aaa in range(10, 45, 5):
             acc = []
             for fol in range(1, 2):
                 filename = '/data/tmpsrt1/log_new/weights_test2_fold%d.%d.hdf5' % (fol, aaa)
