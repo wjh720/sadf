@@ -381,7 +381,7 @@ class Learner():
                             optimizer = 'adam', \
                             metrics = {'out_1' : 'accuracy', 'out_2' : 'accuracy', 'out_3' : 'accuracy'})
 
-        model.save_weights('log_new/model_weights_0.h5')
+        self.model.save_weights('log_new/model_weights_0.h5')
 
     def predict(self):
 
