@@ -329,65 +329,65 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        acc = []
+        for aaa in range(35, 40, 5):
+            acc = []
+            for fol in range(1, 2):
+                filename = '/data/tmpsrt1/log_new/weights_test2_fold%d.%d.hdf5' % (fol, aaa)
+                self.model.load_weights(filename)
+                self.prepare(fol)
 
-        for fol in range(1, 2):
-            filename = '/data/tmpsrt1/log_new/weights_test2_fold%d.16.hdf5' % fol
-            self.model.load_weights(filename)
-            self.prepare(fol)
-
-            self.valid_data = (
-                {
-                    'data_2048' : self.data_2048[1]
-                }, \
-                {
-                    'out_1' : self.label[1],
-                    'out_2' : self.label[1],
-                    'out_3' : self.label[1]
-                }
-            )
-
-            output = self.model.predict(       
-                    x = self.valid_data[0],
-                    batch_size = 64,
-                    verbose = 2
+                self.valid_data = (
+                    {
+                        'data_2048' : self.data_2048[1]
+                    }, \
+                    {
+                        'out_1' : self.label[1],
+                        'out_2' : self.label[1],
+                        'out_3' : self.label[1]
+                    }
                 )
-            print("!!!!!!!!!!!!!!!!!!!!")
 
-            label = self.valid_data[1]['out_1']
+                output = self.model.predict(       
+                        x = self.valid_data[0],
+                        batch_size = 64,
+                        verbose = 2
+                    )
+                print("!!!!!!!!!!!!!!!!!!!!")
 
-            fold_name = meta_path + ('fold%d' % fol)
-            load_name = fold_name + '_evaluate.txt'
+                label = self.valid_data[1]['out_1']
 
-            dict_label = {}
-            self.dict_class = {}
-            num_label = 0
-            with open(load_name, 'r') as ff:
-                for line in ff:
-                    parts = line.split('\t')
+                fold_name = meta_path + ('fold%d' % fol)
+                load_name = fold_name + '_evaluate.txt'
 
-                    if (parts[1] not in dict_label):
-                        dict_label[parts[1]] = num_label
-                        self.dict_class[num_label] = parts[1]
-                        num_label = num_label + 1
+                dict_label = {}
+                self.dict_class = {}
+                num_label = 0
+                with open(load_name, 'r') as ff:
+                    for line in ff:
+                        parts = line.split('\t')
 
-            n = label.shape[0] / num_repeat
-            ans = []
-            for i in range(n):
-                asd = label[i * num_repeat : (i + 1) * num_repeat]
-                data_1 = output[0][i * num_repeat : (i + 1) * num_repeat]
-                data_2 = output[1][i * num_repeat : (i + 1) * num_repeat]
-                data_3 = output[2][i * num_repeat : (i + 1) * num_repeat]
+                        if (parts[1] not in dict_label):
+                            dict_label[parts[1]] = num_label
+                            self.dict_class[num_label] = parts[1]
+                            num_label = num_label + 1
 
-                data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
-                res = Calc(asd, data_asd)
-                ans.append(res)
+                n = label.shape[0] / num_repeat
+                ans = []
+                for i in range(n):
+                    asd = label[i * num_repeat : (i + 1) * num_repeat]
+                    data_1 = output[0][i * num_repeat : (i + 1) * num_repeat]
+                    data_2 = output[1][i * num_repeat : (i + 1) * num_repeat]
+                    data_3 = output[2][i * num_repeat : (i + 1) * num_repeat]
 
-            acc_fol = np.mean(np.array(ans))
-            print(acc_fol)
-            acc.append(acc_fol)
+                    data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
+                    res = Calc(asd, data_asd)
+                    ans.append(res)
 
-        print('totoal_acc : %lf' % np.mean(acc))
+                acc_fol = np.mean(np.array(ans))
+                print(acc_fol)
+                acc.append(acc_fol)
+
+            print('totoal_acc : %lf' % np.mean(acc))
 
 
     def work(self):
