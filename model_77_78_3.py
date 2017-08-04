@@ -371,10 +371,13 @@ class Learner():
             if (np.max(num) != np.min(num)):
                 print('calc error!')
 
-            asd = np.argmax(data, axis = 1)
+            #asd = np.argmax(data, axis = 1)
 
-            counts = np.bincount(asd)
-            ans = np.argmax(counts)
+            #counts = np.bincount(asd)
+            #ans = np.argmax(counts)
+
+            asd = np.sum(data, axis = 0)
+            ans = np.argmax(asd)
 
             '''
             if (ans != num[0]):
