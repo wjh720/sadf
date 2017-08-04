@@ -135,7 +135,7 @@ class Learner():
         
         print(' Begin fitting %d' % fol)
 
-        num_epoch = 20
+        num_epoch = 30
         print(fol)
         for i in range(num_epoch):
             self.prepare(fol)
@@ -143,7 +143,7 @@ class Learner():
 
             self.x_data = {
                 'data_8192' : self.data_8192[0],
-                'data_mel' : self.data_mel[0],
+                'data_cqt' : self.data_cqt[0],
                 'data_2048' : self.data_2048[0]
             }
             self.y_data = {
@@ -155,7 +155,7 @@ class Learner():
             self.valid_data = (
                 {
                     'data_8192' : self.data_8192[1],
-                    'data_mel' : self.data_mel[1],
+                    'data_cqt' : self.data_cqt[1],
                     'data_2048' : self.data_2048[1]
                 }, \
                 {
@@ -198,11 +198,11 @@ class Learner():
             return X
 
         mfcc_1 = Input(shape = (si_1, 64, ), dtype = 'float32', name = 'data_8192')
-        mfcc_2 = Input(shape = (si_2, 128, ), dtype = 'float32', name = 'data_mel')
+        mfcc_2 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_mel')
         mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
-        mfcc_2_r = Reshape((si_2, 128, 1))(mfcc_2)
+        mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
         mfcc_3_r = Reshape((si_2, 64, 1))(mfcc_3)
 
         # -----------------------------
@@ -224,7 +224,7 @@ class Learner():
         conv_1_d = BatchNormalization()(conv_1_2)
         conv_2_d = BatchNormalization()(conv_2_2)
         conv_3_d = BatchNormalization()(conv_3_2)
-        
+        '''
         in1_conv_1_1 = MaxPooling2D(pool_size = (K_1, K_1))(conv_1_d)
         in1_conv_2_2 = MaxPooling2D(pool_size = (K_1, K_1))(conv_2_d)
         in1_conv_3_3 = MaxPooling2D(pool_size = (K_1, K_1))(conv_3_d)
@@ -332,7 +332,7 @@ class Learner():
         conv_1_in_3 = Dropout(0.2)(conv_1_in_3_d)
         conv_2_in_3 = Dropout(0.2)(conv_2_in_3_d)
         conv_3_in_3 = Dropout(0.2)(conv_3_in_3_d)
-        '''
+        
         #-----------------------------------
 
         Conv_1_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
@@ -342,15 +342,15 @@ class Learner():
         Conv_3_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
         Conv_3_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
 
-        conv_1_7 = Conv_1_7(in1_conv_1_1)
+        conv_1_7 = Conv_1_7(conv_1_in_1)
         conv_1_8 = Conv_1_8(conv_1_7)
-        conv_2_7 = Conv_2_7(in1_conv_2_2)
+        conv_2_7 = Conv_2_7(conv_1_in_2)
         conv_2_8 = Conv_2_8(conv_2_7)
-        conv_3_7 = Conv_3_7(in1_conv_3_3)
+        conv_3_7 = Conv_3_7(conv_1_in_3)
         conv_3_8 = Conv_3_8(conv_3_7)
 
         lam_1 = Lambda(lam, output_shape=(32, size))(conv_1_8)
-        lam_2 = Lambda(lam, output_shape=(64, size))(conv_2_8)
+        lam_2 = Lambda(lam, output_shape=(32, size))(conv_2_8)
         lam_3 = Lambda(lam, output_shape=(32, size))(conv_3_8)
         drop_1 = Dropout(0.3)(lam_1)
         drop_2 = Dropout(0.3)(lam_2)
