@@ -374,7 +374,7 @@ class Learner():
                 print(acc_fol)
                 acc.append(acc_fol)
 
-            print('totoal_acc : %lf' % np.mean(acc))
+            print('num_epoch : %d, totoal_acc : %lf' % aaa, np.mean(acc))
 
 
     def work(self):
