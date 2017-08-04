@@ -288,7 +288,7 @@ class Learner():
         den_3_1 = Dense_3_1(fla_3)
         den_3_2 = Dense_3_2(den_3_1)
 
-        self.model = Model(inputs = [mfcc_1, mfcc_2, mfcc_3], outputs = [den_1_2, den_2_2, den_3_2])
+        self.model = Model(inputs = [mfcc_3], outputs = [den_1_2, den_2_2, den_3_2])
         self.model.compile(loss = {'out_1' : 'categorical_crossentropy', 'out_2' : 'categorical_crossentropy', \
                             'out_3' : 'categorical_crossentropy'}, \
                             loss_weights = {'out_1' : 1., 'out_2' : 1., 'out_3' : 1.}, \
