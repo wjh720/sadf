@@ -139,6 +139,7 @@ class Learner():
 
         for i in range(num_epoch):
             self.prepare(fol)
+            print('start')
 
             self.x_data = {
                 'data_8192' : self.data_8192[0],
@@ -177,7 +178,7 @@ class Learner():
                 initial_epoch = i
             )
             self.model.save_weights('/data/tmpsrt1/log_new/model_weights_%d.h5' % (i + 1))
-            #print('epoch num : %d' % i)
+            print('epoch num : %d' % i)
 
         print(' End fitting %d' % fol)
 
