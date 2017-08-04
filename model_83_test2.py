@@ -69,7 +69,7 @@ class Learner():
 
         for i in range(n):
             asd = data[i]
-            for j in range(num_repeat / 2):
+            for j in range(num_repeat):
                 aa = asd[j * length : (j + 1) * length]
                 pdata.append(aa)
                 #pdata.append(aa[::-1])
