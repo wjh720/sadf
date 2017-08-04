@@ -330,9 +330,9 @@ class Learner():
         conv_3_7 = Conv_3_7(conv_3_in_3)
         conv_3_8 = Conv_3_8(conv_3_7)
 
-        lam_1 = Lambda(lam, output_shape=(32, size))(conv_1_8)
-        lam_2 = Lambda(lam, output_shape=(32, size))(conv_2_8)
-        lam_3 = Lambda(lam, output_shape=(32, size))(conv_3_8)
+        lam_1 = Lambda(lam, output_shape=(8, size))(conv_1_8)
+        lam_2 = Lambda(lam, output_shape=(8, size))(conv_2_8)
+        lam_3 = Lambda(lam, output_shape=(8, size))(conv_3_8)
         drop_1 = Dropout(0.3)(lam_1)
         drop_2 = Dropout(0.3)(lam_2)
         drop_3 = Dropout(0.3)(lam_3)
@@ -392,14 +392,14 @@ class Learner():
         self.create_mfcc()
 
         for fol in range(1, 5):
-            filename = '/data/tmpsrt1/log_new/weights_paper_fold%d.{epoch:02d}.hdf5' % fol
+            filename = '/data/tmpsrt1/log_new/weights_paper_fold%d.20.hdf5' % fol
             self.model.load_weights(filename)
             self.prepare(fol)
 
             self.valid_data = (
                 {
-                    'data_mel' : self.data_mel[1],
-                    'data_4096' : self.data_4096[1],
+                    'data_8192' : self.data_8192[1],
+                    'data_cqt' : self.data_cqt[1],
                     'data_2048' : self.data_2048[1]
                 }, \
                 {
@@ -423,6 +423,7 @@ class Learner():
 
             dict_label = {}
             dict_class = {}
+            num_label = 0
             with open(load_name, 'r') as ff:
                 for line in ff:
                     parts = line.split('\t')
@@ -454,6 +455,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-a.work()
+#a.work()
 a.predict()
 
