@@ -184,7 +184,7 @@ class Learner():
         mfcc_3 = Input(shape = (si_2, 64, ), dtype = 'float32', name = 'data_2048')
 
         mfcc_1_r = Reshape((si_1, 64, 1))(mfcc_1)
-        mfcc_2_r = Reshape((si_2, 64, 1))(mfcc_2)
+        mfcc_2_r = Reshape((si_3, 64, 1))(mfcc_2)
         mfcc_3_r = Reshape((si_2, 64, 1))(mfcc_3)
 
         # -----------------------------
