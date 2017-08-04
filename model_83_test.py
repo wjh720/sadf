@@ -96,7 +96,7 @@ class Learner():
 
         return data
 
-    def prepare(self, fol): 
+    def prepare(self, fol, pr = 0): 
         meta_path = path + 'evaluation_setup/'
         name = meta_path + ('fold%d' % fol)
 
@@ -107,7 +107,7 @@ class Learner():
         self.data_8192 = self.Load_2(name, '_data_8192', si_1)
         self.data_mel = self.Load_2(name, '_data_mel', si_2)
 
-        if (fol == 0):
+        if (pr == 1):
             print('----------------')
             print(self.label[0].shape)
             print(self.data_cqt[0].shape)
@@ -379,7 +379,7 @@ class Learner():
 
     def work(self):
         for fol in range(1, 5):
-            self.prepare(fol)
+            self.prepare(fol, pr = 1)
             self.create_mfcc()
             self.learn(fol)
 
