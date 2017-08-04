@@ -376,6 +376,7 @@ class Learner():
             counts = np.bincount(asd)
             ans = np.argmax(counts)
 
+            '''
             if (ans != num[0]):
                 print([self.dict_class[num[0]]])
                 print([self.dict_class[ans]])
@@ -385,6 +386,7 @@ class Learner():
                 print([self.dict_class[x] for x in asd[:50]])
                 print('--------------------')
                 #time.sleep(5)
+            ''' 
 
             return float(ans == num[0])
 
