@@ -57,10 +57,10 @@ class Learner():
         data.append(np.load(f))
         f.close()
 
-        print('----------------')
+        #print('----------------')
         data[0] = self.prepare_label(data[0])
         data[1] = self.prepare_label(data[1])
-        print('----------------')
+        #print('----------------')
 
         return data
 
@@ -98,10 +98,10 @@ class Learner():
         data.append(np.load(f))
         f.close()
 
-        print('----------------')
+        #print('----------------')
         data[0] = self.prepare_data(data[0], length, 1)
         data[1] = self.prepare_data(data[1], length, 0)
-        print('----------------')
+        #print('----------------')
 
         return data
 
@@ -136,7 +136,7 @@ class Learner():
         print(' Begin fitting %d' % fol)
 
         num_epoch = 20
-
+        print(fol)
         for i in range(num_epoch):
             self.prepare(fol)
             print('start')
