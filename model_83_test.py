@@ -317,7 +317,7 @@ class Learner():
         for aaa in range(10, 60, 10):
             acc = []
             for fol in range(1, 2):
-                filename = '/data/tmpsrt1/log_new/weights_merge2_fold%d.%d.hdf5' % fol, aaa
+                filename = '/data/tmpsrt1/log_new/weights_merge2_fold%d.%d.hdf5' % (fol, aaa)
                 self.model.load_weights(filename)
                 self.prepare(fol)
 
@@ -374,7 +374,7 @@ class Learner():
                 print(acc_fol)
                 acc.append(acc_fol)
 
-            print('num_epoch : %d, totoal_acc : %lf' % aaa, np.mean(acc))
+            print('num_epoch : %d, totoal_acc : %lf' % (aaa, np.mean(acc)))
 
 
     def work(self):
