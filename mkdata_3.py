@@ -17,7 +17,7 @@ def Save(data, name):
     np.save(f, data)
     f.close()
 
-def Work(name, save_name):
+def Work(name, save_name, Label = 1):
     dict_label = {}
     num_label = 0
     label_list = []
@@ -28,15 +28,17 @@ def Work(name, save_name):
 
             file_list.append(path + parts[0])
 
-            if (parts[1] not in dict_label):
-                dict_label[parts[1]] = num_label
-                num_label = num_label + 1
-            label_list.append(dict_label[parts[1]])
+            if (Label):
+                if (parts[1] not in dict_label):
+                    dict_label[parts[1]] = num_label
+                    num_label = num_label + 1
+                label_list.append(dict_label[parts[1]])
 
-    label = np.array(label_list)
-    print(label.shape)
+    if (Label):
+        label = np.array(label_list)
+        print(label.shape)
 
-    Save(label, save_name + '_label')
+        Save(label, save_name + '_label')
 
     data_2048 = []
     data_4096 = []
@@ -104,7 +106,7 @@ def prepare_evaluation():
     meta_path = path + 'evaluation_setup/'
 
     fold_name = meta_path + 'test.txt'
-    Work(fold_name, fold_name + '_test')
+    Work(fold_name, fold_name + '_test', Label = 0)
 
 
 #prepare_mfcc()
