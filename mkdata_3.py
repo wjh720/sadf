@@ -25,7 +25,7 @@ def Work(name, save_name):
     with open(name, 'r') as ff:
         for line in ff:
             parts = line.split('\t')
-            
+
             file_list.append(path + parts[0])
 
             if (parts[1] not in dict_label):
@@ -99,4 +99,13 @@ def prepare_mfcc():
         Work(fold_name + '_train.txt', fold_name + '_train')
         Work(fold_name + '_evaluate.txt', fold_name + '_evaluate')
 
-prepare_mfcc()
+def prepare_evaluation():
+    path = '../data/TUT-acoustic-scenes-2017-evaluation/'
+    meta_path = path + 'evaluation_setup/'
+    for fol in range(1, 5):
+        fold_name = meta_path + 'text.txt'
+        Work(fold_name, fold_name + '_test')
+
+
+#prepare_mfcc()
+prepare_evaluation()
