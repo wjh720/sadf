@@ -25,12 +25,12 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
-num_repeat = 13
+num_repeat = 53
 num_asd = 25
 num_classes = 15
-si_1 = 16
-si_2 = 64
-si_3 = 32
+si_1 = 4
+si_2 = 16
+si_3 = 8
 
 path = '../data/TUT-acoustic-scenes-2017-development/'
 
@@ -71,7 +71,8 @@ class Learner():
             asd = data[i]
             for j in range(num_repeat):
                 aa = asd[j * length : (j + 1) * length]
-                pdata.append(aa)
+                bb = np.concatenate([aa, aa[::-1]], axis = 0)
+                pdata.append(bb)
                 #pdata.append(aa[::-1])
 
         pdata = np.array(pdata)
