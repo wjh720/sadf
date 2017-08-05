@@ -374,10 +374,10 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(10, 100, 10):
+        for aaa in range(11):
             acc = []
             for fol in range(1, 2):
-                filename = '/data/tmpsrt1/log_new/weights_test3_fold%d.%d.hdf5' % (fol, aaa)
+                filename = '/data/tmpsrt1/log_new/weights_test3_fold%d.%02d.hdf5' % (fol, aaa)
                 self.model.load_weights(filename)
                 self.prepare(fol)
 
@@ -444,6 +444,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-a.work()
-#a.predict()
+#a.work()
+a.predict()
 
