@@ -102,9 +102,9 @@ def prepare_mfcc():
 def prepare_evaluation():
     path = '../data/TUT-acoustic-scenes-2017-evaluation/'
     meta_path = path + 'evaluation_setup/'
-    for fol in range(1, 5):
-        fold_name = meta_path + 'text.txt'
-        Work(fold_name, fold_name + '_test')
+    
+    fold_name = meta_path + 'text.txt'
+    Work(fold_name, fold_name + '_test')
 
 
 #prepare_mfcc()
