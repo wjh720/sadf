@@ -33,7 +33,7 @@ def Work(name, save_name, path, Label = 1):
                     num_label = num_label + 1
                 label_list.append(dict_label[parts[1]])
             else:
-                parts = parts.split('\r\n')
+                parts = parts[0].split('\r\n')
                 file_list.append(path + parts[0])
 
     if (Label):
