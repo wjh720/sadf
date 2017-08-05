@@ -388,7 +388,7 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(50, 100, 10):
+        for aaa in range(0, 24, 4):
             acc = []
             for fol in range(1, 2):
                 filename = '/data/tmpsrt1/log_new/weights_test2_fold%d.%d.hdf5' % (fol, aaa)
@@ -397,12 +397,14 @@ class Learner():
 
                 self.valid_data = (
                     {
+                        'data_cqt' : self.data_cqt[1],
                         'data_2048' : self.data_2048[1]
                     }, \
                     {
                         'out_1' : self.label[1],
                         'out_2' : self.label[1],
-                        'out_3' : self.label[1]
+                        'out_3' : self.label[1],
+                        'out_4' : self.label[1]
                     }
                 )
 
@@ -437,8 +439,9 @@ class Learner():
                     data_1 = output[0][i * num_repeat : (i + 1) * num_repeat]
                     data_2 = output[1][i * num_repeat : (i + 1) * num_repeat]
                     data_3 = output[2][i * num_repeat : (i + 1) * num_repeat]
+                    data_4 = output[3][i * num_repeat : (i + 1) * num_repeat]
 
-                    data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
+                    data_asd = np.concatenate([data_1, data_2, data_3, data_4], axis = 0)
                     res = Calc(asd, data_asd)
                     ans.append(res)
 
@@ -456,6 +459,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-a.work()
-#a.predict()
+#a.work()
+a.predict()
 
