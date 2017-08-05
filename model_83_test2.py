@@ -435,7 +435,7 @@ class Learner():
                 print(acc_fol)
                 acc.append(acc_fol)
 
-            print('num_epoch : %d, totoal_acc : %lf' % (aaa, np.mean(acc)))
+            print('num_epoch : %d, total_acc : %lf' % (aaa, np.mean(acc)))
 
 
     def work(self):
@@ -445,6 +445,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-#a.work()
-a.predict()
+a.work()
+#a.predict()
 
