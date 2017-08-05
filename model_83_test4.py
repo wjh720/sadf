@@ -133,7 +133,8 @@ class Learner():
         self.y_data = {
             'out_1' : self.label[0],
             'out_2' : self.label[0],
-            'out_3' : self.label[0]
+            'out_3' : self.label[0],
+            'out_4' : self.label[0]
         }
 
         self.valid_data = (
@@ -144,7 +145,8 @@ class Learner():
             {
                 'out_1' : self.label[1],
                 'out_2' : self.label[1],
-                'out_3' : self.label[1]
+                'out_3' : self.label[1],
+                'out_4' : self.label[1]
             }
         )
 
