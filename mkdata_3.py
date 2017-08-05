@@ -17,7 +17,7 @@ def Save(data, name):
     np.save(f, data)
     f.close()
 
-def Work(name, save_name, Label = 1):
+def Work(name, save_name, path, Label = 1):
     dict_label = {}
     num_label = 0
     label_list = []
@@ -98,15 +98,15 @@ def prepare_mfcc():
     meta_path = path + 'evaluation_setup/'
     for fol in range(1, 5):
         fold_name = meta_path + ('fold%d' % fol) 
-        Work(fold_name + '_train.txt', fold_name + '_train')
-        Work(fold_name + '_evaluate.txt', fold_name + '_evaluate')
+        Work(fold_name + '_train.txt', fold_name + '_train', path)
+        Work(fold_name + '_evaluate.txt', fold_name + '_evaluate', path)
 
 def prepare_evaluation():
     path = '../data/TUT-acoustic-scenes-2017-evaluation/'
     meta_path = path + 'evaluation_setup/'
 
     fold_name = meta_path + 'test.txt'
-    Work(fold_name, fold_name + '_test', Label = 0)
+    Work(fold_name, fold_name + '_test', path, Label = 0)
 
 
 #prepare_mfcc()
