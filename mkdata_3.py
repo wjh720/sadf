@@ -26,13 +26,15 @@ def Work(name, save_name, path, Label = 1):
         for line in ff:
             parts = line.split('\t')
 
-            file_list.append(path + parts[0])
-
             if (Label):
+                file_list.append(path + parts[0])
                 if (parts[1] not in dict_label):
                     dict_label[parts[1]] = num_label
                     num_label = num_label + 1
                 label_list.append(dict_label[parts[1]])
+            else:
+                parts = parts.split('\r\n')
+                file_list.append(path + parts[0])
 
     if (Label):
         label = np.array(label_list)
