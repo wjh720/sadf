@@ -28,9 +28,9 @@ import keras
 num_repeat = 53
 num_asd = 25
 num_classes = 15
-si_1 = 4
-si_2 = 16
-si_3 = 8
+si_1 = 8
+si_2 = 32
+si_3 = 16
 
 path = '../data/TUT-acoustic-scenes-2017-development/'
 
@@ -66,6 +66,7 @@ class Learner():
     def prepare_data(self, data, length):
         n = data.shape[0]
         pdata = []
+        length = length / 2
 
         for i in range(n):
             asd = data[i]
