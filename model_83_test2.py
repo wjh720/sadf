@@ -151,7 +151,7 @@ class Learner():
             y = self.y_data,
             validation_data = self.valid_data,
             batch_size = 64,
-            epochs = 100,
+            epochs = 40,
             verbose = 2,
             shuffle = True,
             callbacks = [tbCallBack,checkpointer]
