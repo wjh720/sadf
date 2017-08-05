@@ -445,6 +445,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-#a.work()
-a.predict()
+a.work()
+#a.predict()
 
