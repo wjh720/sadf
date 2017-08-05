@@ -232,7 +232,7 @@ class Learner():
         pre_2 = MaxPooling2D(pool_size = (2, 2))(pre_2_2_b)
 
         pre_2_con = Concatenate(axis = 3)([pre2_2, pre_2])
-        pre_2_d = Dropout(0.1)(pre_2_con)
+        pre_2_d = Dropout(0.15)(pre_2_con)
 
         pre_1_1 = Conv_pre_2_1(pre_2_d)
         pre_1_1_b = BatchNormalization()(pre_1_1)
@@ -241,7 +241,7 @@ class Learner():
         pre_1 = MaxPooling2D(pool_size = (2, 2))(pre_1_2_b)
 
         pre_1_con = Concatenate(axis = 3)([pre1_4, pre_1])
-        pre_1_d = Dropout(0.15)(pre_1_con)
+        pre_1_d = Dropout(0.2)(pre_1_con)
 
         # -----------------------------
 
@@ -286,9 +286,9 @@ class Learner():
         conv_2_in_1_d = Concatenate(axis = 3)([in1_conv_2_2, in1_conv_1_2, in1_conv_3_2])
         conv_3_in_1_d = Concatenate(axis = 3)([in1_conv_3_3, in1_conv_1_3, in1_conv_2_3])
 
-        conv_1_in_1 = Dropout(0.2)(conv_1_in_1_d)
-        conv_2_in_1 = Dropout(0.2)(conv_2_in_1_d)
-        conv_3_in_1 = Dropout(0.2)(conv_3_in_1_d)
+        conv_1_in_1 = Dropout(0.25)(conv_1_in_1_d)
+        conv_2_in_1 = Dropout(0.25)(conv_2_in_1_d)
+        conv_3_in_1 = Dropout(0.25)(conv_3_in_1_d)
 
         #-----------------------------------------------
 
@@ -372,7 +372,7 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(10, 45, 5):
+        for aaa in range(10, 100, 10):
             acc = []
             for fol in range(1, 2):
                 filename = '/data/tmpsrt1/log_new/weights_test2_fold%d.%d.hdf5' % (fol, aaa)
@@ -442,6 +442,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-a.work()
-#a.predict()
+#a.work()
+a.predict()
 
