@@ -25,12 +25,12 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
-num_repeat = 53
+num_repeat = 13
 num_asd = 25
 num_classes = 15
-si_1 = 8
-si_2 = 32
-si_3 = 16
+si_1 = 16
+si_2 = 64
+si_3 = 32
 
 path = '../data/TUT-acoustic-scenes-2017-development/'
 
@@ -66,14 +66,12 @@ class Learner():
     def prepare_data(self, data, length):
         n = data.shape[0]
         pdata = []
-        length = length / 2
 
         for i in range(n):
             asd = data[i]
             for j in range(num_repeat):
                 aa = asd[j * length : (j + 1) * length]
-                bb = np.concatenate([aa, aa[::-1]], axis = 0)
-                pdata.append(bb)
+                pdata.append(aa)
                 #pdata.append(aa[::-1])
 
         pdata = np.array(pdata)
@@ -121,9 +119,9 @@ class Learner():
 
 
     def learn(self, fol):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test6_fold%d' % fol, \
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test8_fold%d' % fol, \
                             histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_test6_fold%d.{epoch:02d}.hdf5' % fol, \
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_test8_fold%d.{epoch:02d}.hdf5' % fol, \
                         period = 1, verbose = 1, save_weights_only = True)
         
         print(' Begin fitting %d' % fol)
@@ -157,7 +155,7 @@ class Learner():
             y = self.y_data,
             validation_data = self.valid_data,
             batch_size = 64,
-            epochs = 30,
+            epochs = 40,
             verbose = 2,
             shuffle = True,
             callbacks = [tbCallBack,checkpointer]
@@ -374,10 +372,10 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(11):
+        for aaa in range(10, 100, 10):
             acc = []
             for fol in range(1, 2):
-                filename = '/data/tmpsrt1/log_new/weights_test3_fold%d.%02d.hdf5' % (fol, aaa)
+                filename = '/data/tmpsrt1/log_new/weights_test3_fold%d.%d.hdf5' % (fol, aaa)
                 self.model.load_weights(filename)
                 self.prepare(fol)
 
@@ -444,6 +442,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-#a.work()
-a.predict()
+a.work()
+#a.predict()
 
