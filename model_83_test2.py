@@ -249,6 +249,54 @@ class Learner():
 
         #-----------------------------------------------
 
+        Conv_1_3 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_1_4 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_3 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_2_4 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_3 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+        Conv_3_4 = Conv2D(64, (K_n, K_n), padding='same', activation='relu')
+
+        conv_1_3 = Conv_1_3(conv_1_in_1)
+        conv_1_3_b = BatchNormalization()(conv_1_3)
+        conv_1_4 = Conv_1_4(conv_1_3_b)
+
+        conv_2_3 = Conv_2_3(conv_2_in_1)
+        conv_2_3_b = BatchNormalization()(conv_2_3)
+        conv_2_4 = Conv_2_4(conv_2_3_b)
+
+        conv_3_3 = Conv_3_3(conv_3_in_1)
+        conv_3_3_b = BatchNormalization()(conv_3_3)
+        conv_3_4 = Conv_3_4(conv_3_3_b)
+
+        conv_1_dd = BatchNormalization()(conv_1_4)
+        conv_2_dd = BatchNormalization()(conv_2_4)
+        conv_3_dd = BatchNormalization()(conv_3_4)
+
+        #-----------------------------------
+
+        in2_conv_1_1 = conv_1_dd
+        in2_conv_1_2 = UpSampling2D(size = (2, 2))(in2_conv_1_1)
+        in2_conv_1_3 = UpSampling2D(size = (2, 2))(in2_conv_1_2)
+
+        in2_conv_2_2 = conv_2_dd
+        in2_conv_2_1 = MaxPooling2D(pool_size = (2, 2))(in2_conv_2_2)
+        in2_conv_2_3 = UpSampling2D(size = (2, 2))(in2_conv_2_2)
+
+        in2_conv_3_3 = conv_3_dd
+        in2_conv_3_2 = MaxPooling2D(pool_size = (2, 2))(in2_conv_3_3)
+        in2_conv_3_1 = MaxPooling2D(pool_size = (2, 2))(in2_conv_3_2)
+
+        conv_1_in_2_d = Concatenate(axis = 3)([in2_conv_1_1, in2_conv_2_1, in2_conv_3_1])
+        conv_2_in_2_d = Concatenate(axis = 3)([in2_conv_2_2, in2_conv_1_2, in2_conv_3_2])
+        conv_3_in_2_d = Concatenate(axis = 3)([in2_conv_3_3, in2_conv_1_3, in2_conv_2_3])
+
+        conv_1_in_2 = Dropout(0.25)(conv_1_in_2_d)
+        conv_2_in_2 = Dropout(0.25)(conv_2_in_2_d)
+        conv_3_in_2 = Dropout(0.25)(conv_3_in_2_d)
+
+
+        #-----------------------------------------------
+
         Conv_1_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
         Conv_1_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
         Conv_2_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
@@ -256,11 +304,11 @@ class Learner():
         Conv_3_7 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
         Conv_3_8 = Conv2D(size, (K_n, K_n), padding='same', activation='relu')
 
-        conv_1_7 = Conv_1_7(conv_1_in_1)
+        conv_1_7 = Conv_1_7(conv_1_in_2)
         conv_1_8 = Conv_1_8(conv_1_7)
-        conv_2_7 = Conv_2_7(conv_2_in_1)
+        conv_2_7 = Conv_2_7(conv_2_in_2)
         conv_2_8 = Conv_2_8(conv_2_7)
-        conv_3_7 = Conv_3_7(conv_3_in_1)
+        conv_3_7 = Conv_3_7(conv_3_in_2)
         conv_3_8 = Conv_3_8(conv_3_7)
 
         lam_1 = Lambda(lam, output_shape=(16, size))(conv_1_8)
