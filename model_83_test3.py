@@ -372,9 +372,9 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(10, 100, 10):
+        for aaa in range(10, 40, 10):
             acc = []
-            for fol in range(1, 2):
+            for fol in range(1, 3):
                 filename = '/data/tmpsrt1/log_new/weights_test3_fold%d.%d.hdf5' % (fol, aaa)
                 self.model.load_weights(filename)
                 self.prepare(fol)
@@ -432,7 +432,7 @@ class Learner():
                 print(acc_fol)
                 acc.append(acc_fol)
 
-            print('num_epoch : %d, totoal_acc : %lf' % (aaa, np.mean(acc)))
+            print('num_epoch : %d, total_acc : %lf' % (aaa, np.mean(acc)))
 
 
     def work(self):
@@ -442,6 +442,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-a.work()
-#a.predict()
+#a.work()
+a.predict()
 
