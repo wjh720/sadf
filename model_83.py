@@ -544,7 +544,7 @@ class Learner():
 
             af = np.array(af)
             print(af)
-            time.sleep(10)
+            time.sleep(100)
 
 
     def work(self):
