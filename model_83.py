@@ -512,7 +512,7 @@ class Learner():
                 data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
 
                 asd = np.argmax(data_asd, axis = 1)
-                vas = self.dict[j][asd]
+                vas = [self.dict[j][x] for x in asd]
                 print(vas)
                 time.sleep(10)
 
