@@ -527,6 +527,7 @@ class Learner():
             output.append(output1)
 
         n = output[0][0].shape[0] / num_repeat
+        res = []
         for i in range(n):
             af = []
             for j in range(4):
@@ -537,20 +538,37 @@ class Learner():
 
                 asd = np.argmax(data_asd, axis = 1)
                 vas = [self.dict[j][x] for x in asd]
-                print(vas)
+                #print(vas)
                 #time.sleep(10)
                 wqe = [self.dict_label[x] for x in vas]
                 af.append(wqe)
 
             af = np.concatenate(af)
-            print(af)
+            #print(af)
             counts = np.bincount(af)
             ans = np.argmax(counts)
-            print(counts)
-            print(ans)
+            res.append(ans)
+            #print(counts)
+            #print(ans)
 
             #time.sleep(100)
             print('---------------------')
+
+        save_name = 'result.txt'
+        f_name = meta_path + 'test.txt'
+        f_list = []
+        with open(f_name, 'r') as ff:
+            for line in ff:
+                parts = line.split('\t')
+                parts = parts[0].split('\r\n')
+                f_list.append(parts[0])
+
+        with open(save_name, 'w') as ff:
+            n = len(res)
+            m = len(f_list)
+            print('n : %d, m : %d' % (n, m))
+            for i in range(n):
+                ff.write(f_list[i] + ' ' + res[i])
 
 
     def work(self):
