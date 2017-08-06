@@ -569,10 +569,10 @@ class Learner():
             print('n : %d, m : %d' % (n, m))
             for i in range(n):
                 print(f_list[i])
-                print(res[i])
-                print(type(f_list[i]))
-                print(type(res[i]))
-                ff.write(f_list[i] + ' ' + res[i])
+                print(self.dict_label[res[i]])
+                #print(type(f_list[i]))
+                #print(type(res[i]))
+                ff.write(f_list[i] + ' ' + self.dict_label[res[i]])
 
 
     def work(self):
