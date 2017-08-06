@@ -399,6 +399,7 @@ class Learner():
         self.create_mfcc()
 
         acc = []
+        acc_wise = {}
 
         for fol in range(1, 5):
             filename = '/data/tmpsrt1/log_new/weights_merge_fold%d.29.hdf5' % fol
@@ -462,12 +463,18 @@ class Learner():
             print('----------------------')
 
             for i in range(15):
-                print(self.dict_class[i])
-                print(1. * self.ans_wise[i] / self.total_wise[i])
+                name = self.dict_class[i]
+                acc_i = 1. * self.ans_wise[i] / self.total_wise[i]
+                if (fol == 1):
+                    acc_wise[name] = []
+                acc_wise[name].append(acc_i)
 
             print('----------------------')
 
         print('totoal_acc : %lf' % np.mean(acc))
+        for item in acc_wise:
+            print(item)
+            print(np.mean(np.array(acc_wise[item])))
 
     def evaluation(self):
         def Load(name1, name2, length):
