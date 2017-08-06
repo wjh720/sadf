@@ -542,10 +542,10 @@ class Learner():
                 wqe = [self.dict_label[x] for x in vas]
                 af.append(wqe)
 
-            af = np.array(af)
+            af = np.concatenate(af)
+            print(af)
             counts = np.bincount(af)
             ans = np.argmax(counts)
-            print(af)
             print(counts)
             print(ans)
 
