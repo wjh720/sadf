@@ -460,7 +460,7 @@ class Learner():
 
         print('totoal_acc : %lf' % np.mean(acc))
 
-    def evaluation():
+    def evaluation(self):
         def Load_2(self, name1, name2, length):
             f = file(name1 + name2, 'r')
             data = np.load(f)
