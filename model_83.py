@@ -488,16 +488,15 @@ class Learner():
             filename = '/data/tmpsrt1/log_new/weights_merge_fold%d.29.hdf5' % fol
             self.model.load_weights(filename)
 
-            self.valid_data = (
-                {
+            self.valid_data = {
                     'data_8192' : self.data_8192[1],
                     'data_cqt' : self.data_cqt[1],
                     'data_2048' : self.data_2048[1]
                 }
-            )
+            
 
             output1 = self.model.predict(       
-                    x = self.valid_data[0],
+                    x = self.valid_data,
                     batch_size = 64,
                     verbose = 2
                 )
