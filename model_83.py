@@ -549,7 +549,8 @@ class Learner():
             print(counts)
             print(ans)
 
-            time.sleep(100)
+            #time.sleep(100)
+            print('---------------------')
 
 
     def work(self):
