@@ -570,6 +570,8 @@ class Learner():
             for i in range(n):
                 print(f_list[i])
                 print(res[i])
+                print(type(f_list[i]))
+                print(type(res[i]))
                 ff.write(f_list[i] + ' ' + res[i])
 
 
