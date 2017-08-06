@@ -25,7 +25,7 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
-num_repeat = 26
+num_repeat = 13
 num_asd = 25
 num_classes = 15
 si_1 = 16
@@ -69,10 +69,10 @@ class Learner():
 
         for i in range(n):
             asd = data[i]
-            for j in range(num_repeat / 2):
+            for j in range(num_repeat):
                 aa = asd[j * length : (j + 1) * length]
                 pdata.append(aa)
-                pdata.append(aa[::-1])
+                #pdata.append(aa[::-1])
         pdata = np.array(pdata)
         #print(pdata.shape)
         return pdata
@@ -397,6 +397,7 @@ class Learner():
         self.create_mfcc()
 
         acc = []
+        self.dict = []
 
         for fol in range(1, 5):
             filename = '/data/tmpsrt1/log_new/weights_merge_fold%d.29.hdf5' % fol
@@ -440,6 +441,7 @@ class Learner():
                         self.dict_class[num_label] = parts[1]
                         num_label = num_label + 1
 
+            self.dict.append(self.dict_class)
             n = label.shape[0] / num_repeat
             ans = []
             for i in range(n):
@@ -458,6 +460,66 @@ class Learner():
 
         print('totoal_acc : %lf' % np.mean(acc))
 
+    def evaluation():
+        def Load_2(self, name1, name2, length):
+            f = file(name1 + name2, 'r')
+            data = np.load(f)
+            f.close()
+
+            data = self.prepare_data(data, length)
+
+            return data
+
+        path = '../data/TUT-acoustic-scenes-2017-evaluation/'
+        meta_path = path + 'evaluation_setup/'
+        name = meta_path + 'test.txt_test'
+        
+        self.data_cqt = Load_2(name, '_data_cqt', si_2)
+        self.data_2048 = Load_2(name, '_data_2048', si_2)
+        self.data_4096 = Load_2(name, '_data_4096', si_3)
+        self.data_8192 = Load_2(name, '_data_8192', si_1)
+        self.data_mel = Load_2(name, '_data_mel', si_2)
+
+        output = []
+
+        for fol in range(1, 5):
+            filename = '/data/tmpsrt1/log_new/weights_merge_fold%d.29.hdf5' % fol
+            self.model.load_weights(filename)
+
+            self.valid_data = (
+                {
+                    'data_8192' : self.data_8192[1],
+                    'data_cqt' : self.data_cqt[1],
+                    'data_2048' : self.data_2048[1]
+                }, \
+                {
+                    'out_1' : self.label[1],
+                    'out_2' : self.label[1],
+                    'out_3' : self.label[1]
+                }
+            )
+
+            output1 = self.model.predict(       
+                    x = self.valid_data[0],
+                    batch_size = 64,
+                    verbose = 2
+                )
+
+            output.append(output1)
+
+        n = output[0].shape[0] / num_repeat
+        for i in range(n):
+            for j in range(1, 5):
+                data_1 = output[j, 0][i * num_repeat : (i + 1) * num_repeat]
+                data_2 = output[j, 1][i * num_repeat : (i + 1) * num_repeat]
+                data_3 = output[j, 2][i * num_repeat : (i + 1) * num_repeat]
+                data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
+
+                asd = np.argmax(data_asd, axis = 1)
+                vas = self.dict[j][asd]
+                print(vas)
+                time.sleep(10)
+
 
     def work(self):
         for fol in range(2, 5):
@@ -466,6 +528,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-a.work()
-#a.predict()
-
+#a.work()
+a.predict()
+a.evaluation()
