@@ -371,13 +371,13 @@ class Learner():
             if (np.max(num) != np.min(num)):
                 print('calc error!')
 
-            #asd = np.argmax(data, axis = 1)
+            asd = np.argmax(data, axis = 1)
 
-            #counts = np.bincount(asd)
-            #ans = np.argmax(counts)
+            counts = np.bincount(asd)
+            ans = np.argmax(counts)
 
-            asd = np.sum(data, axis = 0)
-            ans = np.argmax(asd)
+            #asd = np.sum(data, axis = 0)
+            #ans = np.argmax(asd)
 
             '''
             if (ans != num[0]):
@@ -537,13 +537,18 @@ class Learner():
 
                 asd = np.argmax(data_asd, axis = 1)
                 vas = [self.dict[j][x] for x in asd]
-                #print(vas)
+                print(vas)
                 #time.sleep(10)
                 wqe = [self.dict_label[x] for x in vas]
                 af.append(wqe)
 
             af = np.array(af)
+            counts = np.bincount(af)
+            ans = np.argmax(counts)
             print(af)
+            print(counts)
+            print(ans)
+
             time.sleep(100)
 
 
