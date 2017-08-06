@@ -503,7 +503,7 @@ class Learner():
 
             output.append(output1)
 
-        n = output[0,0].shape[0] / num_repeat
+        n = output[0][0].shape[0] / num_repeat
         for i in range(n):
             for j in range(1, 5):
                 data_1 = output[j, 0][i * num_repeat : (i + 1) * num_repeat]
@@ -525,5 +525,5 @@ class Learner():
 
 a = Learner()
 #a.work()
-a.predict()
+#a.predict()
 a.evaluation()
