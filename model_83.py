@@ -489,9 +489,9 @@ class Learner():
             self.model.load_weights(filename)
 
             self.valid_data = {
-                    'data_8192' : self.data_8192[1],
-                    'data_cqt' : self.data_cqt[1],
-                    'data_2048' : self.data_2048[1]
+                    'data_8192' : self.data_8192,
+                    'data_cqt' : self.data_cqt,
+                    'data_2048' : self.data_2048
                 }
             
 
