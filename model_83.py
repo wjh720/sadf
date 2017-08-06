@@ -461,7 +461,7 @@ class Learner():
         print('totoal_acc : %lf' % np.mean(acc))
 
     def evaluation(self):
-        def Load_2(self, name1, name2, length):
+        def Load(name1, name2, length):
             f = file(name1 + name2, 'r')
             data = np.load(f)
             f.close()
@@ -474,11 +474,11 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         name = meta_path + 'test.txt_test'
         
-        self.data_cqt = Load_2(name, '_data_cqt', si_2)
-        self.data_2048 = Load_2(name, '_data_2048', si_2)
-        self.data_4096 = Load_2(name, '_data_4096', si_3)
-        self.data_8192 = Load_2(name, '_data_8192', si_1)
-        self.data_mel = Load_2(name, '_data_mel', si_2)
+        self.data_cqt = Load(name, '_data_cqt', si_2)
+        self.data_2048 = Load(name, '_data_2048', si_2)
+        self.data_4096 = Load(name, '_data_4096', si_3)
+        self.data_8192 = Load(name, '_data_8192', si_1)
+        self.data_mel = Load(name, '_data_mel', si_2)
 
         output = []
 
