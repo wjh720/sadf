@@ -552,7 +552,7 @@ class Learner():
             #print(ans)
 
             #time.sleep(100)
-            print('---------------------')
+            #print('---------------------')
 
         save_name = 'result.txt'
         f_name = meta_path + 'test.txt'
@@ -568,6 +568,8 @@ class Learner():
             m = len(f_list)
             print('n : %d, m : %d' % (n, m))
             for i in range(n):
+                print(f_list[i])
+                print(res[i])
                 ff.write(f_list[i] + ' ' + res[i])
 
 
