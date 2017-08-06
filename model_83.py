@@ -480,6 +480,8 @@ class Learner():
         self.data_8192 = Load(name, '_data_8192', si_1)
         self.data_mel = Load(name, '_data_mel', si_2)
 
+        self.create_mfcc()
+
         output = []
 
         for fol in range(1, 5):
