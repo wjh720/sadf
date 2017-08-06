@@ -493,11 +493,6 @@ class Learner():
                     'data_8192' : self.data_8192[1],
                     'data_cqt' : self.data_cqt[1],
                     'data_2048' : self.data_2048[1]
-                }, \
-                {
-                    'out_1' : self.label[1],
-                    'out_2' : self.label[1],
-                    'out_3' : self.label[1]
                 }
             )
 
