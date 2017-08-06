@@ -468,6 +468,7 @@ class Learner():
 
             return data
         
+        path = '../data/TUT-acoustic-scenes-2017-development/'
         meta_path = path + 'evaluation_setup/'
         self.dict = []
 
