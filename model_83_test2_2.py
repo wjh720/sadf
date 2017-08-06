@@ -25,7 +25,7 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
-num_repeat = 13
+num_repeat = 26
 num_asd = 25
 num_classes = 15
 si_1 = 16
@@ -69,10 +69,10 @@ class Learner():
 
         for i in range(n):
             asd = data[i]
-            for j in range(num_repeat):
+            for j in range(num_repeat / 2):
                 aa = asd[j * length : (j + 1) * length]
                 pdata.append(aa)
-                #pdata.append(aa[::-1])
+                pdata.append(aa[::-1])
 
         pdata = np.array(pdata)
         #print(pdata.shape)
@@ -377,10 +377,10 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(30, 40, 5):
+        for aaa in range(30, 40):
             acc = []
-            for fol in range(1, 4):
-                filename = '/data/tmpsrt1/log_new/weights_test5_fold%d.%02d.hdf5' % (fol, aaa)
+            for fol in range(1, 2):
+                filename = '/data/tmpsrt1/log_new/weights_test2_fold%d.%02d.hdf5' % (fol, aaa)
                 self.model.load_weights(filename)
                 self.prepare(fol)
 
@@ -445,6 +445,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-#a.work()
-a.predict()
+a.work()
+#a.predict()
 
