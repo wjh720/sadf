@@ -390,6 +390,8 @@ class Learner():
                 print('--------------------')
                 #time.sleep(5)
             ''' 
+            self.total_wise[num[0]] = self.total_wise[num[0]] + 1
+            self.ans_wise[num[0]] = self.ans_wise[num[0]] + (ans == num[0])
 
             return float(ans == num[0])
 
@@ -442,6 +444,8 @@ class Learner():
 
             n = label.shape[0] / num_repeat
             ans = []
+            self.ans_wise = np.zeros(15)
+            self.total_wise = np.zeros(15)
             for i in range(n):
                 asd = label[i * num_repeat : (i + 1) * num_repeat]
                 data_1 = output[0][i * num_repeat : (i + 1) * num_repeat]
@@ -455,6 +459,13 @@ class Learner():
             acc_fol = np.mean(np.array(ans))
             print(acc_fol)
             acc.append(acc_fol)
+            print('----------------------')
+
+            for i in range(15):
+                print(self.dict_class[i])
+                print(1. * self.ans_wise[i] / self.total_wise[i])
+
+            print('----------------------')
 
         print('totoal_acc : %lf' % np.mean(acc))
 
@@ -583,5 +594,5 @@ class Learner():
 
 a = Learner()
 #a.work()
-#a.predict()
-a.evaluation()
+a.predict()
+#a.evaluation()
