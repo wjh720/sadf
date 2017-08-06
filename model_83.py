@@ -490,6 +490,8 @@ class Learner():
                         num_label = num_label + 1
 
             self.dict.append(self.dict_class)
+            if (fol == 1):
+                self.dict_label = dict_label
 
         path2 = '../data/TUT-acoustic-scenes-2017-evaluation/'
         meta_path = path2 + 'evaluation_setup/'
@@ -526,7 +528,8 @@ class Learner():
 
         n = output[0][0].shape[0] / num_repeat
         for i in range(n):
-            for j in range(1, 5):
+            af = []
+            for j in range(4):
                 data_1 = output[j][0][i * num_repeat : (i + 1) * num_repeat]
                 data_2 = output[j][1][i * num_repeat : (i + 1) * num_repeat]
                 data_3 = output[j][2][i * num_repeat : (i + 1) * num_repeat]
@@ -534,8 +537,14 @@ class Learner():
 
                 asd = np.argmax(data_asd, axis = 1)
                 vas = [self.dict[j][x] for x in asd]
-                print(vas)
-                time.sleep(10)
+                #print(vas)
+                #time.sleep(10)
+                wqe = [self.dict_label[x] for x in vas]
+                af.append(wqe)
+
+            af = np.array(af)
+            print(af)
+            time.sleep(10)
 
 
     def work(self):
