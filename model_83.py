@@ -506,9 +506,9 @@ class Learner():
         n = output[0][0].shape[0] / num_repeat
         for i in range(n):
             for j in range(1, 5):
-                data_1 = output[j, 0][i * num_repeat : (i + 1) * num_repeat]
-                data_2 = output[j, 1][i * num_repeat : (i + 1) * num_repeat]
-                data_3 = output[j, 2][i * num_repeat : (i + 1) * num_repeat]
+                data_1 = output[j][0][i * num_repeat : (i + 1) * num_repeat]
+                data_2 = output[j][1][i * num_repeat : (i + 1) * num_repeat]
+                data_3 = output[j][2][i * num_repeat : (i + 1) * num_repeat]
                 data_asd = np.concatenate([data_1, data_2, data_3], axis = 0)
 
                 asd = np.argmax(data_asd, axis = 1)
