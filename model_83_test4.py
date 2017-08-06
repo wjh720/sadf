@@ -453,12 +453,14 @@ class Learner():
 
 
     def work(self):
-        for fol in range(3, 4):
+        for fol in range(1, 5):
+            if (fol == 3):
+                continue
             self.prepare(fol, pr = 1)
             self.create_mfcc()
             self.learn(fol)
 
 a = Learner()
-#a.work()
-a.predict()
+a.work()
+#a.predict()
 
