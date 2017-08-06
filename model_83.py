@@ -397,7 +397,6 @@ class Learner():
         self.create_mfcc()
 
         acc = []
-        self.dict = []
 
         for fol in range(1, 5):
             filename = '/data/tmpsrt1/log_new/weights_merge_fold%d.29.hdf5' % fol
@@ -441,7 +440,6 @@ class Learner():
                         self.dict_class[num_label] = parts[1]
                         num_label = num_label + 1
 
-            self.dict.append(self.dict_class)
             n = label.shape[0] / num_repeat
             ans = []
             for i in range(n):
@@ -469,6 +467,28 @@ class Learner():
             data = self.prepare_data(data, length)
 
             return data
+        
+        meta_path = path + 'evaluation_setup/'
+        self.dict = []
+
+        for fol in range(1, 5):
+            filename = '/data/tmpsrt1/log_new/weights_merge_fold%d.29.hdf5' % fol
+            fold_name = meta_path + ('fold%d' % fol)
+            load_name = fold_name + '_evaluate.txt'
+
+            dict_label = {}
+            self.dict_class = {}
+            num_label = 0
+            with open(load_name, 'r') as ff:
+                for line in ff:
+                    parts = line.split('\t')
+
+                    if (parts[1] not in dict_label):
+                        dict_label[parts[1]] = num_label
+                        self.dict_class[num_label] = parts[1]
+                        num_label = num_label + 1
+
+            self.dict.append(self.dict_class)
 
         path = '../data/TUT-acoustic-scenes-2017-evaluation/'
         meta_path = path + 'evaluation_setup/'
@@ -525,5 +545,5 @@ class Learner():
 
 a = Learner()
 #a.work()
-a.predict()
+#a.predict()
 a.evaluation()
