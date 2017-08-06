@@ -468,8 +468,8 @@ class Learner():
 
             return data
         
-        path = '../data/TUT-acoustic-scenes-2017-development/'
-        meta_path = path + 'evaluation_setup/'
+        path1 = '../data/TUT-acoustic-scenes-2017-development/'
+        meta_path = path1 + 'evaluation_setup/'
         self.dict = []
 
         for fol in range(1, 5):
@@ -491,8 +491,8 @@ class Learner():
 
             self.dict.append(self.dict_class)
 
-        path = '../data/TUT-acoustic-scenes-2017-evaluation/'
-        meta_path = path + 'evaluation_setup/'
+        path2 = '../data/TUT-acoustic-scenes-2017-evaluation/'
+        meta_path = path2 + 'evaluation_setup/'
         name = meta_path + 'test.txt_test'
         
         self.data_cqt = Load(name, '_data_cqt', si_2)
