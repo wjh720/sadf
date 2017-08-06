@@ -154,7 +154,7 @@ class Learner():
             x = self.x_data,
             y = self.y_data,
             validation_data = self.valid_data,
-            batch_size = 128,
+            batch_size = 64,
             epochs = 30,
             verbose = 2,
             shuffle = True,
