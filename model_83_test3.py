@@ -25,7 +25,7 @@ import tensorflow as tf
 from keras.callbacks import ModelCheckpoint
 import keras
 
-num_repeat = 13
+num_repeat = 26
 num_asd = 25
 num_classes = 15
 si_1 = 16
@@ -69,10 +69,10 @@ class Learner():
 
         for i in range(n):
             asd = data[i]
-            for j in range(num_repeat):
+            for j in range(num_repeat / 2):
                 aa = asd[j * length : (j + 1) * length]
                 pdata.append(aa)
-                #pdata.append(aa[::-1])
+                pdata.append(aa[::-1])
 
         pdata = np.array(pdata)
         #print(pdata.shape)
@@ -119,9 +119,9 @@ class Learner():
 
 
     def learn(self, fol):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test8_fold%d' % fol, \
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test13_fold%d' % fol, \
                             histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_test8_fold%d.{epoch:02d}.hdf5' % fol, \
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_test13_fold%d.{epoch:02d}.hdf5' % fol, \
                         period = 1, verbose = 1, save_weights_only = True)
         
         print(' Begin fitting %d' % fol)
@@ -442,6 +442,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-#a.work()
-a.predict()
+a.work()
+#a.predict()
 
