@@ -525,5 +525,5 @@ class Learner():
 
 a = Learner()
 #a.work()
-#a.predict()
+a.predict()
 a.evaluation()
