@@ -119,9 +119,9 @@ class Learner():
 
 
     def learn(self, fol):
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test4_fold%d' % fol, \
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='../Graph_test10_fold%d' % fol, \
                             histogram_freq=0, write_graph=True, write_images=True)
-        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_test4_fold%d.{epoch:02d}.hdf5' % fol, \
+        checkpointer = ModelCheckpoint(filepath='/data/tmpsrt1/log_new/weights_test10_fold%d.{epoch:02d}.hdf5' % fol, \
                         period = 1, verbose = 1, save_weights_only = True)
         
         print(' Begin fitting %d' % fol)
@@ -155,7 +155,7 @@ class Learner():
             y = self.y_data,
             validation_data = self.valid_data,
             batch_size = 64,
-            epochs = 100,
+            epochs = 40,
             verbose = 2,
             shuffle = True,
             callbacks = [tbCallBack,checkpointer]
@@ -453,12 +453,12 @@ class Learner():
 
 
     def work(self):
-        for fol in range(1, 5):
+        for fol in range(3, 4):
             self.prepare(fol, pr = 1)
             self.create_mfcc()
             self.learn(fol)
 
 a = Learner()
-#a.work()
-a.predict()
+a.work()
+#a.predict()
 
