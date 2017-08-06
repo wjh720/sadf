@@ -404,7 +404,7 @@ class Learner():
             acc_wise = {}
 
             for fol in range(1, 5):
-                filename = '/data/tmpsrt1/log_new/weights_merge2_fold%d.29.hdf5' % fol
+                filename = '/data/tmpsrt1/log_new/weights_merge2_fold%d.%d.hdf5' % (fol, aaa)
                 self.model.load_weights(filename)
                 self.prepare(fol)
 
