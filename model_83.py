@@ -572,7 +572,7 @@ class Learner():
                 print(self.dict[0][res[i]])
                 #print(type(f_list[i]))
                 #print(type(res[i]))
-                ff.write(f_list[i] + ' ' + self.dict[0][res[i]])
+                ff.write(f_list[i] + '\t' + self.dict[0][res[i]])
 
 
     def work(self):
