@@ -453,7 +453,7 @@ class Learner():
 
 
     def work(self):
-        for fol in range(1, 5):
+        for fol in range(4, 5):
             self.prepare(fol, pr = 1)
             self.create_mfcc()
             self.learn(fol)
