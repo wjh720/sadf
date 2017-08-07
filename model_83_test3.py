@@ -355,27 +355,21 @@ class Learner():
             #asd = np.sum(data, axis = 0)
             #ans = np.argmax(asd)
 
-            '''
-            if (ans != num[0]):
-                print([self.dict_class[num[0]]])
-                print([self.dict_class[ans]])
-                print('--------------------')
-                print([(self.dict_class[i], counts[i]) for i in range(counts.shape[0])])
-                print('--------------------')
-                print([self.dict_class[x] for x in asd[:50]])
-                print('--------------------')
-                #time.sleep(5)
-            ''' 
+            self.total_wise[num[0]] = self.total_wise[num[0]] + 1
+            self.ans_wise[num[0]] = self.ans_wise[num[0]] + (ans == num[0])
 
             return float(ans == num[0])
 
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(14, 30, 5):
+        for aaa in range(14, 25, 5):
+
             acc = []
-            for fol in range(1, 3):
-                filename = '/data/tmpsrt1/log_new/weights_test8_fold%d.%d.hdf5' % (fol, aaa)
+            acc_wise = {}
+
+            for fol in range(1, 5):
+                filename = '/data/tmpsrt1/log_new/weights_test13_fold%d.%d.hdf5' % (fol, aaa)
                 self.model.load_weights(filename)
                 self.prepare(fol)
 
@@ -418,6 +412,8 @@ class Learner():
 
                 n = label.shape[0] / num_repeat
                 ans = []
+                self.ans_wise = np.zeros(15)
+                self.total_wise = np.zeros(15)
                 for i in range(n):
                     asd = label[i * num_repeat : (i + 1) * num_repeat]
                     data_1 = output[0][i * num_repeat : (i + 1) * num_repeat]
@@ -431,8 +427,26 @@ class Learner():
                 acc_fol = np.mean(np.array(ans))
                 print(acc_fol)
                 acc.append(acc_fol)
+                print('----------------------')
+
+                for i in range(15):
+                    name = self.dict_class[i]
+                    acc_i = 1. * self.ans_wise[i] / self.total_wise[i]
+                    if (fol == 1):
+                        acc_wise[name] = []
+                    acc_wise[name].append(acc_i)
+
+                print('----------------------')
 
             print('num_epoch : %d, total_acc : %lf' % (aaa, np.mean(acc)))
+            for item in acc_wise:
+                print(item)
+                print(np.mean(np.array(acc_wise[item])))
+
+        print('totoal_acc : %lf' % np.mean(acc))
+        for item in acc_wise:
+            print(item)
+            print(np.mean(np.array(acc_wise[item])))
 
 
     def work(self):
@@ -442,6 +456,6 @@ class Learner():
             self.learn(fol)
 
 a = Learner()
-a.work()
-#a.predict()
+#a.work()
+a.predict()
 
