@@ -398,7 +398,7 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(20, 40, 5):
+        for aaa in range(19, 40, 5):
 
             acc = []
             acc_wise = {}
