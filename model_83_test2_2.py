@@ -379,20 +379,18 @@ class Learner():
         meta_path = path + 'evaluation_setup/'
         self.create_mfcc()
 
-        for aaa in range(20, 40, 5):
+        for aaa in range(19, 40, 5):
 
             acc = []
             acc_wise = {}
 
             for fol in range(1, 5):
-                filename = '/data/tmpsrt1/log_new/weights_merge2_fold%d.%02d.hdf5' % (fol, aaa)
+                filename = '/data/tmpsrt1/log_new/weights_test_fold%d.%02d.hdf5' % (fol, aaa)
                 self.model.load_weights(filename)
                 self.prepare(fol)
 
                 self.valid_data = (
                     {
-                        'data_8192' : self.data_8192[1],
-                        'data_cqt' : self.data_cqt[1],
                         'data_2048' : self.data_2048[1]
                     }, \
                     {
