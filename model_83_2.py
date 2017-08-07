@@ -574,7 +574,7 @@ class Learner():
             #time.sleep(100)
             #print('---------------------')
 
-        save_name = 'result.txt'
+        save_name = 'result_merge2.txt'
         f_name = meta_path + 'test.txt'
         f_list = []
         with open(f_name, 'r') as ff:
@@ -603,5 +603,5 @@ class Learner():
 
 a = Learner()
 #a.work()
-a.predict()
-#a.evaluation()
+#a.predict()
+a.evaluation()
